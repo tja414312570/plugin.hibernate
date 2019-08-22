@@ -116,9 +116,7 @@ public class DBManager {
 		PackageScanner scanner = new PackageScanner();
 		if(classPath==null)
 			classPath = this.getClass().getClassLoader().getResource("").getPath().replace("%20"," ");
-		scanner.setClassPath(classPath);
-		if(pkg!=null&&!pkg.equals("*"))
-			scanner.setPackageName(pkg);
+		scanner.addScanPath(classPath);
 		scanner.doScanner(new ClassInter(){
 			@Override
 			public void find(Class<?> cls) {

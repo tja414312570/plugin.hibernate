@@ -3,11 +3,14 @@ package com.YaNan.frame.hibernate.database.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.YaNan.frame.plugin.annotations.Register;
+
 /**
  * 预执行片段，此片段包含生成的SQL语句以及所涉及到的参数和变量信息。
  * @author yanan
  *
  */
+@Register(signlTon=false)
 public class PreparedFragment {
 	/**
 	 * 生成的SQL语句

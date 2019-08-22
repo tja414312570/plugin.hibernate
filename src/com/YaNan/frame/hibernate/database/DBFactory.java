@@ -56,6 +56,8 @@ public class DBFactory {
 	private DataBase defaultDB = null;
 	private File xmlFile;// new File("src/hibernate.xml");//
 	private String classPath;
+	
+
 	private final Logger log = LoggerFactory.getLogger(DBFactory.class);
 	private Map<String, BaseMapping> wrapMap = new HashMap<String, BaseMapping>();
 
@@ -69,7 +71,15 @@ public class DBFactory {
 		}
 		return dbFactory;
 	}
+	
+	public String getClassPath() {
+		return classPath;
+	}
 
+	public void setClassPath(String classPath) {
+		this.classPath = classPath;
+	}
+	
 	public Map<Class<?>, DBTab> getTabMappingCaches() {
 		return Class2TabMappingCache.getDBTabelsMap();
 	}
@@ -247,9 +257,7 @@ public class DBFactory {
 		PackageScanner scanner = new PackageScanner();
 		if (classPath == null)
 			classPath = this.getClass().getClassLoader().getResource("").getPath().replace("%20", " ");
-		scanner.setClassPath(classPath);
-		if (pkg != null && !pkg.equals("*"))
-			scanner.setPackageName(pkg);
+		scanner.addScanPath(classPath);
 		scanner.doScanner(new ClassInter() {
 			@Override
 			public void find(Class<?> cls) {

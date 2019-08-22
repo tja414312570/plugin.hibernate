@@ -17,6 +17,7 @@ import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 public class HibernateContextInit implements ServletContextListener {
 	private Logger log  = LoggerFactory.getLogger(HibernateContextInit.class);
 	private File location;
+	private String classPath;
 	@SuppressWarnings("deprecation")
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
