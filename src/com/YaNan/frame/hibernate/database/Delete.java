@@ -117,6 +117,10 @@ public class Delete extends OperateImplement{
 	}
 
 	public int delete() {
-		return this.dbTab.delete(this);
+		int rows = this.dbTab.delete(this);
+		log.debug("prepared sql:" + this.getPreparedSql());
+		log.debug("prepared parameter:" + parameters);
+		log.debug("update id: "+rows);
+		return rows;
 	}
 }

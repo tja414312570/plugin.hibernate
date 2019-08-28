@@ -53,12 +53,14 @@ public class DBColumn implements mySqlInterface {
 		setAnnotations(column.Annotations());
 		setCharset(column.charset());
 		setCollate(column.collate());
-		log.debug(columnDesc());
+		if(log.isDebugEnabled())
+			log.debug(columnDesc());
 	}
 
 	public DBColumn(Field field) {
 		setField(field);
-		log.debug("this Field [" + field.getName() + "] is not annotion,all attribute set default");
+		if(log.isDebugEnabled())
+			log.debug("this Field [" + field.getName() + "] is not annotion,all attribute set default");
 		setAuto_Fill(false);
 		setAuto_Increment(false);
 		setLength(255);
@@ -73,7 +75,8 @@ public class DBColumn implements mySqlInterface {
 		setType(this.getType(field));
 		setValue("");
 		setAnnotations("");
-		log.debug(columnDesc());
+		if(log.isDebugEnabled())
+			log.debug(columnDesc());
 	}
 
 	public String columnDesc() {

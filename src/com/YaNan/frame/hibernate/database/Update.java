@@ -238,7 +238,11 @@ public class Update extends OperateImplement {
 	}
 
 	public int update() {
-		return this.getDbTab().update(this);
+		int rows = this.getDbTab().update(this);
+		log.debug("prepared sql:" + this.getPreparedSql());
+		log.debug("prepared parameter:" + parameters);
+		log.debug("update rows: "+rows);
+		return rows;
 	}
 
 	/**

@@ -115,7 +115,7 @@ public class PreparedSql {
 			Class<?> resultType = sqlFragment.getResultTypeClass();
 			Object generatedKey = 0;
 			Object result = ps.execute();
-			QueryCache.getCache().cleanCache(this.sqlFragment.getDataBase().getName());// 清理数据库缓存
+			QueryCache.getCache().cleanDataBaseCache(this.sqlFragment.getDataBase().getName());// 清理数据库缓存
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next())
 				generatedKey = rs.getInt(1);
@@ -149,7 +149,7 @@ public class PreparedSql {
 			this.preparedParameter(ps, collect);
 			Class<?> resultType = sqlFragment.getResultTypeClass();
 			Object result = ps.executeUpdate();
-			QueryCache.getCache().cleanCache(this.sqlFragment.getDataBase().getName());// 清理数据库缓存
+			QueryCache.getCache().cleanDataBaseCache(this.sqlFragment.getDataBase().getName());// 清理数据库缓存
 			ps.close();
 			log.debug("execute result:" + result);
 			if (resultType != null) {

@@ -27,17 +27,20 @@ import com.YaNan.frame.plugin.interfacer.PlugsListener;
 public class GeneralMapperInterfaceProxy implements PlugsListener,InvokeHandler{
 	@Override
 	public void excute(PlugsFactory plugsFactory) {
+		RegisterDescription register = new RegisterDescription(GeneralMapperInterfaceProxy.class);
+		//创建一个此注册器的代理容器
+		register.createProxyContainer();
 		//从组件工厂获取所有的组件，就不必要重新扫描整个类了
 		Map<Class<?>, Plug> plugs = plugsFactory.getAllPlugs();
 		for(Plug plug : plugs.values()){
 			// 查找具有Sql注解的接口
 			if(plug.getDescription().getPlugClass().getAnnotation(Sql.class)!=null){
-				//获取一个注册器实例
-				RegisterDescription register = new RegisterDescription(GeneralMapperInterfaceProxy.class);
+				//将生成的注册描述添加到接口组件
+				plug.addRegister(register);
 				//设置默认实例为此实例的目标对象的本类实现
-				Object t =PlugsFactory.getPlugsInstance(GeneralMapperInterfaceProxy.class);
-				//创建一个此注册器的代理容器
-				register.createProxyContainer();
+				Object proxy =PlugsFactory.getPlugsInstanceByInsClass(plug.getDescription().getPlugClass(),
+						GeneralMapperInterfaceProxy.class);
+				
 				//对接口方法进行代理，代理对象为本身，目的是为了拦截方法的执行
 				for(Method method : plug.getDescription().getPlugClass().getMethods()){
 					register.addMethodHandler(method, this);
@@ -45,9 +48,7 @@ public class GeneralMapperInterfaceProxy implements PlugsListener,InvokeHandler{
 				//生成代理容器中实例的key
 				int hash = RegisterDescription.hash(plug.getDescription().getPlugClass());
 				//将代理对象保存到代理容器，则在调用接口的实例实际访问到自己类，其实就是为了给接口一个实例，具体有没有实现其接口并不关心
-				register.getProxyContainer().put(hash, t);
-				//将生成的注册描述添加到接口组件
-				plug.addRegister(register);
+				register.getProxyContainer().put(hash, proxy);
 			}
 		}
 	}

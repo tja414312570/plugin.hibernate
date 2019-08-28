@@ -124,6 +124,9 @@ public class Insert extends OperateImplement{
 	 */
 	public int insertGk() {
 		this.generatedKey = this.dataTables.insert(this);
+		log.debug("prepared sql:" + this.getPreparedSql());
+		log.debug("prepared parameter:" + parameters);
+		log.debug("insert id: "+generatedKey);
 		return this.generatedKey;
 	}
 	public Object getObj() {

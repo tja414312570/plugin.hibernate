@@ -461,10 +461,20 @@ public class Query extends OperateImplement {
 
 	@Override
 	public String create() {
+		this.parameters.clear();
 		if(this.cache){
 			String sql = SqlCache.getCache().getSql(this.ident());
-			if (sql != null)
+			if (sql != null) {
+				if(this.subQuery!=null){
+					this.parameters.addAll(this.subQuery.getParameters());
+				}
+				Iterator<String> i = map.keySet().iterator();
+				while (i.hasNext()) {
+					String s = i.next();
+					this.parameters.add(map.get(s));
+				}
 				return sql;
+			}
 		}
 		StringBuilder sb = new StringBuilder("SELECT ");
 		if (this.key.size() == 0)
@@ -554,7 +564,11 @@ public class Query extends OperateImplement {
 	public <T> List<T> query(boolean mapping) {
 		this.queryTab.setDataBase(this.dataTables.getDataBase());
 		this.queryTab.setName(this.dataTables.getName());
-		return this.queryTab.query(this, mapping);
+		List<T> result = this.queryTab.query(this, mapping);
+		log.debug("prepared sql:" + this.getPreparedSql());
+		log.debug("prepared parameter:" + parameters);
+		log.debug("query result: "+result);
+		return result;
 	}
 
 	public Map<Field, DBColumn> getFieldMap() {

@@ -107,7 +107,7 @@ public class DBTab implements mySqlInterface {
 			// 重新解析数据表
 			log.debug(
 					"================================================================================================================");
-			log.debug("the current class：" + dataTablesClass.getSimpleName());
+			log.debug("current class：" + dataTablesClass.getName());
 			// 如果当前类有Tab注解
 			if (tab != null) {
 				this.setDBName(tab.DB());
@@ -214,7 +214,7 @@ public class DBTab implements mySqlInterface {
 			if (ps != null) {
 				this.preparedParameter(ps,delete.getParameters());
 				ps.execute();
-				QueryCache.getCache().cleanCache(this.getName());// 清理查询缓存
+				QueryCache.getCache().cleanTable(this.getDBName(),this.getName());// 清理查询缓存
 			}
 			return ps.executeUpdate();
 		} catch (SQLException | SecurityException e) {
@@ -236,7 +236,7 @@ public class DBTab implements mySqlInterface {
 
 	public boolean delete(Delete delete, Connection connection) throws SQLException {
 		this.dataBase.executeUpdate(delete.create(), connection);
-		QueryCache.getCache().cleanCache(this.getName());
+		QueryCache.getCache().cleanTable(this.getDBName(),this.getName());
 		return true;
 	}
 
@@ -338,7 +338,7 @@ public class DBTab implements mySqlInterface {
 			if (ps != null) {
 				this.preparedParameter(ps,insert.getParameters());
 				ps.execute();
-				QueryCache.getCache().cleanCache(this.getName());// 清理查询缓存
+				QueryCache.getCache().cleanTable(this.getDBName(),this.getName());
 				ResultSet rs = ps.getGeneratedKeys();
 				if (this.AIField != null && rs.next())
 					gk = rs.getInt(1);
@@ -368,7 +368,7 @@ public class DBTab implements mySqlInterface {
 					executeResult = ps.executeBatch();
 				else
 					executeResult = ps.executeLargeBatch();
-				QueryCache.getCache().cleanCache(this.getName());// 清理查询缓存
+				QueryCache.getCache().cleanTable(this.getDBName(),this.getName());
 				ps.close();
 			}
 		} catch (SQLException | SecurityException e) {
@@ -418,7 +418,7 @@ public class DBTab implements mySqlInterface {
 		if (ps != null) {
 			this.preparedParameter(ps,insert.getParameters());
 			ps.execute();
-			QueryCache.getCache().cleanCache(this.getName());// 清理查询缓存
+			QueryCache.getCache().cleanTable(this.getDBName(),this.getName());
 			ResultSet rs = ps.getGeneratedKeys();
 			if (this.AIField != null && rs.next())
 				gk = rs.getInt(1);
@@ -445,7 +445,7 @@ public class DBTab implements mySqlInterface {
 			throw new RuntimeException("DataTable mapping class " + this.dataTablesClass.getName()
 					+ " datatable is null,please try to configure the @Tab attribute DB to declare database ");
 		PreparedStatement ps = this.dataBase.execute(insert.create());
-		QueryCache.getCache().cleanCache(this.getName());
+		QueryCache.getCache().cleanTable(this.getDBName(),this.getName());
 		ResultSet rs = ps.getGeneratedKeys();
 		ClassLoader loader = new ClassLoader(obj);
 		try {
@@ -540,9 +540,11 @@ public class DBTab implements mySqlInterface {
 		String sql = query.create();
 		List<T> dataTablesObjects;
 		if(query.isEnableCache()){
-			dataTablesObjects = QueryCache.getCache().getQuery(sql);
-			if (dataTablesObjects != null)
+			dataTablesObjects = QueryCache.getCache().getQuery(query.getDbTab().getDBName(),
+					query.getDbTab().getName(), sql, query.getParameters());
+			if (dataTablesObjects != null) {
 				return dataTablesObjects;
+			}
 		}
 		dataTablesObjects = new ArrayList<T>();
 		try {
@@ -572,7 +574,7 @@ public class DBTab implements mySqlInterface {
 			}
 			rs.close();
 			ps.close();
-			QueryCache.getCache().addQuery(this.getName(), sql, dataTablesObjects);
+			QueryCache.getCache().addCache(this.dataBase.getName(),this.getName(), sql,query.getParameters(), dataTablesObjects);
 		} catch (SQLException e) {
 			log.error("sql:" + query.create());
 			log.error(e.getMessage(),e);
@@ -585,10 +587,7 @@ public class DBTab implements mySqlInterface {
 		if (this.dataBase == null)
 			throw new RuntimeException("DataTable mapping class " + this.dataTablesClass.getName()
 					+ " datatable is null,please try to configure the @Tab attribute DB to declare database ");
-		List<T> dataTablesObjects = QueryCache.getCache().getQuery(sql);
-		if (dataTablesObjects != null)
-			return dataTablesObjects;
-		dataTablesObjects = new ArrayList<T>();
+		List<T> dataTablesObjects = new ArrayList<T>();
 		try {
 			PreparedStatement ps = this.dataBase.executeQuery(sql);
 			ResultSet rs = ps.executeQuery();
@@ -619,7 +618,6 @@ public class DBTab implements mySqlInterface {
 			log.error("sql:" + sql);
 			log.error(e.getMessage(),e);
 		}
-		QueryCache.getCache().addQuery(this.getName(), sql, dataTablesObjects);
 		return dataTablesObjects;
 	}
 
@@ -727,7 +725,7 @@ public class DBTab implements mySqlInterface {
 			if (ps != null) {
 				this.preparedParameter(ps,update.getParameters());
 				ps.execute();
-				QueryCache.getCache().cleanCache(this.getName());// 清理查询缓存
+				QueryCache.getCache().cleanTable(this.DBName,this.getName());// 清理查询缓存
 			}
 			return ps.executeUpdate();
 		} catch (SQLException | SecurityException e) {
@@ -744,7 +742,7 @@ public class DBTab implements mySqlInterface {
 					log.error(e.getMessage(),e);
 				}
 		}
-		return 0;
+		return 1;
 	}
 
 	public int update(Update update, Connection connection) throws SQLException {
@@ -757,7 +755,7 @@ public class DBTab implements mySqlInterface {
 		int end = sql.indexOf(" ", 7);
 		String sub = sql.substring(start, end);
 		sql = sql.replaceFirst(sub, this.name);
-		QueryCache.getCache().cleanCache(this.getName());
+		QueryCache.getCache().cleanTable(this.DBName,this.getName());// 清理查询缓存
 		return this.dataBase.executeUpdate(sql, connection);
 	}
 

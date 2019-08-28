@@ -11,6 +11,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.YaNan.frame.hibernate.database.DBColumn;
 import com.YaNan.frame.hibernate.database.DBTab;
 import com.YaNan.frame.hibernate.database.fragment.SqlFragment;
@@ -19,6 +22,8 @@ import com.YaNan.frame.utils.reflect.ClassLoader;
 
 @Register(priority=Integer.MAX_VALUE)
 public class DefaultOrmBuilder implements OrmBuilder{
+	StringBuilder stringBuffer = new StringBuilder();
+	private Logger log = LoggerFactory.getLogger(DefaultOrmBuilder.class);
 	@Override
 	public List<Object> builder(ResultSet resultSet, SqlFragment sqlFragment) {
 		try {
@@ -42,38 +47,79 @@ public class DefaultOrmBuilder implements OrmBuilder{
 	}
 	private void wrapperBean(ResultSet resultSet, List<Object> result, Class<?> resultType) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, SQLException {
 		DBTab tab = new DBTab(resultType);
+		Iterator<DBColumn> columnIterator = tab.getDBColumns().values().iterator();
+		stringBuffer.setLength(0);
+		DBColumn[] colNameArray = new DBColumn[tab.getDBColumns().values().size()];
+		int i =0;
+		while(columnIterator.hasNext()){
+			DBColumn dbColumn = columnIterator.next();
+			colNameArray[i++] = dbColumn;
+			String columnName = dbColumn.getName();
+			if(log.isDebugEnabled()) {
+				stringBuffer.append(columnName);
+				if(columnIterator.hasNext())
+					stringBuffer.append(",");
+			}
+		}
+		if(log.isDebugEnabled())
+			log.debug(stringBuffer.toString());
 		while (resultSet.next()) {
 			//可以使用PlugsHandler代理类，实现aop。但对Gson序列化有影响
 //			Object beanInstance = PlugsFactory.getPlugsInstance(resultType);
 			ClassLoader loader = new ClassLoader(resultType);
-			Iterator<DBColumn> columnIterator = tab.getDBColumns().values().iterator();
-			while(columnIterator.hasNext()){
-				DBColumn dbColumn = columnIterator.next();
-				Field field = dbColumn.getField();
-				Object object = resultSet.getObject(dbColumn.getName());
+			stringBuffer.setLength(0);
+			for(i=0;i< colNameArray.length;i++) {
+				DBColumn column = colNameArray[i];
+				Field field = column.getField();
+				Object object = resultSet.getObject(column.getName());
+				if(log.isDebugEnabled()) {
+					stringBuffer.append(object);
+					if(i < colNameArray.length-1)
+						stringBuffer.append(",");
+				}
 				if(object==null)
 					continue;
 				loader.set(field,ClassLoader.castType(object,field.getType()));
 			}
+			if(log.isDebugEnabled())
+				log.debug(stringBuffer.toString());
 			result.add(loader.getLoadedObject());
 		}
 	}
 	private void wrapperMap(ResultSet resultSet,List<Object> results, Class<?> resultType) throws SQLException {
 		ResultSetMetaData metaData = resultSet.getMetaData();
 		String[] colNameArray = this.getColumnName(metaData);
+		stringBuffer.setLength(0);
 		while (resultSet.next()) {
 			Map<String,Object> map = new HashMap<String,Object>();
 			for(int i = 0 ;i<colNameArray.length;i++){
-				map.put(colNameArray[i], resultSet.getObject(i+1));
+				Object result = resultSet.getObject(i+1);
+				if(log.isDebugEnabled()) {
+					stringBuffer.append(result);
+					if(i < colNameArray.length-1)
+						stringBuffer.append(",");
+				}
+				map.put(colNameArray[i], result);
 			}
+			if(log.isDebugEnabled())
+				log.debug(stringBuffer.toString());
 			results.add(map);
 		}
 	}
 	private String[] getColumnName(ResultSetMetaData metaData) throws SQLException{
 		int colCount = metaData.getColumnCount();
+		stringBuffer.setLength(0);
 		String[] colNameArray = new String[colCount];
-		for(int i = 0;i<colCount;i++)
+		for(int i = 0;i<colCount;i++) {
 			colNameArray[i] = metaData.getColumnLabel(i+1);
+			if(log.isDebugEnabled()) {
+				stringBuffer.append(colNameArray[i]);
+				if(i < colNameArray.length-1)
+					stringBuffer.append(",");
+			}
+		}
+		if(log.isDebugEnabled())
+			log.debug(stringBuffer.toString());
 		return colNameArray;
 	}
 }
