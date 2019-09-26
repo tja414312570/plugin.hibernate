@@ -284,52 +284,38 @@ public class Test {
 ```
 结果
 ```java
-[2019-09-26 10:53:53] [DEBUG] [DBFactory:162] : found wrap id com.YaNan.debug.test.insert2 ; content : insert into test2 ( id , name ) values
-[2019-09-26 10:53:53] [DEBUG] [DBFactory:194] : build INSERT wrapper fragment , wrapper id : "com.YaNan.debug.test.insert2" ;
-[2019-09-26 10:53:53] [DEBUG] [DBFactory:194] : build SELECT wrapper fragment , wrapper id : "com.YaNan.debug.test.test" ;
-[2019-09-26 10:53:54] [DEBUG] [DBFactory:194] : build INSERT wrapper fragment , wrapper id : "com.YaNan.debug.test.insert" ;
-[2019-09-26 10:53:54] [DEBUG] [DBFactory:194] : build SELECT wrapper fragment , wrapper id : "testSql.query2" ;
-[2019-09-26 10:53:54] [DEBUG] [DBFactory:194] : build SELECT wrapper fragment , wrapper id : "testSql.query" ;
-[2019-09-26 10:53:54] [DEBUG] [DBFactory:194] : build SELECT wrapper fragment , wrapper id : "testSql.query5" ;
-[2019-09-26 10:53:54] [DEBUG] [DBFactory:194] : build SELECT wrapper fragment , wrapper id : "testSql.query1" ;
-[2019-09-26 10:53:54] [DEBUG] [DBFactory:194] : build SELECT wrapper fragment , wrapper id : "testSql.queryCount" ;
-Test$$EnhancerByCGLIB$$874f4a@9d5509a
-[2019-09-26 10:53:54] [DEBUG] [TransactionMethodHandler:36] : create transaction at execute method [public int Test.testTransaction() throws java.sql.SQLException] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@3cd3e762]
-[2019-09-26 10:53:54] [DEBUG] [DefaultMySqlTransaction:64] : transaction com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@3cd3e762 add connection manager com.mysql.jdbc.JDBC4Connection@72e5a8e
-[2019-09-26 10:53:54] [DEBUG] [PreparedSql:126] : prepared sql:insert into test ( id , name ) values  ( ? , ? ) 
-[2019-09-26 10:53:54] [DEBUG] [PreparedSql:127] : prepared parameter:[1025, 1025name]
-[2019-09-26 10:53:54] [DEBUG] [PreparedSql:141] : execute result:false,generatedKey:1025
-[2019-09-26 10:53:54] [DEBUG] [TransactionMethodHandler:36] : create transaction at execute method [public int Test.testInnerTransaction() throws java.sql.SQLException] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4]
-[2019-09-26 10:53:54] [DEBUG] [TransactionMethodHandler:36] : create transaction at execute method [public int Test.testInnerTransaction3() throws java.sql.SQLException] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4]
-[2019-09-26 10:53:54] [DEBUG] [DefaultMySqlTransaction:64] : transaction com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4 add connection manager com.mysql.jdbc.JDBC4Connection@2d52216b
-[2019-09-26 10:53:54] [DEBUG] [PreparedSql:126] : prepared sql:insert into test ( id , name ) values  ( ? , ? ) 
-[2019-09-26 10:53:54] [DEBUG] [PreparedSql:127] : prepared parameter:[1025, 1025name]
-[2019-09-26 10:53:54] [DEBUG] [PreparedSql:141] : execute result:false,generatedKey:1025
-[2019-09-26 10:53:54] [DEBUG] [TransactionMethodHandler:41] : transaction execute completed at method [testInnerTransaction3] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4]
-[2019-09-26 10:53:54] [DEBUG] [TransactionMethodHandler:36] : create transaction at execute method [public int Test.testInnerTransaction2() throws java.sql.SQLException] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@534a5a98]
-[2019-09-26 10:53:54] [DEBUG] [DefaultMySqlTransaction:64] : transaction com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@534a5a98 add connection manager com.mysql.jdbc.JDBC4Connection@72e5a8e
-[2019-09-26 10:53:54] [DEBUG] [PreparedSql:126] : prepared sql:insert into test2 ( id , name ) values  ( ? , ? ) 
-[2019-09-26 10:53:54] [DEBUG] [PreparedSql:127] : prepared parameter:[1025, 1025name]
-[2019-09-26 10:53:54] [DEBUG] [TransactionMethodHandler:61] : transaction execute exception when execute [testInnerTransaction2] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@534a5a98]
-[2019-09-26 10:53:54] [DEBUG] [TransactionMethodHandler:67] : transaction rollback when execute [testInnerTransaction2] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@534a5a98]
-[2019-09-26 10:53:54] [DEBUG] [DefaultMySqlTransaction:50] : (@_@)rollback transaction : com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@534a5a98
-[2019-09-26 10:53:54] [DEBUG] [DefaultMySqlTransaction:51] : manager connection's: [com.mysql.jdbc.JDBC4Connection@72e5a8e]
-[2019-09-26 10:53:54] [DEBUG] [DefaultMySqlTransaction:64] : transaction com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4 add connection manager com.mysql.jdbc.JDBC4Connection@2d52216b
-[2019-09-26 10:53:54] [DEBUG] [PreparedSql:126] : prepared sql:insert into test2 ( id , name ) values  ( ? , ? ) 
-[2019-09-26 10:53:54] [DEBUG] [PreparedSql:127] : prepared parameter:[1025, 1025name]
-[2019-09-26 10:53:54] [DEBUG] [TransactionMethodHandler:61] : transaction execute exception when execute [testInnerTransaction] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4]
-[2019-09-26 10:53:54] [DEBUG] [TransactionMethodHandler:67] : transaction rollback when execute [testInnerTransaction] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4]
-[2019-09-26 10:53:54] [DEBUG] [TransactionMethodHandler:61] : transaction execute exception when execute [testTransaction] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@3cd3e762]
-[2019-09-26 10:53:54] [DEBUG] [TransactionMethodHandler:67] : transaction rollback when execute [testTransaction] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@3cd3e762]
-[2019-09-26 10:53:54] [DEBUG] [DefaultMySqlTransaction:50] : (@_@)rollback transaction : com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@3cd3e762
-[2019-09-26 10:53:54] [DEBUG] [DefaultMySqlTransaction:51] : manager connection's: [com.mysql.jdbc.JDBC4Connection@72e5a8e]
-[2019-09-26 10:53:54] [DEBUG] [DefaultMySqlTransaction:50] : (@_@)rollback transaction : com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4
-[2019-09-26 10:53:54] [DEBUG] [DefaultMySqlTransaction:51] : manager connection's: [com.mysql.jdbc.JDBC4Connection@2d52216b, com.mysql.jdbc.JDBC4Connection@2d52216b]
-[2019-09-26 10:53:54] [DEBUG] [DefaultMySqlTransaction:37] : (^_^)commit transaction : com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4
-[2019-09-26 10:53:54] [DEBUG] [DefaultMySqlTransaction:38] : manager connection's : [com.mysql.jdbc.JDBC4Connection@2d52216b, com.mysql.jdbc.JDBC4Connection@2d52216b]
-[2019-09-26 10:53:54] [DEBUG] [TransactionManager:132] : all transaction completed at transaction com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@3cd3e762
+[2019-09-26 11:28:34] [DEBUG] [TransactionMethodHandler:36] : create transaction at execute method [public int Test.testTransaction() throws java.sql.SQLException] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@3cd3e762]
+[2019-09-26 11:28:34] [DEBUG] [DefaultMySqlTransaction:64] : transaction com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@3cd3e762 add connection manager com.mysql.jdbc.JDBC4Connection@72e5a8e
+[2019-09-26 11:28:34] [DEBUG] [PreparedSql:126] : prepared sql:insert into test ( id , name ) values  ( ? , ? ) 
+[2019-09-26 11:28:34] [DEBUG] [PreparedSql:127] : prepared parameter:[1025, 1025name]
+[2019-09-26 11:28:34] [DEBUG] [PreparedSql:141] : execute result:false,generatedKey:1025
+[2019-09-26 11:28:34] [DEBUG] [TransactionMethodHandler:36] : create transaction at execute method [public int Test.testInnerTransaction() throws java.sql.SQLException] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4]
+[2019-09-26 11:28:34] [DEBUG] [TransactionMethodHandler:36] : create transaction at execute method [public int Test.testInnerTransaction3() throws java.sql.SQLException] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4]
+[2019-09-26 11:28:34] [DEBUG] [DefaultMySqlTransaction:64] : transaction com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4 add connection manager com.mysql.jdbc.JDBC4Connection@2d52216b
+[2019-09-26 11:28:34] [DEBUG] [PreparedSql:126] : prepared sql:insert into test ( id , name ) values  ( ? , ? ) 
+[2019-09-26 11:28:34] [DEBUG] [PreparedSql:127] : prepared parameter:[1025, 1025name]
+[2019-09-26 11:28:34] [DEBUG] [PreparedSql:141] : execute result:false,generatedKey:1025
+[2019-09-26 11:28:34] [DEBUG] [TransactionMethodHandler:41] : transaction execute completed at method [testInnerTransaction3] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4]
+[2019-09-26 11:28:34] [DEBUG] [TransactionMethodHandler:36] : create transaction at execute method [public int Test.testInnerTransaction2() throws java.sql.SQLException] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@534a5a98]
+[2019-09-26 11:28:34] [DEBUG] [DefaultMySqlTransaction:64] : transaction com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@534a5a98 add connection manager com.mysql.jdbc.JDBC4Connection@72e5a8e
+[2019-09-26 11:28:34] [DEBUG] [PreparedSql:126] : prepared sql:insert into test2 ( id , name ) values  ( ? , ? ) 
+[2019-09-26 11:28:34] [DEBUG] [PreparedSql:127] : prepared parameter:[1025, 1025name]
+[2019-09-26 11:28:34] [DEBUG] [TransactionMethodHandler:61] : transaction execute exception when execute [testInnerTransaction2] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@534a5a98]
+[2019-09-26 11:28:34] [DEBUG] [TransactionMethodHandler:67] : transaction rollback when execute [testInnerTransaction2] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@534a5a98]
+[2019-09-26 11:28:34] [DEBUG] [DefaultMySqlTransaction:50] : (@_@)rollback transaction : com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@534a5a98
+[2019-09-26 11:28:34] [DEBUG] [DefaultMySqlTransaction:51] : manager connection's: [com.mysql.jdbc.JDBC4Connection@72e5a8e]
+[2019-09-26 11:28:34] [DEBUG] [DefaultMySqlTransaction:64] : transaction com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4 add connection manager com.mysql.jdbc.JDBC4Connection@2d52216b
+[2019-09-26 11:28:34] [DEBUG] [PreparedSql:126] : prepared sql:insert into test2 ( id , name ) values  ( ? , ? ) 
+[2019-09-26 11:28:34] [DEBUG] [PreparedSql:127] : prepared parameter:[1025, 1025name]
+[2019-09-26 11:28:34] [DEBUG] [TransactionMethodHandler:61] : transaction execute exception when execute [testInnerTransaction] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4]
+[2019-09-26 11:28:34] [DEBUG] [TransactionMethodHandler:67] : transaction rollback when execute [testInnerTransaction] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4]
+[2019-09-26 11:28:34] [DEBUG] [TransactionMethodHandler:61] : transaction execute exception when execute [testTransaction] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@3cd3e762]
+[2019-09-26 11:28:34] [DEBUG] [TransactionMethodHandler:67] : transaction rollback when execute [testTransaction] transaction [com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@3cd3e762]
+[2019-09-26 11:28:34] [DEBUG] [DefaultMySqlTransaction:50] : (@_@)rollback transaction : com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@3cd3e762
+[2019-09-26 11:28:34] [DEBUG] [DefaultMySqlTransaction:51] : manager connection's: [com.mysql.jdbc.JDBC4Connection@72e5a8e]
+[2019-09-26 11:28:34] [DEBUG] [DefaultMySqlTransaction:50] : (@_@)rollback transaction : com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@272113c4
+[2019-09-26 11:28:34] [DEBUG] [DefaultMySqlTransaction:51] : manager connection's: [com.mysql.jdbc.JDBC4Connection@2d52216b, com.mysql.jdbc.JDBC4Connection@2d52216b]
+[2019-09-26 11:28:34] [DEBUG] [TransactionManager:132] : all transaction completed at transaction com.YaNan.frame.hibernate.database.transaction.DefaultMySqlTransaction$$EnhancerByCGLIB$$c90888f9@3cd3e762
 Exception in thread "main" com.YaNan.frame.hibernate.database.exception.SqlExecuteException: faild to execute query "com.YaNan.debug.test.insert2"
-	at com.YaNan.frame.hibernate.database.mapper.DefaultSqlSessionExecuter.insert(DefaultSqlSessionExecuter.java:54)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+Caused by: com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry '1025' for key 'PRIMARY'
 ```
