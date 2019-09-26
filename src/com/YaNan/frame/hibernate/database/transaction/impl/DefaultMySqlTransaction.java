@@ -41,6 +41,7 @@ public class DefaultMySqlTransaction extends AbstractTransaction{
 		for(Connection connection : connectionList) {
 			try {
 				connection.commit();
+				connection.setAutoCommit(true);
 			} catch (SQLException e) {
 				logger.error("failed to commit transaction",e);
 				throw new TransactionExecuteException(e);
@@ -54,6 +55,7 @@ public class DefaultMySqlTransaction extends AbstractTransaction{
 		for(Connection connection : connectionList) {
 			try {
 				connection.rollback();
+				connection.setAutoCommit(true);
 			} catch (SQLException e) {
 				logger.error("failed to rollback transaction",e);
 				throw new TransactionExecuteException(e);
