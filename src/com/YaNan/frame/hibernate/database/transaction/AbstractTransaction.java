@@ -97,16 +97,21 @@ public abstract class AbstractTransaction {
 		completed = true;
 		if(embedTransactionStack!= null)
 		for(AbstractTransaction transaction : embedTransactionStack) {
-			if(!transaction.isCompleted())
+			if(!transaction.isCompleted()) {
 				transaction.commit();
+				transaction.completedCommit();
+			}
 		}
 	}
 	public void completedRollback() {
 		completed = true;
 		if(embedTransactionStack!= null)
 		for(AbstractTransaction transaction : embedTransactionStack) {
-			if(!transaction.isCompleted())
+			if(!transaction.isCompleted()) {
 				transaction.rollback();
+				transaction.completedRollback();
+			}
+				
 		}
 	}
 }
