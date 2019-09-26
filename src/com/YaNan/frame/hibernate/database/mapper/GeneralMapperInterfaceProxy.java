@@ -1,4 +1,4 @@
-package com.YaNan.frame.hibernate.database;
+package com.YaNan.frame.hibernate.database.mapper;
 
 import java.lang.reflect.Method;
 import java.util.List;

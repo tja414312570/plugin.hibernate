@@ -1,10 +1,11 @@
-package com.YaNan.frame.hibernate.database;
+package com.YaNan.frame.hibernate.database.mapper;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import com.YaNan.frame.hibernate.database.entity.PreparedSql;
+import com.YaNan.frame.hibernate.database.SqlSession;
 import com.YaNan.frame.hibernate.database.entity.SqlFragmentManger;
+import com.YaNan.frame.hibernate.database.exception.SqlExecuteException;
 import com.YaNan.frame.hibernate.database.fragment.SqlFragment;
 import com.YaNan.frame.plugin.annotations.Register;
 /**
@@ -26,7 +27,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 		try {
 			return pre.queryOne();
 		} catch (SQLException e) {
-			throw new RuntimeException("faild to execute query \""+sqlId+"\"",e);
+			throw new SqlExecuteException("faild to execute query \""+sqlId+"\"",e);
 		}
 	}
 	/**
@@ -40,7 +41,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 		try {
 			return pre.query();
 		} catch (SQLException e) {
-			throw new RuntimeException("faild to execute query \""+sqlId+"\"",e);
+			throw new SqlExecuteException("faild to execute query \""+sqlId+"\"",e);
 		}
 	}
 	@Override
@@ -50,7 +51,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 		try {
 			return pre.insert();
 		} catch (SQLException e) {
-			throw new RuntimeException("faild to execute query \""+sqlId+"\"",e);
+			throw new SqlExecuteException("faild to execute query \""+sqlId+"\"",e);
 		}
 	}
 	@Override
@@ -65,7 +66,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 		try {
 			return pre.update();
 		} catch (SQLException e) {
-			throw new RuntimeException("faild to execute query \""+sqlId+"\"",e);
+			throw new SqlExecuteException("faild to execute query \""+sqlId+"\"",e);
 		}
 	}
 	@Override
@@ -75,7 +76,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 		try {
 			return pre.update();
 		} catch (SQLException e) {
-			throw new RuntimeException("faild to execute query \""+sqlId+"\"",e);
+			throw new SqlExecuteException("faild to execute query \""+sqlId+"\"",e);
 		}
 	}
 

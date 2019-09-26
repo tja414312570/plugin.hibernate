@@ -11,7 +11,7 @@ import java.util.Map;
 import com.YaNan.frame.hibernate.database.DBFactory;
 import com.YaNan.frame.hibernate.database.DataBase;
 import com.YaNan.frame.hibernate.database.entity.BaseMapping;
-import com.YaNan.frame.hibernate.database.entity.PreparedSql;
+import com.YaNan.frame.hibernate.database.mapper.PreparedSql;
 import com.YaNan.frame.plugin.annotations.Register;
 import com.YaNan.frame.utils.reflect.ClassLoader;
 

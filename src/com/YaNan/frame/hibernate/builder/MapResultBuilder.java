@@ -2,7 +2,7 @@ package com.YaNan.frame.hibernate.builder;
 
 import java.sql.ResultSet;
 
-import com.YaNan.frame.hibernate.database.entity.PreparedSql;
+import com.YaNan.frame.hibernate.database.mapper.PreparedSql;
 import com.YaNan.frame.plugin.annotations.Register;
 
 @Register
