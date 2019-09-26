@@ -58,7 +58,7 @@ public class TransactionMethodHandler implements InvokeHandler {
 		if(e.getClass() == SqlExecuteException.class)
 			e = e.getCause();
 		AbstractTransaction transactionManager = TransactionManager.getCurrentTransaction();
-		logger.debug("transaction execute exception when execute ["+methodHandler.getMethod().getName()+"] transaction ["+transactionManager+"]");
+		logger.debug("transaction execute exception when execute ["+methodHandler.getMethod().getName()+"] transaction ["+transactionManager+"]",e);
 		boolean rollback = false;
 		//判断是否需要回滚
 		for(Class<?> clzz : transactions.value()) {

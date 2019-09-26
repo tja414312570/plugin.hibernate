@@ -37,7 +37,7 @@ public class TransactionDefined {
 	}
 	public static TransactionDefined defaultTransactionDefined() {
 		TransactionDefined transactionDefined = new TransactionDefined();
-		transactionDefined.setTransactionLevel(TransactionIsolocation.TRANSACTION_READ_UNCOMMITTED);
+		transactionDefined.setTransactionLevel(TransactionIsolocation.TRANSACTION_DEFAULT);
 		transactionDefined.setTransactionPropagion(TransactionPropagion.PROPAGATION_REQUIRED);
 		return transactionDefined;
 	}

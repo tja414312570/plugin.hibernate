@@ -1,4 +1,4 @@
-package com.YaNan.frame.hibernate.database.transaction;
+package com.YaNan.frame.hibernate.database.transaction.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -8,6 +8,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.YaNan.frame.hibernate.database.transaction.AbstractTransaction;
+import com.YaNan.frame.hibernate.database.transaction.TransactionDefined;
 import com.YaNan.frame.hibernate.database.transaction.exception.TransactionExecuteException;
 import com.YaNan.frame.plugin.ProxyModel;
 import com.YaNan.frame.plugin.annotations.Register;

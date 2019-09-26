@@ -1,4 +1,4 @@
-package com.YaNan.frame.hibernate.database.transaction;
+package com.YaNan.frame.hibernate.database.transaction.exception;
 
 public class NoneTransactionImplException extends RuntimeException {
 
