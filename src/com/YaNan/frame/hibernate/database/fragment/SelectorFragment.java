@@ -2,9 +2,9 @@ package com.YaNan.frame.hibernate.database.fragment;
 
 import java.util.List;
 
-import com.YaNan.frame.hibernate.database.entity.PreparedSql;
 import com.YaNan.frame.hibernate.database.entity.SelectorMapping;
 import com.YaNan.frame.hibernate.database.entity.TagSupport;
+import com.YaNan.frame.hibernate.database.mapper.PreparedSql;
 import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.plugin.ProxyModel;
 import com.YaNan.frame.plugin.annotations.Register;
