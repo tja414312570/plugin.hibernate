@@ -60,6 +60,12 @@
 			<version>1.7.25</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+    <groupId>com.mchange</groupId>
+    <artifactId>c3p0</artifactId>
+    <version>0.9.5.4</version>
+</dependency>
+
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>

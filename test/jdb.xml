@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Hibernate>
+	<include></include>
+	<include path="" />
+	<!-- dataBase 数据库配置
+		name 服务器应用默认数据库名称
+		driver 驱动
+		host,port
+		username 数据库用户名
+		password 数据库密码
+		start 服务器启动时就初始化
+	 -->
+	<wrapper>classpath:wrapper/**.xml</wrapper>
+	<dataSource name="YaNan_SYSTEM">
+		<driver>com.mysql.jdbc.Driver</driver>
+		<host>localhost</host>
+		<port>3306</port>
+		<username>root</username>
+		<password>tja950233140710W</password>
+	</dataSource>
+	<dataSource name="YaNan_Demo">
+		<driver>com.mysql.jdbc.Driver</driver>
+		<host>localhost</host>
+		<port>3306</port>
+		<username>root</username>
+		<password>tja950233140710W</password>
+	</dataSource>
+	<dataSource name="YaNan_Account">
+		<driver>com.mysql.jdbc.Driver</driver>
+		<host>localhost</host>
+		<port>3306</port>
+		<username>root</username>
+		<password>tja950233140710W</password>
+		<min>20</min>
+		<max>120</max>
+	</dataSource>
+</Hibernate>
