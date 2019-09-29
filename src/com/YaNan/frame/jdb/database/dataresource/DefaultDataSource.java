@@ -40,7 +40,7 @@ public class DefaultDataSource implements DataSource{
 	//框架本身属性
 	@Property("jdb.max_connection")
 	private int max_connection = 4;
-	@Property("jdb.min_connection")
+	@Property(value = "jdb.min_connection",required = true)
 	private int min_connection = 2;
 	@Property("jdb.add_connection")
 	private int add_connection = 2;
