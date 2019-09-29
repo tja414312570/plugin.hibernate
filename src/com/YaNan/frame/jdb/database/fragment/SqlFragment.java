@@ -163,9 +163,8 @@ public abstract class SqlFragment implements FragmentBuilder {
 		this.parameterTypeClass = matchClassType(this.parameterType, true);
 		this.resultType = this.baseMapping.getResultType();
 		this.resultTypeClass = matchClassType(this.resultType, false);
-		this.dataSource = JdbConnectionPoolsManger.get(this.baseMapping.getWrapperMapping().getDatabase());
-		if (this.dataBase == null)
-			throw new RuntimeException("could not found database '" + this.baseMapping.getWrapperMapping().getDatabase()
+		if (this.dataSource == null)
+			throw new RuntimeException("could not found dataSource '" + this.baseMapping.getWrapperMapping()
 					+ "' at mapping file '" + baseMapping.getXmlFile() + "' at id '" + this.id + "'");
 	}
 

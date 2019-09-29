@@ -42,6 +42,7 @@ public class DefaultMySqlTransaction extends AbstractTransaction{
 			try {
 				connection.commit();
 				connection.setAutoCommit(true);
+				connection.close();
 			} catch (SQLException e) {
 				logger.error("failed to commit transaction",e);
 				throw new TransactionExecuteException(e);
@@ -56,6 +57,7 @@ public class DefaultMySqlTransaction extends AbstractTransaction{
 			try {
 				connection.rollback();
 				connection.setAutoCommit(true);
+				connection.close();
 			} catch (SQLException e) {
 				logger.error("failed to rollback transaction",e);
 				throw new TransactionExecuteException(e);
