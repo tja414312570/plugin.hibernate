@@ -12,10 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import com.YaNan.frame.jdb.database.cache.QueryCache;
 import com.YaNan.frame.jdb.database.fragment.SqlFragment;
-import com.YaNan.frame.jdb.database.transaction.AbstractTransaction;
-import com.YaNan.frame.jdb.database.transaction.TransactionManager;
 import com.YaNan.frame.jdb.orm.OrmBuilder;
 import com.YaNan.frame.plugin.PlugsFactory;
+import com.YaNan.frame.transaction.AbstractTransaction;
+import com.YaNan.frame.transaction.TransactionManager;
 
 /**
  * sql执行类 所有sqlsession提供的方法都在此处实现
