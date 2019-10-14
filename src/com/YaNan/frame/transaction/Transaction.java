@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.database.transaction;
+package com.YaNan.frame.transaction;
 
 import java.sql.Connection;
 import java.sql.SQLException;

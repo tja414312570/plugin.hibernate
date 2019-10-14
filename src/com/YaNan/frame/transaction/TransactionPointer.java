@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.database.transaction;
+package com.YaNan.frame.transaction;
 
 /**
  * 事物节点  暂未使用

@@ -1,13 +1,13 @@
-package com.YaNan.frame.jdb.database.transaction;
+package com.YaNan.frame.transaction;
 
 import java.util.Stack;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.database.transaction.exception.TransactionExistsException;
-import com.YaNan.frame.jdb.database.transaction.exception.TransactionIsNotExistsException;
 import com.YaNan.frame.plugin.PlugsFactory;
+import com.YaNan.frame.transaction.exception.TransactionExistsException;
+import com.YaNan.frame.transaction.exception.TransactionIsNotExistsException;
 
 /**
  * 事物管理

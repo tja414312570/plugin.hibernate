@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.database.transaction.exception;
+package com.YaNan.frame.transaction.exception;
 
 public class TransactionExistsException extends RuntimeException {
 
