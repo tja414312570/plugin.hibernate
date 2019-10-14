@@ -11,6 +11,8 @@
 # 2019-09-26:
 * 修改包结构
 * 新增注解事物支持 @Transactions
+
+![avatar](https://ufomedia.oss-cn-beijing.aliyuncs.com/WX20191014-170714.png)
 ```java
 package com.YaNan.frame.hibernate.database.transaction;
 
