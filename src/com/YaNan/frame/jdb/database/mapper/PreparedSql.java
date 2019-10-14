@@ -43,7 +43,7 @@ public class PreparedSql {
 
 	@SuppressWarnings("unchecked")
 	public <T> T query() throws SQLException {
-		Connection connection = this.sqlFragment.getDataSource().getConnection();
+		Connection connection = this.sqlFragment.getContext().getDataSource().getConnection();
 		//获取事物
 		AbstractTransaction transaction = TransactionManager.getCurrentTransaction();
 		//如果事物存在，将连接交给事物管理
@@ -74,7 +74,7 @@ public class PreparedSql {
 
 	@SuppressWarnings("unchecked")
 	public <T> T queryOne() throws SQLException {
-		Connection connection = this.sqlFragment.getDataSource().getConnection();
+		Connection connection = this.sqlFragment.getContext().getDataSource().getConnection();
 		//获取事物
 		AbstractTransaction transaction = TransactionManager.getCurrentTransaction();
 		//如果事物存在，将连接交给事物管理
@@ -94,7 +94,7 @@ public class PreparedSql {
 					sqlFragment.getResultType());
 			List<Object> result = builder.builder(rs, sqlFragment);
 			if (result.size() > 1)
-				throw new RuntimeException("query result rows should is \"1\" but has \"" + result.size() + "\"");
+				throw new RuntimeException("query result rows should \"1\" but has \"" + result.size() + "\"");
 			rs.close();
 			ps.close();
 			return (T) (result.size() == 1 ? result.get(0) : null);
@@ -116,7 +116,7 @@ public class PreparedSql {
 
 	@SuppressWarnings("unchecked")
 	public <T> T insert() throws SQLException {
-		Connection connection = this.sqlFragment.getDataSource().getConnection();
+		Connection connection = this.sqlFragment.getContext().getDataSource().getConnection();
 		//获取事物
 		AbstractTransaction transaction = TransactionManager.getCurrentTransaction();
 		//如果事物存在，将连接交给事物管理
@@ -158,7 +158,7 @@ public class PreparedSql {
 
 	@SuppressWarnings("unchecked")
 	public <T> T update() throws SQLException {
-		Connection connection = this.sqlFragment.getDataSource().getConnection();
+		Connection connection = this.sqlFragment.getContext().getDataSource().getConnection();
 		//获取事物
 		AbstractTransaction transaction = TransactionManager.getCurrentTransaction();
 		//如果事物存在，将连接交给事物管理

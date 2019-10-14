@@ -1,6 +1,5 @@
 package com.YaNan.frame.jdb.database.fragment;
 
-import com.YaNan.frame.jdb.database.DBFactory;
 import com.YaNan.frame.jdb.database.entity.BaseMapping;
 import com.YaNan.frame.jdb.database.entity.Include;
 import com.YaNan.frame.jdb.database.entity.SqlFragmentManger;
@@ -36,10 +35,10 @@ public class IncludeFragment extends FragmentSet implements FragmentBuilder {
 		}catch (Exception e) {
 		}
 		if(sql==null){
-			BaseMapping mapping = DBFactory.getDBFactory().getWrapMap(id);
+			BaseMapping mapping =this.context.getWrapper(id);
 			if(mapping==null)
 				throw new HibernateInitException("mapper \""+id+"\" could not be found at wrap id \""+this.sqlFragment.getId()+"\" at file "+this.sqlFragment.getBaseMapping().getXmlFile());
-			this.sql = DBFactory.getDBFactory().buildFragment(mapping);
+			this.sql = this.context.buildFragment(mapping);
 		}
 		for(String args : sql.getArguments()){
 			this.sqlFragment.addParameter(args);

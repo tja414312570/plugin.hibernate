@@ -9,7 +9,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.YaNan.frame.jdb.database.DBFactory;
 import com.YaNan.frame.jdb.database.DBInterface.OperateImplement;
 import com.YaNan.frame.jdb.database.operate.Delete;
 import com.YaNan.frame.jdb.database.operate.Insert;
@@ -139,11 +138,15 @@ public class Transaction {
 				this.sqls.add(operate.create());
 				Connection coon = null;
 				// 获取连接
-				if (coonMap.containsKey(operate.getDbTab().getDBName()))
-					coon = coonMap.get(operate.getDbTab().getDBName());
+				if (coonMap.containsKey(operate.getDbTab().getSchmel()))
+					coon = coonMap.get(operate.getDbTab().getSchmel());
 				else {
-					coon = operate.getDbTab().getDataBase().getConnection();
-					coonMap.put(operate.getDbTab().getDBName(), coon);
+					try {
+						coon = operate.getDbTab().getDataSource().getConnection();
+					} catch (SQLException e2) {
+						e2.printStackTrace();
+					}
+					coonMap.put(operate.getDbTab().getSchmel(), coon);
 					try {
 						coon.setAutoCommit(false);
 						coon.setTransactionIsolation(transactionLevel);
@@ -170,7 +173,7 @@ public class Transaction {
 									String db = itera.next();
 									Connection rc = this.coonMap.get(db);
 									rc.rollback();
-									DBFactory.getDataBase(db).releaseConnection(rc);
+									rc.close();
 								} catch (SQLException e1) {
 									e1.printStackTrace();
 								}
@@ -195,7 +198,7 @@ public class Transaction {
 									String db = itera.next();
 									Connection rc = this.coonMap.get(db);
 									rc.rollback();
-									DBFactory.getDataBase(db).releaseConnection(rc);
+									rc.close();
 								} catch (SQLException e1) {
 									e1.printStackTrace();
 								}
@@ -219,7 +222,7 @@ public class Transaction {
 									String db = itera.next();
 									Connection rc = this.coonMap.get(db);
 									rc.rollback();
-									DBFactory.getDataBase(db).releaseConnection(rc);
+									rc.close();
 								} catch (SQLException e1) {
 									e1.printStackTrace();
 								}
@@ -243,7 +246,7 @@ public class Transaction {
 									String db = itera.next();
 									Connection rc = this.coonMap.get(db);
 									rc.rollback();
-									DBFactory.getDataBase(db).releaseConnection(rc);
+									rc.close();
 								} catch (SQLException e1) {
 									e1.printStackTrace();
 								}
@@ -262,7 +265,7 @@ public class Transaction {
 					String db = itera.next();
 					Connection rc = this.coonMap.get(db);
 					rc.commit();
-					DBFactory.getDataBase(db).releaseConnection(rc);
+					rc.close();
 					rc.setAutoCommit(true);
 				} catch (SQLException e1) {
 					e1.printStackTrace();

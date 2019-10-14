@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.YaNan.frame.jdb.database.Case;
-import com.YaNan.frame.jdb.database.DBTab;
+import com.YaNan.frame.jdb.database.DataTable;
 import com.YaNan.frame.jdb.database.DBInterface.OperateImplement;
 
 /**
@@ -29,7 +29,7 @@ public class Update extends OperateImplement {
 	//参数存储规则==>列==》参数
 	private final Logger log = LoggerFactory.getLogger( Query.class);
 
-	public Update(DBTab dataTables, Object object) {
+	public Update(DataTable dataTables, Object object) {
 		this.setDbTab(dataTables);
 		dataTables.setLoaderObject(object);
 		this.preparedUpdateColumn();
@@ -67,7 +67,7 @@ public class Update extends OperateImplement {
 	 * @param object
 	 */
 	public Update(Object object) {
-		this.setDbTab(new DBTab(object));
+		this.setDbTab(new DataTable(object));
 		this.preparedUpdateColumn();
 	}
 
@@ -76,7 +76,7 @@ public class Update extends OperateImplement {
 	 * @param object
 	 */
 	public Update(Object object, boolean updateNull) {
-		this.setDbTab(new DBTab(object));
+		this.setDbTab(new DataTable(object));
 		this.preparedUpdateColumn();
 	}
 
@@ -88,7 +88,7 @@ public class Update extends OperateImplement {
 	 */
 	public Update(Object object, String... fields) {
 		try {
-			this.setDbTab(new DBTab(object));
+			this.setDbTab(new DataTable(object));
 			for (String strField : fields) {
 				Field field = this.getDbTab().getDataTablesClass().getDeclaredField(strField);
 				Object value = this.dataTables.getLoader().get(field);
@@ -106,12 +106,12 @@ public class Update extends OperateImplement {
 	 * @param cls
 	 */
 	public Update(Class<?> cls) {
-		this.setDbTab(new DBTab(cls));
+		this.setDbTab(new DataTable(cls));
 	}
 
 	public Update(Class<?> cls, String... fields) {
 		try {
-			this.setDbTab(new DBTab(cls));
+			this.setDbTab(new DataTable(cls));
 			for (String strField : fields) {
 				Field field = this.getDbTab().getDataTablesClass().getDeclaredField(strField);
 				Object value = this.dataTables.getLoader().get(field);

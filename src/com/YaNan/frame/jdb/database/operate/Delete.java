@@ -10,7 +10,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.database.DBTab;
+import com.YaNan.frame.jdb.database.DataTable;
 import com.YaNan.frame.jdb.database.DBInterface.OperateImplement;
 
 /**
@@ -21,7 +21,7 @@ import com.YaNan.frame.jdb.database.DBInterface.OperateImplement;
  */
 public class Delete extends OperateImplement{
 	private List<String> key = new ArrayList<String>();
-	private DBTab dbTab;
+	private DataTable dbTab;
 	private Object object;
 	private Map<String, String> map = new HashMap<String, String>();
 	private List<String> condition = new ArrayList<String>();
@@ -31,16 +31,16 @@ public class Delete extends OperateImplement{
 		return key;
 	}
 
-	public Delete(DBTab dbTab) {
+	public Delete(DataTable dbTab) {
 		this.dbTab = dbTab;
 	}
 
 	public Delete(Object object) {
-		this.dbTab = new DBTab(object);
+		this.dbTab = new DataTable(object);
 		this.object = object;
 	}
 	public Delete(Class<?> tabClass) {
-		this.dbTab = new DBTab(tabClass);
+		this.dbTab = new DataTable(tabClass);
 	}
 
 	public void setFields(List<String> key) {

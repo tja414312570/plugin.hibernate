@@ -19,7 +19,7 @@ public @interface Tab {
 
 	String value() default "";//
 
-	String DB() default "";//数据库名称 与 hibernate.xml中的name对应
+	String dataSource() default "";//数据源ID
 
 	boolean autoUpdate() default false;//自动更新表结构，此版本不提供
 

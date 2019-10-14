@@ -10,9 +10,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import com.YaNan.frame.jdb.database.DBFactory;
-import com.YaNan.frame.jdb.database.DataBase;
-import com.YaNan.frame.jdb.database.dataresource.JdbConnectionPoolsManger;
+import com.YaNan.frame.jdb.builder.HibernateBuilder;
 import com.YaNan.frame.jdb.database.entity.BaseMapping;
 import com.YaNan.frame.jdb.database.mapper.PreparedSql;
 import com.YaNan.frame.plugin.annotations.Register;
@@ -33,19 +31,19 @@ public abstract class SqlFragment implements FragmentBuilder {
 	protected FragmentSet fragemntSet;
 	protected Class<?> resultTypeClass;
 	protected Class<?> parameterTypeClass;
-	protected DataSource dataSource;
+	protected String scheml;
 
-
-	public DataSource getDataSource() {
-		return dataSource;
+	public String getScheml() {
+		return scheml;
 	}
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
+	public void setScheml(String scheml) {
+		this.scheml = scheml;
 	}
 
 	// 参数列表
 	protected List<String> arguments = new ArrayList<String>();
+	protected HibernateBuilder context;
 
 	public void addParameter(String argument) {
 		if (!this.arguments.contains(argument))
@@ -163,9 +161,13 @@ public abstract class SqlFragment implements FragmentBuilder {
 		this.parameterTypeClass = matchClassType(this.parameterType, true);
 		this.resultType = this.baseMapping.getResultType();
 		this.resultTypeClass = matchClassType(this.resultType, false);
-		if (this.dataSource == null)
+		if (this.context.getDataSource() == null)
 			throw new RuntimeException("could not found dataSource '" + this.baseMapping.getWrapperMapping()
 					+ "' at mapping file '" + baseMapping.getXmlFile() + "' at id '" + this.id + "'");
+	}
+
+	public HibernateBuilder getContext() {
+		return context;
 	}
 
 	@Override
@@ -264,4 +266,9 @@ public abstract class SqlFragment implements FragmentBuilder {
 	}
 
 	public abstract PreparedSql getPreparedSql(Object... parameter);
+
+	public void setContext(HibernateBuilder context) {
+		this.context = context;
+		
+	}
 }

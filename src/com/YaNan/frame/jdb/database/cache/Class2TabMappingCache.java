@@ -3,13 +3,13 @@ package com.YaNan.frame.jdb.database.cache;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.YaNan.frame.jdb.database.DBTab;
+import com.YaNan.frame.jdb.database.DataTable;
 
 public class Class2TabMappingCache {
 	private static Class2TabMappingCache dbManager;
-	private static Map<Class<?>, DBTab> map = new HashMap<Class<?>, DBTab>();
+	private static Map<Class<?>, DataTable> map = new HashMap<Class<?>, DataTable>();
 
-	public static Map<Class<?>, DBTab> getDBTabelsMap() {
+	public static Map<Class<?>, DataTable> getDBTabelsMap() {
 		return map;
 	}
 
@@ -19,18 +19,18 @@ public class Class2TabMappingCache {
 		return dbManager;
 	}
 
-	public static DBTab getDBTab(Class<?> cls) {
+	public static DataTable getDBTab(Class<?> cls) {
 		if (map.containsKey(cls))
 			return map.get(cls);
-		DBTab tab = new DBTab(cls);
+		DataTable tab = new DataTable(cls);
 		map.put(tab.getDataTablesClass(), tab);
 		return tab;
 	}
 
-	public static DBTab getDBTab(Object obj) {
+	public static DataTable getDBTab(Object obj) {
 		if (map.containsKey(obj.getClass()))
 			return map.get(obj.getClass());
-		DBTab tab = new DBTab(obj);
+		DataTable tab = new DataTable(obj);
 		map.put(tab.getDataTablesClass(), tab);
 		return tab;
 	}
@@ -44,7 +44,7 @@ public class Class2TabMappingCache {
 		return map.containsKey(obj.getClass());
 	}
 
-	public static void addTab(DBTab tab) {
+	public static void addTab(DataTable tab) {
 		map.put(tab.getDataTablesClass(), tab);
 	}
 }

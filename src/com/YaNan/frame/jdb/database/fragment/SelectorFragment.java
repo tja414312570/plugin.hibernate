@@ -48,6 +48,7 @@ public class SelectorFragment extends SqlFragment implements FragmentBuilder {
 			this.fragemntSet = currentFragmentSet = (FragmentSet) PlugsFactory
 					.getPlugsInstanceByAttributeStrict(FragmentBuilder.class, "DEFAULT.fragment");
 			currentFragmentSet.setXml(this.baseMapping.getXml());
+			currentFragmentSet.setContext(getContext());
 			currentFragmentSet.setValue(this.baseMapping.getContent());
 			currentFragmentSet.setSqlFragment(this);
 			currentFragmentSet.build(null);
@@ -65,6 +66,7 @@ public class SelectorFragment extends SqlFragment implements FragmentBuilder {
 							.getPlugsInstanceByAttributeStrict(FragmentBuilder.class, "DEFAULT.fragment");
 					currentFragmentSet.setXml(preffix);
 					currentFragmentSet.setValue(preffix);
+					currentFragmentSet.setContext(getContext());
 					currentFragmentSet.setSqlFragment(this);
 					currentFragmentSet.build(null);
 					if (this.fragemntSet == null)
@@ -86,6 +88,7 @@ public class SelectorFragment extends SqlFragment implements FragmentBuilder {
 				currentFragmentSet.setValue(tag.getValue());
 				currentFragmentSet.setTagSupport(tag);
 				currentFragmentSet.setSqlFragment(this);
+				currentFragmentSet.setContext(getContext());
 				currentFragmentSet.build(null);
 				sql = sql.substring(predex + len);
 			}
@@ -96,6 +99,7 @@ public class SelectorFragment extends SqlFragment implements FragmentBuilder {
 				currentFragmentSet.setXml(sql);
 				currentFragmentSet.setValue(sql);
 				currentFragmentSet.setSqlFragment(this);
+				currentFragmentSet.setContext(getContext());
 				currentFragmentSet.build(null);
 				if (this.fragemntSet == null)
 					this.fragemntSet = currentFragmentSet;

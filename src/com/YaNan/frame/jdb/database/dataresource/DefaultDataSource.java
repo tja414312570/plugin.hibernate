@@ -2,14 +2,16 @@ package com.YaNan.frame.jdb.database.dataresource;
 
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
+import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import com.YaNan.frame.plugin.ProxyModel;
 import com.YaNan.frame.plugin.annotations.Register;
 import com.YaNan.frame.plugin.autowired.property.Property;
 
@@ -40,7 +42,7 @@ public class DefaultDataSource implements DataSource{
 	//框架本身属性
 	@Property("jdb.max_connection")
 	private int max_connection = 4;
-	@Property(value = "jdb.min_connection",required = true)
+	@Property(value = "jdb.min_connection")
 	private int min_connection = 2;
 	@Property("jdb.add_connection")
 	private int add_connection = 2;
@@ -61,6 +63,14 @@ public class DefaultDataSource implements DataSource{
 	}
 	public DefaultDataSource() {
 		connectionPools = JdbConnectionPoolsManger.getJdbConnectionPools(this);
+	}
+	public void deregistDriver() throws SQLException {
+		for (Enumeration<java.sql.Driver> e = DriverManager.getDrivers(); e.hasMoreElements();) {
+			Driver driver = (Driver) e.nextElement();
+			if (driver.getClass().getClassLoader() == getClass().getClassLoader()) {
+				DriverManager.deregisterDriver(driver);
+			}
+		}
 	}
 	@Override
 	public Connection getConnection() throws SQLException {

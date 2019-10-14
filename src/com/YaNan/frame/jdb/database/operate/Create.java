@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.YaNan.frame.jdb.database.DBColumn;
-import com.YaNan.frame.jdb.database.DBTab;
+import com.YaNan.frame.jdb.database.DataTable;
 import com.YaNan.frame.jdb.database.DBInterface.OperateImplement;
 
 /**
@@ -29,7 +29,7 @@ public class Create extends OperateImplement{
 	 * 数据表的创建对象，传入一个DBTab对象 
 	 * @param tab
 	 */
-	public Create(DBTab tab) {
+	public Create(DataTable tab) {
 		this.dataTables = tab;
 		init();
 	}
@@ -60,7 +60,7 @@ public class Create extends OperateImplement{
 	 * @param tab
 	 */
 	public Create(Class<?> cls) {
-		this.dataTables = new DBTab(cls);
+		this.dataTables = new DataTable(cls);
 		init();
 	}
 	/**
@@ -68,7 +68,7 @@ public class Create extends OperateImplement{
 	 * @param tab
 	 */
 	public Create(Object object) {
-		this.dataTables = new DBTab(object);
+		this.dataTables = new DataTable(object);
 		init();
 	}
 	
@@ -77,7 +77,7 @@ public class Create extends OperateImplement{
 	}
 
 	public void addClass(Class<?> cls) {
-		DBTab tab = new DBTab(cls);
+		DataTable tab = new DataTable(cls);
 		Iterator<Field> i = tab.iterator();
 		while (i.hasNext()) {
 			Field f = i.next();

@@ -12,6 +12,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import com.YaNan.frame.jdb.builder.HibernateBuilder;
 import com.YaNan.frame.jdb.database.entity.TagSupport;
 import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.plugin.ProxyModel;
@@ -29,6 +30,7 @@ import com.YaNan.frame.utils.StringUtil;
  */
 @Register(attribute = "*.fragment", priority = Integer.MAX_VALUE, model = ProxyModel.CGLIB, signlTon = false)
 public class FragmentSet implements FragmentBuilder {
+	protected HibernateBuilder context;
 	// xml文档
 	protected String xml;
 	// sql语句
@@ -466,6 +468,14 @@ public class FragmentSet implements FragmentBuilder {
 
 	public void setSqlFragment(SqlFragment sqlFragment) {
 		this.sqlFragment = sqlFragment;
+	}
+
+	public HibernateBuilder getContext() {
+		return context;
+	}
+
+	public void setContext(HibernateBuilder context) {
+		this.context = context;
 	}
 
 }

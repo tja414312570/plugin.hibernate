@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.database.DBTab;
+import com.YaNan.frame.jdb.database.DataTable;
 import com.YaNan.frame.jdb.database.DBInterface.OperateImplement;
 
 /**
@@ -46,7 +46,7 @@ public class Insert extends OperateImplement{
 	 * @param obj
 	 */
 	public Insert(Object obj) {
-		this.dataTables = new DBTab(obj);
+		this.dataTables = new DataTable(obj);
 		this.obj = obj;
 		Iterator<Field> fI = this.dataTables.getFieldMap().keySet().iterator();
 		Field field;

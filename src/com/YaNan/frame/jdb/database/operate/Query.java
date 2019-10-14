@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.YaNan.frame.jdb.database.DBColumn;
-import com.YaNan.frame.jdb.database.DBTab;
+import com.YaNan.frame.jdb.database.DataTable;
 import com.YaNan.frame.jdb.database.DBInterface.OperateImplement;
 import com.YaNan.frame.jdb.database.cache.SqlCache;
 import com.YaNan.frame.utils.StringUtil;
@@ -26,7 +26,7 @@ import com.YaNan.frame.utils.StringUtil;
  */
 public class Query extends OperateImplement {
 	protected List<String> key = new ArrayList<String>();
-	protected DBTab queryTab;
+	protected DataTable queryTab;
 	protected Query unionQuery = null;
 	protected boolean unionAll = false;
 	protected Object dataTablesObject;
@@ -156,12 +156,12 @@ public class Query extends OperateImplement {
 		return this.key.contains(str);
 	}
 
-	public Query(DBTab dataTables) {
+	public Query(DataTable dataTables) {
 		this.dataTables = dataTables;
 	}
 
 	public Query(Object obj, String... strings) {
-		this.dataTables = new DBTab(obj);
+		this.dataTables = new DataTable(obj);
 		dataTablesObject = obj;
 		this.queryTab = this.dataTables;
 		if (strings.length != 0) {
@@ -189,7 +189,7 @@ public class Query extends OperateImplement {
 	}
 
 	public Query(Object obj, boolean starReplace) {
-		this.dataTables = new DBTab(obj);
+		this.dataTables = new DataTable(obj);
 		this.queryTab = this.dataTables;
 		dataTablesObject = obj;
 		this.fieldMap.putAll(dataTables.getFieldMap());
@@ -206,7 +206,7 @@ public class Query extends OperateImplement {
 		int dataTablesClassHash = dataTablesClass.hashCode();
 		this.dataTables = SqlCache.getCache().getAttribute(dataTablesClassHash);
 		if (this.dataTables == null) {
-			this.dataTables = new DBTab(dataTablesClass);
+			this.dataTables = new DataTable(dataTablesClass);
 			SqlCache.getCache().addAttribute(dataTablesClassHash, this.dataTables);
 		}
 		this.queryTab = this.dataTables;
@@ -262,7 +262,7 @@ public class Query extends OperateImplement {
 	}
 
 	public Query(Class<?> dataTablesClass, boolean trans) {
-		this.dataTables = new DBTab(dataTablesClass);
+		this.dataTables = new DataTable(dataTablesClass);
 		this.queryTab = this.dataTables;
 		this.fieldMap.putAll(dataTables.getFieldMap());
 		if (trans) {
@@ -281,14 +281,14 @@ public class Query extends OperateImplement {
 	 * @param saveCls
 	 */
 	public Query(Class<?> queryCls, Class<?> saveCls) {
-		this.dataTables = new DBTab(queryCls);
-		this.queryTab = new DBTab(saveCls);
+		this.dataTables = new DataTable(queryCls);
+		this.queryTab = new DataTable(saveCls);
 		this.fieldMap.putAll(queryTab.getFieldMap());
 	}
 
 	public Query(Class<?> queryCls, Class<?> saveCls, String... strings) {
-		this.dataTables = new DBTab(queryCls);
-		this.queryTab = new DBTab(saveCls);
+		this.dataTables = new DataTable(queryCls);
+		this.queryTab = new DataTable(saveCls);
 		if (strings.length != 0) {
 			for (String str : strings) {
 				this.key.add(str);
@@ -324,8 +324,8 @@ public class Query extends OperateImplement {
 	}
 
 	public Query(Class<?> queryCls, Class<?> saveCls, boolean trans, String... strings) {
-		this.dataTables = new DBTab(queryCls);
-		this.queryTab = new DBTab(saveCls);
+		this.dataTables = new DataTable(queryCls);
+		this.queryTab = new DataTable(saveCls);
 		this.fieldMap.putAll(queryTab.getFieldMap());
 		if (strings.length != 0) {
 			for (String str : strings) {
@@ -564,7 +564,7 @@ public class Query extends OperateImplement {
 	}
 
 	public <T> List<T> query(boolean mapping) {
-		this.queryTab.setDataBase(this.dataTables.getDataBase());
+		this.queryTab.setDataSource(this.dataTables.getDataSource());
 		this.queryTab.setName(this.dataTables.getName());
 		List<T> result = this.queryTab.query(this, mapping);
 		log.debug("prepared sql:" + this.getPreparedSql());
@@ -633,7 +633,7 @@ public class Query extends OperateImplement {
 	public Query setJoinLeft(Class<?> dataTablesClass, boolean trans, String... conditions) {
 		if (conditions.length == 0)
 			return this;
-		DBTab rTab = new DBTab(dataTablesClass);
+		DataTable rTab = new DataTable(dataTablesClass);
 		this.joinObject = new JoinObject(this.dataTables.getName(), rTab.getName());
 		this.joinObject.setConditions(conditions);
 		if (trans)
@@ -650,7 +650,7 @@ public class Query extends OperateImplement {
 	public Query setInnnerJoin(Class<?> dataTablesClass, boolean trans, String... conditions) {
 		if (conditions.length == 0)
 			return this;
-		DBTab rTab = new DBTab(dataTablesClass);
+		DataTable rTab = new DataTable(dataTablesClass);
 		this.joinObject = new JoinObject(this.dataTables.getName(), rTab.getName());
 		this.joinObject.setConditions(conditions);
 		this.joinObject.setInnerJoin(true);

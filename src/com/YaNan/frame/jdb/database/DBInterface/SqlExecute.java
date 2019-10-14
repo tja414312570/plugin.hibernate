@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.YaNan.frame.jdb.database.DBTab;
+import com.YaNan.frame.jdb.database.DataTable;
 
 public class SqlExecute {
 
@@ -53,7 +53,7 @@ public class SqlExecute {
 
 	}
 
-	public boolean createTab(DBTab dbTab) {
+	public boolean createTab(DataTable dbTab) {
 		return true;
 	}
 }

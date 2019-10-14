@@ -6,13 +6,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.database.DBTab;
+import com.YaNan.frame.jdb.database.DataTable;
 
 public abstract class OperateImplement {
 	/**
 	 * 数据结构
 	 */
-	protected DBTab dataTables;
+	protected DataTable dataTables;
 	/**
 	 * 参数列表
 	 */
@@ -30,10 +30,10 @@ public abstract class OperateImplement {
 		this.preparedSql = preparedSql;
 	}
 	public abstract String create();
-	public DBTab getDbTab() {
+	public DataTable getDbTab() {
 		return dataTables;
 	}
-	public void setDbTab(DBTab dataTables) {
+	public void setDbTab(DataTable dataTables) {
 		this.dataTables = dataTables;
 	}
 	public String hashString(){

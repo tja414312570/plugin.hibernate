@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class TabCache {
 	private static TabCache dbManager;
-	private static Map<String, DBTab> map = new HashMap<String, DBTab>();
+	private static Map<String, DataTable> map = new HashMap<String, DataTable>();
 
 	public TabCache getManager() {
 		if (dbManager == null)
@@ -14,19 +14,19 @@ public class TabCache {
 	}
 
 	@SuppressWarnings("unlikely-arg-type")
-	public static DBTab getDBTab(Class<?> cls) {
+	public static DataTable getDBTab(Class<?> cls) {
 		if (map.containsKey(cls))
 			return map.get(cls);
-		DBTab tab = new DBTab(cls);
+		DataTable tab = new DataTable(cls);
 		map.put(tab.getName(), tab);
 		return tab;
 	}
 
 	@SuppressWarnings("unlikely-arg-type")
-	public static DBTab getDBTab(Object obj) {
+	public static DataTable getDBTab(Object obj) {
 		if (map.containsKey(obj.getClass()))
 			return map.get(obj.getClass());
-		DBTab tab = new DBTab(obj);
+		DataTable tab = new DataTable(obj);
 		map.put(tab.getName(), tab);
 		return tab;
 	}
@@ -42,7 +42,7 @@ public class TabCache {
 		return map.containsKey(obj.getClass());
 	}
 
-	public static void addTab(DBTab tab) {
+	public static void addTab(DataTable tab) {
 		map.put(tab.getName(), tab);
 	}
 }

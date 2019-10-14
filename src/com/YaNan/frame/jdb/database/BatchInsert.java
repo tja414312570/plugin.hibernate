@@ -30,7 +30,7 @@ public class BatchInsert extends OperateImplement{
 	public BatchInsert(Object[] objects){
 		if(objects==null||objects.length==0)
 			throw new RuntimeException("Batch Insert object length is 0");
-		this.dataTables = new DBTab(objects[0]);
+		this.dataTables = new DataTable(objects[0]);
 		this.columns = this.dataTables.getFieldMap().values();
 		for(Object object : objects){
 			this.preparedParameter(object);
@@ -50,7 +50,7 @@ public class BatchInsert extends OperateImplement{
 	public BatchInsert(List<Object> objects){
 		if(objects==null||objects.size()==0)
 			throw new RuntimeException("Batch Insert object length is 0");
-		this.dataTables = new DBTab(objects.get(0));
+		this.dataTables = new DataTable(objects.get(0));
 		this.columns = this.dataTables.getFieldMap().values();
 		for(Object object : objects){
 			this.preparedParameter(object);
@@ -61,7 +61,7 @@ public class BatchInsert extends OperateImplement{
 	 * @param objects
 	 */
 	public BatchInsert(Class<?> tabClass,String...columns){
-		this.dataTables = new DBTab(tabClass);
+		this.dataTables = new DataTable(tabClass);
 		if(columns.length>0){
 			this.columns = new ArrayList<DBColumn>();
 			this.addColumn(columns);

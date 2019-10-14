@@ -1,21 +1,18 @@
-package com.YaNan.frame.jdb.builder;
+package com.YaNan.frame.jdb.database.mapper;
 
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-
-import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.YaNan.frame.jdb.builder.HibernateBuilder;
 import com.YaNan.frame.jdb.database.DataTable;
 import com.YaNan.frame.jdb.database.entity.BaseMapping;
 import com.YaNan.frame.jdb.database.entity.SqlFragmentManger;
@@ -23,12 +20,8 @@ import com.YaNan.frame.jdb.database.entity.WrapperMapping;
 import com.YaNan.frame.jdb.database.exception.HibernateInitException;
 import com.YaNan.frame.jdb.database.fragment.FragmentBuilder;
 import com.YaNan.frame.jdb.database.fragment.SqlFragment;
-import com.YaNan.frame.jdb.database.mapper.SqlSessionMapper;
 import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.plugin.PlugsFactory.STREAM_TYPT;
-import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.plugin.annotations.Service;
-import com.YaNan.frame.plugin.autowired.property.Property;
 import com.YaNan.frame.plugin.handler.PlugsHandler;
 import com.YaNan.frame.utils.beans.xml.XMLHelper;
 import com.YaNan.frame.utils.reflect.cache.ClassHelper;
@@ -36,74 +29,27 @@ import com.YaNan.frame.utils.resource.PackageScanner;
 import com.YaNan.frame.utils.resource.ResourceManager;
 import com.YaNan.frame.utils.resource.PackageScanner.ClassInter;
 
-@Register(method = "init")
-public class HibernateBuilder {
-	private static final Logger logger = LoggerFactory.getLogger(HibernateBuilder.class);
-
-	/**
-	 * Mapper  位置
-	 */
-	@Property("jdb.mapperLocations")
-	private String[] mapperLocations;
+public class SqlSessionMapper {
 	private Map<String, BaseMapping> wrapMap = new HashMap<String, BaseMapping>();
-	/**
-	 * 扫描资源路径
-	 */
-	@Property("jdb.scanPather")
-	private String[] scanPather;
-
-	private List<String> nameSpaces = new ArrayList<String>();
-	/**
-	 * 数据源
-	 */
-	@Service
-	private DataSource dataSource;
-	
-	private SqlSessionMapper sqlSessionMapper;
-	public Map<String, BaseMapping> getWrapMap() {
-		return wrapMap;
+	private HibernateBuilder builder;
+	private static final Logger logger = LoggerFactory.getLogger(HibernateBuilder.class);
+	public SqlSessionMapper(HibernateBuilder builder) {
+		this.builder = builder;
 	}
-
-	public void setWrapMap(Map<String, BaseMapping> wrapMap) {
-		this.wrapMap = wrapMap;
+	public BaseMapping getSqlMapping(String id) {
+		return wrapMap.get(id);
 	}
-
-	public SqlSessionMapper getSqlSessionMapper() {
-		return sqlSessionMapper;
-	}
-
-	public void setSqlSessionMapper(SqlSessionMapper sqlSessionMapper) {
-		this.sqlSessionMapper = sqlSessionMapper;
-	}
-
-	public String[] getScanPather() {
-		return scanPather;
-	}
-
-	public void setScanPather(String[] scanPather) {
-		this.scanPather = scanPather;
-	}
-
-	private Properties configurationProperties;
-	
-
-	public String[] getMapperLocations() {
-		return mapperLocations;
-	}
-
 	public void init() {
 		// 获取mapper配置
-		InputStream pluginConf = HibernateBuilder.class.getResourceAsStream("../conf/plugin.conf");
+		InputStream pluginConf = HibernateBuilder.class.getResourceAsStream("./conf/plugin.conf");
 		PlugsFactory.getInstance().addPlugs(pluginConf, STREAM_TYPT.CONF, null);
 		if (!PlugsFactory.getInstance().isAvailable())
 			PlugsFactory.init();
-		this.sqlSessionMapper = new SqlSessionMapper(this);
 		logger.debug("init hibernate configure!");
-		String[] wrappers = mapperLocations;
+		String[] wrappers = builder.getMapperLocations();
 		if (wrappers == null || wrappers.length == 0)
 			return;
 		System.out.println(Arrays.toString(wrappers));
-		buildMappingTable();
 		// 获取所有的wrapper xml文件
 		List<File> files = ResourceManager.getResource(wrappers[0]);
 		System.out.println(files);
@@ -118,7 +64,6 @@ public class HibernateBuilder {
 				List<BaseMapping> baseMapping = wrapps.get(0).getBaseMappings();
 				Iterator<BaseMapping> mappingIterator = baseMapping.iterator();
 				String namespace = wrapps.get(0).getNamespace();
-				nameSpaces.add(namespace);
 				ClassHelper classHelper = null;
 				while (mappingIterator.hasNext()) {
 					BaseMapping mapping = mappingIterator.next();
@@ -147,7 +92,6 @@ public class HibernateBuilder {
 		while (iterator.hasNext())
 			this.buildFragment(iterator.next());
 	}
-
 	public SqlFragment buildFragment(BaseMapping mapping) {
 		SqlFragment sqlFragment = null;
 		try {
@@ -162,16 +106,16 @@ public class HibernateBuilder {
 			logger.debug("build " + mapping.getNode().toUpperCase() + " wrapper fragment , wrapper id : \""
 					+ mapping.getWrapperMapping().getNamespace() + "." + mapping.getId() + "\" ;");
 			sqlFragment = (SqlFragment) fragmentBuilder;
-			sqlFragment.setContext(this);
+			sqlFragment.setContext(builder);
 			fragmentBuilder.build(mapping);
 			SqlFragmentManger.addWarp(sqlFragment);
 		}
 		return sqlFragment;
 	}
 	public void buildMappingTable() {
-		if(this.scanPather != null && this.scanPather.length != 0) {
+		if(builder.getScanPather() != null && builder.getScanPather().length != 0) {
 			PackageScanner scanner = new PackageScanner();
-			for(String path : this.scanPather) {
+			for(String path : builder.getScanPather()) {
 				path =  ResourceManager.getPathExress(path);
 				scanner.addScanPath(path);
 			}
@@ -181,7 +125,7 @@ public class HibernateBuilder {
 					if (cls.getAnnotation(com.YaNan.frame.jdb.database.annotation.Tab.class) != null) {
 						logger.debug("scan hibernate class:" + cls.getName());
 						DataTable table = new DataTable(cls);
-						table.setDataSource(dataSource);
+						table.setDataSource(builder.getDataSource());
 						table.init();
 						System.out.println(table);
 					}
@@ -189,42 +133,4 @@ public class HibernateBuilder {
 			});
 		}
 	}
-	public void setMapperLocations(String[] mapperLocations) {
-		this.mapperLocations = mapperLocations;
-	}
-
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
-
-	public Properties getConfigurationProperties() {
-		return configurationProperties;
-	}
-
-	public void setConfigurationProperties(Properties configurationProperties) {
-		this.configurationProperties = configurationProperties;
-	}
-
-	public static Logger getLogger() {
-		return logger;
-	}
-
-	@Override
-	public String toString() {
-		return "HibernateBuilder [mapperLocations=" + Arrays.toString(mapperLocations) + ", dataSource=" + dataSource
-				+ ", configurationProperties=" + configurationProperties + ", scanPather=" + Arrays.toString(scanPather)
-				+ "]";
-	}
-
-	public BaseMapping getWrapper(String id) {
-		return this.wrapMap.get(id);
-	}
-	public boolean hasNamespace(String namespace) {
-		return this.nameSpaces.contains(namespace);
-	}
-
 }
