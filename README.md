@@ -2,12 +2,13 @@
 特点
 * 对象化数据库编程（Query，Update，Insert，Delete等）
 * 事务支持
-* 类mybatis的xml方式的sql
+* Mapper和Wrapper支持
 * 内置连接池管理
-* 支持sqlsession调用
+* 支持sqlsession
 * 支持接口调用方式
 * 多参数支持（参数默认按配置文件中参数循序）
 * ORM支持
+* 提供一个默认的MySql的事物实现
 # 2019-09-26:
 * 修改包结构
 * 新增注解事物支持 @Transactions
