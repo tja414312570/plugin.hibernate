@@ -3,7 +3,7 @@ package com.YaNan.frame.jdb.orm;
 import java.sql.ResultSet;
 import java.util.List;
 
-import com.YaNan.frame.jdb.database.fragment.SqlFragment;
+import com.YaNan.frame.jdb.fragment.SqlFragment;
 /**
  * Orm构建接口
  * @author yanan

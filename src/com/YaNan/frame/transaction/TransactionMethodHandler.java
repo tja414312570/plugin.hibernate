@@ -6,7 +6,7 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.database.exception.SqlExecuteException;
+import com.YaNan.frame.jdb.exception.SqlExecuteException;
 import com.YaNan.frame.plugin.annotations.Register;
 import com.YaNan.frame.plugin.annotations.Support;
 import com.YaNan.frame.plugin.handler.InvokeHandler;

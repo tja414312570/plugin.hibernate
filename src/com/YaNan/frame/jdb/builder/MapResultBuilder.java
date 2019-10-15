@@ -2,7 +2,7 @@ package com.YaNan.frame.jdb.builder;
 
 import java.sql.ResultSet;
 
-import com.YaNan.frame.jdb.database.mapper.PreparedSql;
+import com.YaNan.frame.jdb.mapper.PreparedSql;
 import com.YaNan.frame.plugin.annotations.Register;
 
 @Register

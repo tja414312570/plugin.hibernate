@@ -14,9 +14,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.database.DBColumn;
-import com.YaNan.frame.jdb.database.DataTable;
-import com.YaNan.frame.jdb.database.fragment.SqlFragment;
+import com.YaNan.frame.jdb.DBColumn;
+import com.YaNan.frame.jdb.DataTable;
+import com.YaNan.frame.jdb.fragment.SqlFragment;
 import com.YaNan.frame.plugin.annotations.Register;
 import com.YaNan.frame.utils.reflect.ClassLoader;
 
