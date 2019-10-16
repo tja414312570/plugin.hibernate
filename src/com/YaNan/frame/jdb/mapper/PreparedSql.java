@@ -94,6 +94,7 @@ public class PreparedSql {
 			List<Object> result = builder.builder(rs, sqlFragment);
 			if (result.size() > 1)
 				throw new RuntimeException("query result rows should \"1\" but has \"" + result.size() + "\"");
+			log.debug("result rows:" + result.size());
 			rs.close();
 			ps.close();
 			return (T) (result.size() == 1 ? result.get(0) : null);
