@@ -1,7 +1,9 @@
-package com.YaNan.frame.jdb;
+package com.YaNan.frame.jdb.cache;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.YaNan.frame.jdb.DataTable;
 
 public class TabCache {
 	private static TabCache dbManager;

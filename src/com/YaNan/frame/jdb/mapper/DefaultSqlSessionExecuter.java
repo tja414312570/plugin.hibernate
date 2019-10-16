@@ -3,11 +3,12 @@ package com.YaNan.frame.jdb.mapper;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.YaNan.frame.jdb.JDBContext;
 import com.YaNan.frame.jdb.SqlSession;
-import com.YaNan.frame.jdb.entity.SqlFragmentManger;
 import com.YaNan.frame.jdb.exception.SqlExecuteException;
 import com.YaNan.frame.jdb.fragment.SqlFragment;
 import com.YaNan.frame.plugin.annotations.Register;
+import com.YaNan.frame.plugin.annotations.Service;
 /**
  * 框架默认sqlsession的实现类
  * @author yanan
@@ -15,6 +16,8 @@ import com.YaNan.frame.plugin.annotations.Register;
  */
 @Register
 public class DefaultSqlSessionExecuter implements SqlSession{
+	@Service
+	private JDBContext context;
 	/**
 	 * 从数据库中查询数据</br>
 	 * 除非为java基础数据类型和String，否则参数只有第一个有效，无须再mapper中定义参数类型</br>
@@ -22,7 +25,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 	 */
 	@Override
 	public <T> T selectOne(String sqlId, Object... parameters) {
-		SqlFragment frag = SqlFragmentManger.getSqlFragment(sqlId);
+		SqlFragment frag = context.getSqlFragmentManger().getSqlFragment(sqlId);
 		PreparedSql pre = frag.getPreparedSql(parameters);
 		try {
 			return pre.queryOne();
@@ -36,7 +39,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 	 */
 	@Override
 	public <T> List<T> selectList(String sqlId, Object... params) {
-		SqlFragment frag = SqlFragmentManger.getSqlFragment(sqlId);
+		SqlFragment frag = context.getSqlFragmentManger().getSqlFragment(sqlId);
 		PreparedSql pre = frag.getPreparedSql(params);
 		try {
 			return pre.query();
@@ -46,7 +49,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 	}
 	@Override
 	public <T> T insert(String sqlId, Object... parameters) {
-		SqlFragment frag = SqlFragmentManger.getSqlFragment(sqlId);
+		SqlFragment frag = context.getSqlFragmentManger().getSqlFragment(sqlId);
 		PreparedSql pre = frag.getPreparedSql(parameters);
 		try {
 			return pre.insert();
@@ -61,7 +64,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 	}
 	@Override
 	public <T> T update(String sqlId, Object... parameters) {
-		SqlFragment frag = SqlFragmentManger.getSqlFragment(sqlId);
+		SqlFragment frag = context.getSqlFragmentManger().getSqlFragment(sqlId);
 		PreparedSql pre = frag.getPreparedSql(parameters);
 		try {
 			return pre.update();
@@ -71,7 +74,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 	}
 	@Override
 	public int delete(String sqlId, Object... parameters) {
-		SqlFragment frag = SqlFragmentManger.getSqlFragment(sqlId);
+		SqlFragment frag = context.getSqlFragmentManger().getSqlFragment(sqlId);
 		PreparedSql pre = frag.getPreparedSql(parameters);
 		try {
 			return pre.update();

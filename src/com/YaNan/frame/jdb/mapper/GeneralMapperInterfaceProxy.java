@@ -37,7 +37,7 @@ public class GeneralMapperInterfaceProxy implements InvokeHandler{
 		//从映射中获取sqlId对应的映射，并通过映射获取SQL的类型，对应增删查改
 		BaseMapping mapping = context.getWrapper(sqlId);
 		if(mapping==null)
-			throw new RuntimeException("could not found sql wrapper id \""+method+"\" at namespace \""+clzz+"\"");
+			throw new RuntimeException("could not found sql mapper id \""+method+"\" at namespace \""+clzz+"\"");
 		if(mapping.getNode().trim().toLowerCase().equals("select")){
 			if(com.YaNan.frame.utils.reflect.ClassLoader.implementsOf(methodHandler.getMethod().getReturnType(), List.class)){
 				methodHandler.interrupt(sqlSession.selectList(sqlId, methodHandler.getParameters()));

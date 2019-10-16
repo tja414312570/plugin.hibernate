@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import com.YaNan.frame.jdb.DataTable;
 import com.YaNan.frame.jdb.JDBContext;
 import com.YaNan.frame.jdb.entity.BaseMapping;
-import com.YaNan.frame.jdb.entity.SqlFragmentManger;
 import com.YaNan.frame.jdb.entity.WrapperMapping;
 import com.YaNan.frame.jdb.exception.JDBContextInitException;
 import com.YaNan.frame.jdb.fragment.FragmentBuilder;
@@ -31,10 +30,10 @@ import com.YaNan.frame.utils.resource.PackageScanner.ClassInter;
 
 public class SqlSessionMapper {
 	private Map<String, BaseMapping> wrapMap = new HashMap<String, BaseMapping>();
-	private JDBContext builder;
+	private JDBContext context;
 	private static final Logger logger = LoggerFactory.getLogger(JDBContext.class);
-	public SqlSessionMapper(JDBContext builder) {
-		this.builder = builder;
+	public SqlSessionMapper(JDBContext context) {
+		this.context = context;
 	}
 	public BaseMapping getSqlMapping(String id) {
 		return wrapMap.get(id);
@@ -46,7 +45,7 @@ public class SqlSessionMapper {
 		if (!PlugsFactory.getInstance().isAvailable())
 			PlugsFactory.init();
 		logger.debug("init hibernate configure!");
-		String[] wrappers = builder.getMapperLocations();
+		String[] wrappers = context.getMapperLocations();
 		if (wrappers == null || wrappers.length == 0)
 			return;
 		System.out.println(Arrays.toString(wrappers));
@@ -95,7 +94,7 @@ public class SqlSessionMapper {
 	public SqlFragment buildFragment(BaseMapping mapping) {
 		SqlFragment sqlFragment = null;
 		try {
-			sqlFragment = SqlFragmentManger
+			sqlFragment = context.getSqlFragmentManger()
 					.getSqlFragment(mapping.getWrapperMapping().getNamespace() + "." + mapping.getId());
 		} catch (Exception e) {
 		}
@@ -106,16 +105,16 @@ public class SqlSessionMapper {
 			logger.debug("build " + mapping.getNode().toUpperCase() + " wrapper fragment , wrapper id : \""
 					+ mapping.getWrapperMapping().getNamespace() + "." + mapping.getId() + "\" ;");
 			sqlFragment = (SqlFragment) fragmentBuilder;
-			sqlFragment.setContext(builder);
+			sqlFragment.setContext(context);
 			fragmentBuilder.build(mapping);
-			SqlFragmentManger.addWarp(sqlFragment);
+			context.getSqlFragmentManger().addWarp(sqlFragment);
 		}
 		return sqlFragment;
 	}
 	public void buildMappingTable() {
-		if(builder.getScanPather() != null && builder.getScanPather().length != 0) {
+		if(context.getScanPather() != null && context.getScanPather().length != 0) {
 			PackageScanner scanner = new PackageScanner();
-			for(String path : builder.getScanPather()) {
+			for(String path : context.getScanPather()) {
 				path =  ResourceManager.getPathExress(path);
 				scanner.addScanPath(path);
 			}
@@ -125,7 +124,7 @@ public class SqlSessionMapper {
 					if (cls.getAnnotation(com.YaNan.frame.jdb.annotation.Tab.class) != null) {
 						logger.debug("scan hibernate class:" + cls.getName());
 						DataTable table = new DataTable(cls);
-						table.setDataSource(builder.getDataSource());
+						table.setDataSource(context.getDataSource());
 						table.init();
 						System.out.println(table);
 					}
