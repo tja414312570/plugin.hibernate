@@ -13,6 +13,11 @@
 # 2019-09-26:
 * 修改包结构
 * 新增注解事物支持 @Transactions
+# 2019-10-16:
+* 独立出数据源模块和事物模块，使得架构耦合度更低
+* 重新设计架构依赖关系，支持多数据源，多上下文。
+* 接口映射文件中新增@Param注解，用于指定接口的参数名
+* 当前xml中支持的标签（select,insert,sql,update,delete,if,trim,foreach,include)
 
 ![avatar](https://ufomedia.oss-cn-beijing.aliyuncs.com/WX20191014-173332.png)
 ```java
