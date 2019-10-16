@@ -57,7 +57,19 @@ public class JDBContext {
 	 */
 	@Service
 	private DataSource dataSource;
+	/**
+	 * Sql片段容器
+	 */
+	private SqlFragmentManger sqlFragmentManger;
 	
+	public SqlFragmentManger getSqlFragmentManger() {
+		return sqlFragmentManger;
+	}
+
+	public void setSqlFragmentManger(SqlFragmentManger sqlFragmentManger) {
+		this.sqlFragmentManger = sqlFragmentManger;
+	}
+
 	private SqlSessionMapper sqlSessionMapper;
 	public Map<String, BaseMapping> getWrapMap() {
 		return wrapMap;
@@ -148,9 +160,16 @@ public class JDBContext {
 	}
 
 	public SqlFragment buildFragment(BaseMapping mapping) {
+		if(sqlFragmentManger == null) {
+			synchronized (this) {
+				if(sqlFragmentManger == null) {
+					sqlFragmentManger = new SqlFragmentManger(this);
+				}
+			}
+		}
 		SqlFragment sqlFragment = null;
 		try {
-			sqlFragment = SqlFragmentManger
+			sqlFragment = sqlFragmentManger
 					.getSqlFragment(mapping.getWrapperMapping().getNamespace() + "." + mapping.getId());
 		} catch (Exception e) {
 		}
@@ -163,7 +182,7 @@ public class JDBContext {
 			sqlFragment = (SqlFragment) fragmentBuilder;
 			sqlFragment.setContext(this);
 			fragmentBuilder.build(mapping);
-			SqlFragmentManger.addWarp(sqlFragment);
+			sqlFragmentManger.addWarp(sqlFragment);
 		}
 		return sqlFragment;
 	}

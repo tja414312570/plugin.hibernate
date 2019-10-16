@@ -2,7 +2,6 @@ package com.YaNan.frame.jdb.fragment;
 
 import com.YaNan.frame.jdb.entity.BaseMapping;
 import com.YaNan.frame.jdb.entity.Include;
-import com.YaNan.frame.jdb.entity.SqlFragmentManger;
 import com.YaNan.frame.jdb.exception.JDBContextInitException;
 import com.YaNan.frame.plugin.ProxyModel;
 import com.YaNan.frame.plugin.annotations.Register;
@@ -31,7 +30,7 @@ public class IncludeFragment extends FragmentSet implements FragmentBuilder {
 		if(id.indexOf(".")==-1)
 			id = this.sqlFragment.getBaseMapping().getWrapperMapping().getNamespace()+"."+id;
 		try{
-			this.sql = SqlFragmentManger.getSqlFragment(this.id);
+			this.sql = this.context.getSqlFragmentManger().getSqlFragment(this.id);
 		}catch (Exception e) {
 		}
 		if(sql==null){

@@ -3,11 +3,16 @@ package com.YaNan.frame.jdb.entity;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.YaNan.frame.jdb.JDBContext;
 import com.YaNan.frame.jdb.fragment.SqlFragment;
 
 public class SqlFragmentManger {
-	private static Map<String,WrapMapping> wrapMapping = new HashMap<String,WrapMapping>();
-	public static void addWarp(SqlFragment sqlFragment){
+	private Map<String,WrapMapping> wrapMapping = new HashMap<String,WrapMapping>();
+	private JDBContext context;
+	public SqlFragmentManger(JDBContext context) {
+		this.context = context;
+	}
+	public void addWarp(SqlFragment sqlFragment){
 		String namespace = sqlFragment.getBaseMapping().getWrapperMapping().getNamespace();
 		WrapMapping wrapperMapping = wrapMapping.get(namespace);
 		if(wrapperMapping==null){
@@ -16,7 +21,7 @@ public class SqlFragmentManger {
 		}
 		wrapperMapping.addSqlFragemnt(sqlFragment);
 	}
-	public static SqlFragment getSqlFragment(String id){
+	public SqlFragment getSqlFragment(String id){
 		int symIndex = id.lastIndexOf(".");
 		if(symIndex==-1)
 			throw new RuntimeException("id \"" +id+"\" does not container namespace symbol \".\"");
@@ -29,5 +34,11 @@ public class SqlFragmentManger {
 		if(sqlFragment==null)
 			throw new RuntimeException("could not found wrapper \""+idl+"\" at namespace \"" +namespace+"\"!");
 		return sqlFragment;
+	}
+	public JDBContext getContext() {
+		return context;
+	}
+	public void setContext(JDBContext context) {
+		this.context = context;
 	}
 }

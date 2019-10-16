@@ -8,8 +8,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import com.YaNan.frame.jdb.JDBContext;
 import com.YaNan.frame.jdb.entity.BaseMapping;
 import com.YaNan.frame.jdb.mapper.PreparedSql;
