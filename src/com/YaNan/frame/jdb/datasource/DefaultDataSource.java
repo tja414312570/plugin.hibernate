@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
+import org.slf4j.LoggerFactory;
+
 import com.YaNan.frame.plugin.annotations.Register;
 import com.YaNan.frame.plugin.autowired.property.Property;
 
@@ -22,6 +24,7 @@ import com.YaNan.frame.plugin.autowired.property.Property;
  */
 @Register(method="init",register=DataSource.class)
 public class DefaultDataSource implements DataSource{
+	static org.slf4j.Logger logger = LoggerFactory.getLogger(DefaultDataSource.class);
 	/**
 	 * 数据库属性
 	 */
@@ -51,7 +54,9 @@ public class DefaultDataSource implements DataSource{
 	@Property("jdb.test_sql")
 	private String test_sql = "";
 	@Property("jdb.wait_times")
-	private long wait_times;
+	private int wait_times;
+	@Property("jdb.login_timeout")
+	private int login_timeout;
 	
 	@Override
 	public String toString() {
@@ -59,7 +64,7 @@ public class DefaultDataSource implements DataSource{
 				+ ", id=" + id + ", url=" + url + ", username=" + username + ", password=" + password + ", driver="
 				+ driver + ", max_connection=" + max_connection + ", min_connection=" + min_connection
 				+ ", add_connection=" + add_connection + ", test_connection=" + test_connection + ", test_sql="
-				+ test_sql + ", wait_times=" + wait_times + "]";
+				+ test_sql + ", wait_times=" + wait_times + ", login_timeout=" + login_timeout + "]";
 	}
 	public DefaultDataSource() {
 		connectionPools = JdbConnectionPoolsManger.getJdbConnectionPools(this);
@@ -78,6 +83,8 @@ public class DefaultDataSource implements DataSource{
         return connection;
 	}
 	public void init() throws SQLException, ClassNotFoundException {
+		logger.debug("init datasource");
+		logger.debug(this.toString());
 		//写入属性
 		if(this.driverProperties == null) {
 			driverProperties = new Properties();
@@ -108,14 +115,12 @@ public class DefaultDataSource implements DataSource{
 
 	@Override
 	public void setLoginTimeout(int seconds) throws SQLException {
-		// TODO Auto-generated method stub
-		
+		this.login_timeout = seconds;
 	}
 
 	@Override
 	public int getLoginTimeout() throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+		return login_timeout;
 	}
 
 	@Override
@@ -208,7 +213,7 @@ public class DefaultDataSource implements DataSource{
 	public long getWait_times() {
 		return wait_times;
 	}
-	public void setWait_times(long wait_times) {
+	public void setWait_times(int wait_times) {
 		this.wait_times = wait_times;
 	}
 
