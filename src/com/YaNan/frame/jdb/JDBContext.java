@@ -92,7 +92,7 @@ public class JDBContext {
 
 	public void init() {
 		// 获取mapper配置
-		InputStream pluginConf = JDBContext.class.getResourceAsStream("../conf/plugin.conf");
+		InputStream pluginConf = JDBContext.class.getResourceAsStream("./conf/plugin.conf");
 		PlugsFactory.getInstance().addPlugs(pluginConf, STREAM_TYPT.CONF, null);
 		if (!PlugsFactory.getInstance().isAvailable())
 			PlugsFactory.init();

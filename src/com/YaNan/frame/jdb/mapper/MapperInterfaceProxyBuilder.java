@@ -18,7 +18,7 @@ import com.YaNan.frame.utils.PathMatcher;
  *
  */
 @Register(method="execute")
-public class DefaultMapperInterfaceProxy {
+public class MapperInterfaceProxyBuilder {
 	/**
 	 * 上下文
 	 */
@@ -29,8 +29,6 @@ public class DefaultMapperInterfaceProxy {
 	private String scanPath[];
 	public void execute() {
 		generalMapperInterfaceProxy = PlugsFactory.getPlugsInstance(GeneralMapperInterfaceProxy.class,hibernateBuilder);
-		System.out.println("default:"+this+"\r\ncontext:"+hibernateBuilder
-				+"\r\ngeneral:"+generalMapperInterfaceProxy);
 		RegisterDescription register = new RegisterDescription(GeneralMapperInterfaceProxy.class);
 		//创建一个此注册器的代理容器
 		register.createProxyContainer();
@@ -38,7 +36,6 @@ public class DefaultMapperInterfaceProxy {
 		Map<Class<?>, Plug> plugs = PlugsFactory.getInstance().getAllPlugs();
 		for(Plug plug : plugs.values()){
 			// 查找具有Sql注解的接口
-			System.out.println(plug.getDescription().getPlugClass()+"   "+isCurrentProxy(plug));
 			if(isCurrentProxy(plug)){
 				//将生成的注册描述添加到接口组件
 				plug.addRegister(register);
