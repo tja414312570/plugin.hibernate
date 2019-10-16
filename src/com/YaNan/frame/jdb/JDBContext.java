@@ -113,11 +113,9 @@ public class JDBContext {
 		String[] wrappers = mapperLocations;
 		if (wrappers == null || wrappers.length == 0)
 			return;
-		System.out.println(Arrays.toString(wrappers));
 		buildMappingTable();
 		// 获取所有的wrapper xml文件
 		List<File> files = ResourceManager.getResource(wrappers[0]);
-		System.out.println(files);
 		logger.debug("get wrap file num : " + files.size());
 		Iterator<File> fileIterator = files.iterator();
 		while (fileIterator.hasNext()) {
@@ -201,7 +199,6 @@ public class JDBContext {
 						DataTable table = new DataTable(cls);
 						table.setDataSource(dataSource);
 						table.init();
-						System.out.println(table);
 					}
 				}
 			});
