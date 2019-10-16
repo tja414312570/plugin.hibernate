@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 数据库连接池，用于管理数据库连接，提供数据库连接的初始化、获取、释放</br>
- * 注意！！数据库连接获取并使用之后，记得关闭PreparedStatement和ResultSet，否则导致连接池刷新逻辑失效，ProxyConnection不需要关闭</br>
  * 注意！！数据库使用完毕后，记得关闭ProxyConnectionPoolRefreshService服务，否则导致ProxyConnectionPoolRefreshService服务延迟关闭</br>
  * 具体关闭时间和设置的连接池空闲时等待时间有关（参数timeout）</br>
  * 通过ProxyConnectionPoolRefreshService.destory()或DBFactory.getDBFactory().destory()可销毁该线程</br>
@@ -56,7 +55,8 @@ public class ConnectionPools implements PooledConnection{
 		Properties props = new Properties();
         if (dataSource.getDriverProperties() != null) {
         	props.putAll(dataSource.getDriverProperties());
-        } 
+        }
+       DriverManager.setLoginTimeout(this.dataSource.getLoginTimeout());
        Connection connection = DriverManager.getConnection(dataSource.getUrl(),props);
        if(this.dataSource.isTest_connection()) {
     	   if(this.dataSource.getTest_sql() == null) 
@@ -210,8 +210,7 @@ public class ConnectionPools implements PooledConnection{
 	
 	@Override
 	public void close() throws SQLException {
-		// TODO Auto-generated method stub
-		
+		this.destory();
 	}
 	@Override
 	public void addConnectionEventListener(ConnectionEventListener listener) {
