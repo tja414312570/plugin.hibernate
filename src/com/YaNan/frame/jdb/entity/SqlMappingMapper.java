@@ -10,8 +10,6 @@ import com.YaNan.frame.jdb.fragment.SqlFragment;
  *
  */
 public class SqlMappingMapper {
-	//数据库
-	private String datasource;
 	//命名空间 
 	private String namespace;
 	//里面包含的语句片段
@@ -28,9 +26,8 @@ public class SqlMappingMapper {
 	public void setSqlFragmentList(List<SqlFragment> sqlFragmentList) {
 		this.sqlFragmentList = sqlFragmentList;
 	}
-	public SqlMappingMapper(String datasource, String namespace) {
+	public SqlMappingMapper(String namespace) {
 		super();
-		this.datasource = datasource;
 		this.namespace = namespace;
 	}
 	public SqlMappingMapper() {
@@ -38,14 +35,6 @@ public class SqlMappingMapper {
 	}
 	@Override
 	public String toString() {
-		return "SqlMappingMapper [database=" + datasource + ", namespace=" + namespace + ", sqlFragmentList="
-				+ sqlFragmentList + "]";
+		return "SqlMappingMapper [namespace=" + namespace + ", sqlFragmentList=" + sqlFragmentList + "]";
 	}
-	public String getDatasource() {
-		return datasource;
-	}
-	public void setDatasource(String datasource) {
-		this.datasource = datasource;
-	}
-	
 }
