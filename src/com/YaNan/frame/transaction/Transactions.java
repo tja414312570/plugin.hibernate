@@ -6,6 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.SQLException;
 
+import com.YaNan.frame.jdb.exception.SqlExecuteException;
+
 /**
  * 事物注解
  * @author yanan
@@ -18,7 +20,7 @@ public @interface Transactions {
 	 * 回滚异常
 	 * @return
 	 */
-	Class<?>[] value() default {SQLException.class};
+	Class<?>[] value() default {SQLException.class,SqlExecuteException.class};
 	
 	/**
 	 * 事物传播行为

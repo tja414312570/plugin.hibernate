@@ -6,7 +6,6 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.exception.SqlExecuteException;
 import com.YaNan.frame.plugin.annotations.Register;
 import com.YaNan.frame.plugin.annotations.Support;
 import com.YaNan.frame.plugin.handler.InvokeHandler;
@@ -53,10 +52,7 @@ public class TransactionMethodHandler implements InvokeHandler {
 
 	@Override
 	public void error(MethodHandler methodHandler, Throwable e) {
-		
 		Transactions transactions = methodHandler.getMethod().getAnnotation(Transactions.class);
-		if(e.getClass() == SqlExecuteException.class)
-			e = e.getCause();
 		AbstractTransaction transactionManager = TransactionManager.getCurrentTransaction();
 		logger.debug("transaction execute exception when execute ["+methodHandler.getMethod().getName()+"] transaction ["+transactionManager+"]",e);
 		boolean rollback = false;
