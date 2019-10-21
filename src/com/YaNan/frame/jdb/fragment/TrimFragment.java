@@ -54,22 +54,22 @@ public class TrimFragment extends FragmentSet implements FragmentBuilder {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public PreparedFragment prepared(Object... objects) {
+	public PreparedFragment prepared(Object object) {
 		PreparedFragment preparedFragment = PlugsFactory.getPlugsInstance(PreparedFragment.class);
 		if (this.nextSet != null && this.childSet != null) {
-			PreparedFragment child = this.childSet.prepared(objects);
-			PreparedFragment next = this.nextSet.prepared(objects);
+			PreparedFragment child = this.childSet.prepared(object);
+			PreparedFragment next = this.nextSet.prepared(object);
 			preparedFragment.setSql(this.preparedSql(child.getSql()) + next.getSql());
 			preparedFragment.addParameter(child.getArguments(), next.getArguments());
 			preparedFragment.addAllVariable(child.getVariable());
 			preparedFragment.addAllVariable(next.getVariable());
 		} else if (this.childSet != null) {
-			PreparedFragment child = this.childSet.prepared(objects);
+			PreparedFragment child = this.childSet.prepared(object);
 			preparedFragment.setSql(this.preparedSql(child.getSql()));
 			preparedFragment.addParameter(child.getArguments());
 			preparedFragment.addAllVariable(child.getVariable());
 		} else {
-			preparedFragment = super.prepared(objects);
+			preparedFragment = super.prepared(object);
 		}
 		return preparedFragment;
 	}

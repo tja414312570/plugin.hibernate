@@ -80,7 +80,7 @@ public class FragmentSet implements FragmentBuilder {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public PreparedFragment prepared(Object... objects) {
+	public PreparedFragment prepared(Object objects) {
 		/**
 		 * 通过调用PlugsFactory生成PreparedFragment的实例。
 		 */
@@ -136,7 +136,7 @@ public class FragmentSet implements FragmentBuilder {
 	 * @param parameter
 	 * @return
 	 */
-	public String preparedParameterSql(String sql, Object... parameter) {
+	public String preparedParameterSql(String sql, Object parameter) {
 		List<String> variable = StringUtil.find(sql, "${", "}");
 		if (variable != null && variable.size() > 0) {
 			StringBuffer sb = new StringBuffer(sql).append(" ");
@@ -159,40 +159,17 @@ public class FragmentSet implements FragmentBuilder {
 		return sql;
 	}
 
-	public void buildMapParameter(List<String> variables, List<Object> arguments, Map<?, ?> object) {
-		Iterator<String> iterator = variables.iterator();
-		while (iterator.hasNext()) {
-			String key = iterator.next();
-			arguments.add(object.get(key));
-		}
-	}
 	/**
 	 * 获取创建sql时所涉及到的参数列表
 	 * @param variables 此片段锁涉及到的变量
 	 * @param parameter 调用接口传入的参数
 	 * @return
 	 */
-	public List<Object> preparedParameter(List<String> variables, Object... parameter) {
+	public List<Object> preparedParameter(List<String> variables, Object parameter) {
 		List<Object> arguments = new ArrayList<Object>();
 		if (parameter != null && variables.size() > 0) {
-			// 需要参数的数量是否与传入参数的数量相同
-			if (parameter.length > 1) {
-				if (SqlFragment.removeDuplicate(variables).size() <= parameter.length)
-					for (int i = 0; i < variables.size(); i++) {
-						int pos = this.sqlFragment.getArguments().indexOf(variables.get(i));
-						arguments.add(pos >= parameter.length ? null : parameter[pos]);
-					}
-				else
-					throw new RuntimeException("failed to prepared parameter \"" + variables
-							+ "\"because the need parameter \"" + variables.size() + "\" get the parameter \""
-							+ parameter.length + "\"! at mapping file '" + this.sqlFragment.baseMapping.getXmlFile()
-							+ "' at id '" + this.sqlFragment.baseMapping.getId() + "'");
-			} else if (parameter.length == 1) {
-				Object object = parameter[0];
-				if (object == null) {
-					arguments.add(object);
-					//如果参数时脚本引擎可以直接使用Binder
-				}else if(ClassLoader.implementsOf(object.getClass(), Bindings.class)){ 
+				Object object = parameter;
+				if(ClassLoader.implementsOf(object.getClass(), Bindings.class)){ 
 					for(int i = 0;i<variables.size();i++){
 						try {
 							arguments.add(scriptEngine.eval(variables.get(i),(Bindings)object));
@@ -203,45 +180,79 @@ public class FragmentSet implements FragmentBuilder {
 						}
 					}
 					//如果是Map类型的参数
-				}else if (ClassLoader.implementsOf(object.getClass(), Map.class)) {
-					this.buildMapParameter(variables, arguments, (Map<?, ?>) object);
-					//如果是List类型的参数
-				} else if (ClassLoader.implementsOf(object.getClass(), List.class)) {
-					this.buldListParameter(variables, arguments, (List<?>) object);
-					//如果参数是一个基本类型
-				} else if (ClassLoader.isBaseType(object.getClass())) {
+				}else if (ClassLoader.isBaseType(object.getClass())) {
 					if (SqlFragment.removeDuplicate(variables).size() == 1)
 						for (int i = 0; i < variables.size(); i++)
 							arguments.add(object);
 					else
 						throw new RuntimeException("failed to prepared parameter \"" + variables
-								+ "\"because the need parameter \"" + variables.size() + "\" get the parameter \""
-								+ parameter.length + "\"! at mapping file '" + this.sqlFragment.baseMapping.getXmlFile()
+								+ "\"because the parameter size at last \""+variables.size()+"\"! at mapping file '" + this.sqlFragment.baseMapping.getXmlFile()
 								+ "' at id '" + this.sqlFragment.baseMapping.getId() + "'");
 				} else {
 					//如果参数是一个POJO类型
-					ClassLoader loader = new ClassLoader(object);
-					for (int i = 0; i < variables.size(); i++)
-						try {
-							arguments.add(loader.get(variables.get(i)));
-						} catch (NoSuchMethodException | SecurityException | IllegalAccessException
-								| IllegalArgumentException | InvocationTargetException e) {
-							throw new RuntimeException("failed to get need parameter \"" + variables.get(i)
-									+ "\" at parameterType " + loader.getLoadedClass() + "at mapping file '"
-									+ this.sqlFragment.baseMapping.getXmlFile() + "' at id '"
-									+ this.sqlFragment.baseMapping.getId() + "'", e);
-						}
+					Iterator<String> iterator = variables.iterator();
+					while (iterator.hasNext()) {
+						String key = iterator.next();
+						Object value = this.decodeParameter(key,object);
+						arguments.add(value);
+					}
 				}
 			}
-		}
 		return arguments;
 	}
 
-	public void buldListParameter(List<String> variables, List<Object> arguments2, List<?> object) {
-		for (int i = 0; i < variables.size(); i++)
-			arguments2.add(i < object.size() ? object.get(i) : null);
+	@SuppressWarnings("unchecked")
+	public Object decodeParameter(String parameterName,Object parameter) {
+		if(parameter == null)
+			return null;
+		//如果是Map集合
+		String express;
+		Object value;
+		if(ClassLoader.implementsOf(parameter.getClass(), Map.class)) {
+			Map<String,Object> parameterMap = (Map<String,Object>) parameter;
+			value = parameterMap.get(parameterName);
+			if(value != null) {
+				return value;
+			}else {
+				int offset = parameterName.indexOf(".");
+				if(offset>-1) {
+					express = parameterName.substring(0,offset);
+					value = parameterMap.get(express);
+					if(value != null){
+						express =  parameterName.substring(offset+1);
+						return decodeParameter(express,value);
+					}
+				}
+				return value;
+			}
+		}else {
+			ClassLoader parameterLoader = new ClassLoader(parameter);
+			String header = parameterLoader.getLoadedClass().getSimpleName()+".";
+				if(parameterName.startsWith(header)) {
+					parameterName = parameterName.substring(header.length()); 
+				}
+				try {
+					int offset = parameterName.indexOf(".");
+					if(offset>-1) {
+						express = parameterName.substring(0,offset);
+						value = parameterLoader.get(express);
+						if(value != null){
+							express =  parameterName.substring(offset+1);
+							return decodeParameter(express,value);
+						}else {
+							return null;
+						}
+					}else {
+						return parameterLoader.get(parameterName);
+					}
+				} catch ( Exception e) {
+					throw new RuntimeException("failed to get parameter \"" + parameterName
+							+ "\" at parameterType " + parameterLoader.getLoadedClass() + " at mapping file '"
+							+ this.sqlFragment.baseMapping.getXmlFile() + "' at id '"
+							+ this.sqlFragment.baseMapping.getId() + "'", e);
+				}
+		}
 	}
-
 	@Override
 	public void build(Object wrapper) {
 		String sql = this.xml;
@@ -346,60 +357,44 @@ public class FragmentSet implements FragmentBuilder {
 		}
 	}
 
-	public boolean eval(String express, List<String> argument, Object... objects) {
+	public boolean eval(String express, List<String> argument, Object object) {
 		Bindings binder = scriptEngine.createBindings();
-		if (objects != null) {
-			// 如果有多个参数
-			if (objects.length > 1) {
-				// 需要参数的数量是否与传入参数的数量相同
-				for (int i = 0; i < argument.size(); i++) {
-					int pos = this.sqlFragment.getArguments().indexOf(argument.get(i));
-					binder.put(argument.get(i), pos >= objects.length ? null : objects[pos]);
-				}
-
-				// 单个参数
-			} else if (objects.length == 1) {
-				Object object = objects[0];
-				if (object == null) {
+		if (object != null) {
+			if(ClassLoader.implementsOf(object.getClass(), Bindings.class)){ 
+				binder = (Bindings) object;
+			}
+			// 如果参数类型为Map
+			else if (ClassLoader.implementsOf(object.getClass(), Map.class)) {
+				this.buildMapBinder(binder, argument, (Map<?, ?>) object);
+				// 如果参数为List
+			} else if (ClassLoader.implementsOf(object.getClass(), List.class)) {
+				this.buldListBinder(binder, argument, (List<?>) object);
+				// 如果参数时基本类型
+			} else if (ClassLoader.isBaseType(object.getClass())) {
+				if (argument.size() == 1){
 					binder.put(argument.get(0), object);
-				}else if(ClassLoader.implementsOf(object.getClass(), Bindings.class)){ 
-					binder = (Bindings) object;
 				}
-				// 如果参数类型为Map
-				else if (ClassLoader.implementsOf(object.getClass(), Map.class)) {
-					this.buildMapBinder(binder, argument, (Map<?, ?>) object);
-					// 如果参数为List
-				} else if (ClassLoader.implementsOf(object.getClass(), List.class)) {
-					this.buldListBinder(binder, argument, (List<?>) object);
-					// 如果参数时基本类型
-				} else if (ClassLoader.isBaseType(object.getClass())) {
-					if (argument.size() == 1){
-						int pos = this.sqlFragment.getArguments().indexOf(argument.get(0));
-						binder.put(argument.get(0), pos >= objects.length ? null : objects[pos]);
+				else
+					throw new RuntimeException(
+							"failed to execute \"" + express + "\" expression because the need parameter \""
+									+ argument + "\" but found one! at mapping file '" + this.sqlFragment.baseMapping.getXmlFile()
+									+ "' at id '" + this.sqlFragment.baseMapping.getId() + "'");
+			} else {
+				ClassLoader loader = new ClassLoader(object);
+				for (int i = 0; i < argument.size(); i++)
+					try {
+						binder.put(argument.get(i), loader.get(argument.get(i)));
+					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
+							| IllegalArgumentException | InvocationTargetException e) {
+						throw new RuntimeException("failed to get need parameter \"" + argument.get(i)
+								+ "\" at express \"" + express + "\" at parameterType " + loader.getLoadedClass(),
+								e);
 					}
-					else
-						throw new RuntimeException(
-								"failed to execute \"" + express + "\" expression because the need parameter \""
-										+ argument.size() + "\" get the parameter \"" + objects.length
-										+ "\"! at mapping file '" + this.sqlFragment.baseMapping.getXmlFile()
-										+ "' at id '" + this.sqlFragment.baseMapping.getId() + "'");
-				} else {
-					ClassLoader loader = new ClassLoader(object);
-					for (int i = 0; i < argument.size(); i++)
-						try {
-							binder.put(argument.get(i), loader.get(argument.get(i)));
-						} catch (NoSuchMethodException | SecurityException | IllegalAccessException
-								| IllegalArgumentException | InvocationTargetException e) {
-							throw new RuntimeException("failed to get need parameter \"" + argument.get(i)
-									+ "\" at express \"" + express + "\" at parameterType " + loader.getLoadedClass(),
-									e);
-						}
-				}
+			}
 			} else {
 				for (int i = 0; i < argument.size(); i++)
 					binder.put(argument.get(i), null);
 			}
-		}
 		Object result = null;
 		try {
 			result = scriptEngine.eval(express, binder);

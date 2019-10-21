@@ -169,7 +169,7 @@ public abstract class SqlFragment implements FragmentBuilder {
 	}
 
 	@Override
-	public PreparedFragment prepared(Object... objects) {
+	public PreparedFragment prepared(Object objects) {
 		return null;
 	}
 
@@ -263,7 +263,7 @@ public abstract class SqlFragment implements FragmentBuilder {
 		return norepetList;
 	}
 
-	public abstract PreparedSql getPreparedSql(Object... parameter);
+	public abstract PreparedSql getPreparedSql(Object parameter);
 
 	public void setContext(JDBContext context) {
 		this.context = context;

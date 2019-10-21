@@ -15,11 +15,11 @@ public class IFFragment extends FragmentSet implements FragmentBuilder {
 	private List<String> testArgument = new ArrayList<String>();
 	//	参数列表
 	@Override
-	public PreparedFragment prepared(Object... objects) {
-		if((boolean) this.eval(test,testArgument, objects))
-			return super.prepared(objects);
+	public PreparedFragment prepared(Object object) {
+		if((boolean) this.eval(test,testArgument, object))
+			return super.prepared(object);
 		if(this.nextSet!=null)
-			return this.nextSet.prepared(objects);
+			return this.nextSet.prepared(object);
 		return new PreparedFragment();
 	}
 	//构建sql片段

@@ -28,7 +28,7 @@ public class ForEachFragment extends FragmentSet implements FragmentBuilder {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public PreparedFragment prepared(Object... objects) {
+	public PreparedFragment prepared(Object objects) {
 		List<Object> param = this.getParameter(objects);
 		PreparedFragment preparedFragment = PlugsFactory.getPlugsInstance(PreparedFragment.class);
 		if (this.nextSet != null && this.childSet != null) {
@@ -82,60 +82,41 @@ public class ForEachFragment extends FragmentSet implements FragmentBuilder {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private List<Object> getParameter(Object[] objects) {
+	private List<Object> getParameter(Object object) {
 		List<Object> result = null;
 		if (exArgs == null) {
 			exArgs = new ArrayList<String>();
 			exArgs.addAll(this.sqlFragment.getArguments());
 			exArgs.removeAll(args);
 		}
-		if (objects != null) {
-			// 如果有多个参数
-			if (objects.length > 1) {
-				// 需要参数的数量是否与传入参数的数量相同
-				if (exArgs.size() > 0) {
+		if (object != null) {
+			if (ClassLoader.implementsOf(object.getClass(), Map.class)) {
+				Object obj = ((Map) object).get(this.forEach.getCollection());
+				result = getBySignleParameter(obj);
+			} else if (ClassLoader.implementsOf(object.getClass(), List.class)) {
+				Object obj;
+				if (exArgs.size() > 1) {
 					int pos = this.sqlFragment.getArguments().indexOf(this.forEach.getCollection());
-					result = getBySignleParameter(objects[pos]);
+					obj = ((List) object).get(pos);
 				} else {
-					result = new ArrayList<Object>();
-					for (int i = 0; i < objects.length; i++) {
-						result.add(objects[i]);
-					}
+					obj = ((List) object);
 				}
-
-				// 单个参数
-			} else if (objects.length == 1) {
-				Object object = objects[0];
-				if (object == null) {
-					result = getBySignleParameter(object);
-				} else if (ClassLoader.implementsOf(object.getClass(), Map.class)) {
-					Object obj = ((Map) object).get(this.forEach.getCollection());
-					result = getBySignleParameter(obj);
-				} else if (ClassLoader.implementsOf(object.getClass(), List.class)) {
-					Object obj;
-					if (exArgs.size() > 1) {
-						int pos = this.sqlFragment.getArguments().indexOf(this.forEach.getCollection());
-						obj = ((List) object).get(pos);
-					} else {
-						obj = ((List) object);
-					}
-					result = getBySignleParameter(obj);
-				} else if (ClassLoader.isBaseType(object.getClass())) {
-					result = getBySignleParameter(object);
-				} else {
-					ClassLoader loader = new ClassLoader(object);
-					try {
-						Object obj = loader.get(this.forEach.getCollection());
-						result = getBySignleParameter(obj);
-					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
-							| IllegalArgumentException | InvocationTargetException e) {
-						throw new RuntimeException("failed to get need parameter \"" + this.forEach.getCollection()
-								+ "\" at parameterType " + loader.getLoadedClass(), e);
-					}
-				}
+				result = getBySignleParameter(obj);
+			} else if (ClassLoader.isBaseType(object.getClass())) {
+				result = getBySignleParameter(object);
 			} else {
-				throw new RuntimeException("failed to get need parameter \"" + this.forEach.getCollection() + "\"");
+				ClassLoader loader = new ClassLoader(object);
+				try {
+					Object obj = loader.get(this.forEach.getCollection());
+					result = getBySignleParameter(obj);
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException e) {
+					throw new RuntimeException("failed to get need parameter \"" + this.forEach.getCollection()
+							+ "\" at parameterType " + loader.getLoadedClass(), e);
+				}
 			}
+		} else {
+			throw new RuntimeException("failed to get need parameter \"" + this.forEach.getCollection() + "\"");
 		}
 		return result;
 	}

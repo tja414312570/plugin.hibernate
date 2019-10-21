@@ -41,11 +41,9 @@ public class GeneralMapperInterfaceProxy implements InvokeHandler{
 		String clzz = methodHandler.getPlugsProxy().getInterfaceClass().getName();
 		String method = methodHandler.getMethod().getName();
 		String sqlId=clzz+"."+method;
-		Object[] parameter = null; 
+		Object parameter = null; 
 		//此部分代码用于判断是否接口参数中使用了@Param注解
-		parameter = decodeParamerters(methodHandler, parameter);
-		if(parameter == null)
-			parameter = methodHandler.getParameters();
+		parameter = decodeParamerters(methodHandler);
 		//从映射中获取sqlId对应的映射，并通过映射获取SQL的类型，对应增删查改
 		BaseMapping mapping = context.getWrapper(sqlId);
 		if(mapping==null)
@@ -70,8 +68,8 @@ public class GeneralMapperInterfaceProxy implements InvokeHandler{
 	 * @param parameter
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public Object[] decodeParamerters(MethodHandler methodHandler, Object[] parameter) {
+	public Object decodeParamerters(MethodHandler methodHandler) {
+		Map<String,Object> parameter = new HashMap<>();
 		ClassHelper classHelper = ClassHelper.getClassHelper(methodHandler.getPlugsProxy().getInterfaceClass());
 		MethodHelper methodHelper = classHelper.getMethodHelper(methodHandler.getMethod());
 		Parameter[] actParameters = methodHelper.getParameters();
@@ -79,11 +77,9 @@ public class GeneralMapperInterfaceProxy implements InvokeHandler{
 			ParameterHelper parameterHelper = methodHelper.getParmeterHelper(actParameters[i]);
 			Param param = parameterHelper.getAnnotation(Param.class);
 			if(param != null) {
-				if(parameter == null) {
-					parameter = new Object[1];
-					parameter[0] = new HashMap<String,Object>();
-				}
-				((Map<String,Object>)parameter[0]).put(param.value(), methodHandler.getParameters()[i]);
+				parameter.put(param.value(), methodHandler.getParameters()[i]);
+			}else {
+				parameter.put(parameterHelper.getParameter().getName(), methodHandler.getParameters()[i]);
 			}
 		}
 		return parameter;

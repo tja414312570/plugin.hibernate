@@ -1,10 +1,14 @@
 package com.YaNan.frame.jdb.mapper;
 
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.YaNan.frame.jdb.JDBContext;
 import com.YaNan.frame.jdb.SqlSession;
+import com.YaNan.frame.jdb.exception.JDBRuntimeException;
 import com.YaNan.frame.jdb.exception.SqlExecuteException;
 import com.YaNan.frame.jdb.fragment.SqlFragment;
 import com.YaNan.frame.plugin.annotations.Register;
@@ -25,13 +29,44 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 	 */
 	@Override
 	public <T> T selectOne(String sqlId, Object... parameters) {
+		Object parameter = checkParams(parameters);
 		SqlFragment frag = context.getSqlFragmentManger().getSqlFragment(sqlId);
-		PreparedSql pre = frag.getPreparedSql(parameters);
+		PreparedSql pre = frag.getPreparedSql(parameter);
 		try {
 			return pre.queryOne();
 		} catch (SQLException e) {
 			throw new SqlExecuteException("faild to execute query \""+sqlId+"\"",e);
 		}
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Object checkParams(Object... params) {
+		if(params!=null && params.length>1) {
+//			for(int i = 0;i<params.length-1;i++) {
+//				for(int j = i+1;j<params.length;j++) {
+//					if(params[j] != null && params[i] != null && !com.YaNan.frame.utils.reflect.ClassLoader.isBaseType(params[i].getClass()) && params[j].getClass().equals(params[i].getClass())) {
+//						throw new JDBRuntimeException("could not build parameter map");
+//					}
+//				}
+//			}
+			Map<String,Object> paramMap = new HashMap<>();;
+			for(int i = 0;i<params.length;i++) {
+				if(i==0 && params[0] != null && 
+						com.YaNan.frame.utils.reflect.
+						ClassLoader.implementsOf(params[0].getClass(), Map.class)) {
+					paramMap.putAll((Map)params[0]);;
+				}else {
+					if(params[i] == null ||
+							com.YaNan.frame.utils.reflect.
+							ClassLoader.isBaseType(params[0].getClass())){
+						paramMap.put("parameter_"+i, params[i]);
+					}else {
+						paramMap.put(params[i].getClass().getSimpleName(), params[i]);
+					}
+				}
+			}
+			return paramMap;
+		}else
+			return params == null ? null:params[0];
 	}
 	/**
 	 * 从数据库中查询结果集，需要从mapper中定义返回类型，返回类型为一个list或其实现类。</br>
@@ -39,8 +74,9 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 	 */
 	@Override
 	public <T> List<T> selectList(String sqlId, Object... params) {
+		Object parameter = checkParams(params);
 		SqlFragment frag = context.getSqlFragmentManger().getSqlFragment(sqlId);
-		PreparedSql pre = frag.getPreparedSql(params);
+		PreparedSql pre = frag.getPreparedSql(parameter);
 		try {
 			return pre.query();
 		} catch (SQLException e) {
@@ -49,8 +85,9 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 	}
 	@Override
 	public <T> T insert(String sqlId, Object... parameters) {
+		Object parameter = checkParams(parameters);
 		SqlFragment frag = context.getSqlFragmentManger().getSqlFragment(sqlId);
-		PreparedSql pre = frag.getPreparedSql(parameters);
+		PreparedSql pre = frag.getPreparedSql(parameter);
 		try {
 			return pre.insert();
 		} catch (SQLException e) {
@@ -64,8 +101,9 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 	}
 	@Override
 	public <T> T update(String sqlId, Object... parameters) {
+		Object parameter = checkParams(parameters);
 		SqlFragment frag = context.getSqlFragmentManger().getSqlFragment(sqlId);
-		PreparedSql pre = frag.getPreparedSql(parameters);
+		PreparedSql pre = frag.getPreparedSql(parameter);
 		try {
 			return pre.update();
 		} catch (SQLException e) {
@@ -74,8 +112,9 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 	}
 	@Override
 	public int delete(String sqlId, Object... parameters) {
+		Object parameter = checkParams(parameters);
 		SqlFragment frag = context.getSqlFragmentManger().getSqlFragment(sqlId);
-		PreparedSql pre = frag.getPreparedSql(parameters);
+		PreparedSql pre = frag.getPreparedSql(parameter);
 		try {
 			return pre.update();
 		} catch (SQLException e) {

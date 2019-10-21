@@ -17,5 +17,5 @@ public interface FragmentBuilder {
 	 * 准备sql
 	 * @return
 	 */
-	PreparedFragment prepared(Object...objects);
+	PreparedFragment prepared(Object objects);
 }

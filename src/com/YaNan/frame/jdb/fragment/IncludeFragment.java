@@ -13,8 +13,8 @@ public class IncludeFragment extends FragmentSet implements FragmentBuilder {
 	private SqlFragment sql;
 	//	参数列表
 	@Override
-	public PreparedFragment prepared(Object... objects) {
-		return super.prepared(objects);
+	public PreparedFragment prepared(Object object) {
+		return super.prepared(object);
 	}
 	//构建sql片段
 	@Override

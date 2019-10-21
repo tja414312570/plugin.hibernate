@@ -20,10 +20,10 @@ public class SelectorFragment extends SqlFragment implements FragmentBuilder {
 	private SelectorMapping selectMapping;
 
 	@Override
-	public PreparedFragment prepared(Object... objects) {
-		super.prepared(objects);
+	public PreparedFragment prepared(Object object) {
+		super.prepared(object);
 		if (this.fragemntSet != null)
-			return this.fragemntSet.prepared(objects);
+			return this.fragemntSet.prepared(object);
 		return null;
 	}
 
@@ -110,7 +110,7 @@ public class SelectorFragment extends SqlFragment implements FragmentBuilder {
 		}
 	}
 
-	public PreparedSql getPreparedSql(Object... parameter) {
+	public PreparedSql getPreparedSql(Object parameter) {
 		PreparedFragment preparedFragment = this.prepared(parameter);
 		PreparedSql preparedSql = new PreparedSql(preparedFragment.getSql(), preparedFragment.getVariable(), this);
 		return preparedSql;
