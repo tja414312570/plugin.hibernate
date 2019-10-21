@@ -111,7 +111,6 @@ public class TransactionManager{
 	 */
 	public static AbstractTransaction getCurrentTransaction() {
 		return currentTransactionLocal.get();
-		
 	}
 
 	public static void hang(int hashCode, AbstractTransaction embedTransaction,
