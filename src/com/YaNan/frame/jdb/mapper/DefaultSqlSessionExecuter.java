@@ -1,18 +1,19 @@
 package com.YaNan.frame.jdb.mapper;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.YaNan.frame.jdb.JDBContext;
 import com.YaNan.frame.jdb.SqlSession;
-import com.YaNan.frame.jdb.exception.JDBRuntimeException;
 import com.YaNan.frame.jdb.exception.SqlExecuteException;
 import com.YaNan.frame.jdb.fragment.SqlFragment;
 import com.YaNan.frame.plugin.annotations.Register;
 import com.YaNan.frame.plugin.annotations.Service;
+import com.YaNan.frame.utils.reflect.cache.ClassHelper;
 /**
  * 框架默认sqlsession的实现类
  * @author yanan
@@ -44,16 +45,35 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 //			for(int i = 0;i<params.length-1;i++) {
 //				for(int j = i+1;j<params.length;j++) {
 //					if(params[j] != null && params[i] != null && !com.YaNan.frame.utils.reflect.ClassLoader.isBaseType(params[i].getClass()) && params[j].getClass().equals(params[i].getClass())) {
-//						throw new JDBRuntimeException("could not build parameter map");
+//						throw new JDBSqlExecuteException("could not build parameter map");
 //					}
 //				}
 //			}
 			Map<String,Object> paramMap = new HashMap<>();;
 			for(int i = 0;i<params.length;i++) {
-				if(i==0 && params[0] != null && 
+				if(i==0 && params[0] != null) {
+					if(com.YaNan.frame.utils.reflect.
+						ClassLoader.implementsOf(params[0].getClass(), Map.class))
+					paramMap.putAll((Map)params[0]);
+					if(params[i] == null ||
+							com.YaNan.frame.utils.reflect.
+							ClassLoader.isBaseType(params[0].getClass())){
+						paramMap.put("parameter_"+i, params[i]);
+					}else {
+						Field[] fields = ClassHelper.getClassHelper(params[0].getClass()).getAllFields();
 						com.YaNan.frame.utils.reflect.
-						ClassLoader.implementsOf(params[0].getClass(), Map.class)) {
-					paramMap.putAll((Map)params[0]);;
+						ClassLoader loader =new com.YaNan.frame.utils.reflect.
+								ClassLoader(params[0]);
+						for(Field field : fields) {
+							try {
+								paramMap.put(field.getName(), loader.get(field));
+							} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+									| NoSuchMethodException | SecurityException e) {
+								throw new SqlExecuteException("failed to build param map for field "+field,e);
+							}
+						}
+						
+					}
 				}else {
 					if(params[i] == null ||
 							com.YaNan.frame.utils.reflect.

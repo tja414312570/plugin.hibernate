@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.YaNan.frame.jdb.JDBContext;
 import com.YaNan.frame.jdb.entity.BaseMapping;
+import com.YaNan.frame.jdb.exception.SqlExecuteException;
 import com.YaNan.frame.jdb.mapper.PreparedSql;
 import com.YaNan.frame.plugin.annotations.Register;
 import com.YaNan.frame.utils.reflect.ClassLoader;
@@ -132,7 +133,7 @@ public abstract class SqlFragment implements FragmentBuilder {
 				} else if (typeString.equals("ResultSet")) {
 					typeClass = ResultSet.class;
 				}   else {
-					throw new RuntimeException(
+					throw new SqlExecuteException(
 							"Unsupport " + (isParmeter ? "parameterType" : "resultType") + " type '" + typeString
 									+ "' at mapping file '" + baseMapping.getXmlFile() + "' at id '" + this.id + "'");
 				}
@@ -141,7 +142,7 @@ public abstract class SqlFragment implements FragmentBuilder {
 					typeClass = Class.forName(typeString);
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
-					throw new RuntimeException(
+					throw new SqlExecuteException(
 							"Unsupport " + (isParmeter ? "parameterType" : "resultType") + " type '" + typeString
 									+ "' at mapping file '" + baseMapping.getXmlFile() + "' at id '" + this.id + "'");
 				}
@@ -160,7 +161,7 @@ public abstract class SqlFragment implements FragmentBuilder {
 		this.resultType = this.baseMapping.getResultType();
 		this.resultTypeClass = matchClassType(this.resultType, false);
 		if (this.context.getDataSource() == null)
-			throw new RuntimeException("could not found dataSource '" + this.baseMapping.getWrapperMapping()
+			throw new SqlExecuteException("could not found dataSource '" + this.baseMapping.getWrapperMapping()
 					+ "' at mapping file '" + baseMapping.getXmlFile() + "' at id '" + this.id + "'");
 	}
 
@@ -217,7 +218,7 @@ public abstract class SqlFragment implements FragmentBuilder {
 						arguments.add(pos>=parameter.length?null:parameter[pos]);
 					}
 				else
-					throw new RuntimeException("failed to prepared parameter \"" + variables
+					throw new SqlExecuteException("failed to prepared parameter \"" + variables
 							+ "\"because the need parameter \"" + variables.size() + "\" get the parameter \""
 							+ parameter.length + "\"! at mapping file '" + this.baseMapping.getXmlFile() + "' at id '"
 							+ this.baseMapping.getId() + "'");
@@ -234,7 +235,7 @@ public abstract class SqlFragment implements FragmentBuilder {
 						for(int i = 0 ;i<variables.size();i++)
 							arguments.add(object);
 					else
-						throw new RuntimeException("failed to prepared parameter \"" + variables
+						throw new SqlExecuteException("failed to prepared parameter \"" + variables
 								+ "\"because the need parameter \"" + variables.size() + "\" get the parameter \""
 								+ parameter.length + "\"! at mapping file '" + this.baseMapping.getXmlFile()
 								+ "' at id '" + this.baseMapping.getId() + "'");
@@ -245,7 +246,7 @@ public abstract class SqlFragment implements FragmentBuilder {
 							arguments.add(loader.get(variables.get(i)));
 						} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 								| IllegalArgumentException | InvocationTargetException e) {
-							throw new RuntimeException("failed to get need parameter \"" + variables.get(i)
+							throw new SqlExecuteException("failed to get need parameter \"" + variables.get(i)
 									+ "\" at parameterType " + loader.getLoadedClass() + "at mapping file '"
 									+ this.baseMapping.getXmlFile() + "' at id '" + this.baseMapping.getId() + "'", e);
 						}

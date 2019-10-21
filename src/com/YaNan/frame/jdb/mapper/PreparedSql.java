@@ -10,6 +10,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.YaNan.frame.jdb.exception.SqlExecuteException;
 import com.YaNan.frame.jdb.fragment.SqlFragment;
 import com.YaNan.frame.jdb.orm.OrmBuilder;
 import com.YaNan.frame.plugin.PlugsFactory;
@@ -87,13 +88,13 @@ public class PreparedSql {
 			this.preparedParameter(ps, collect);
 			ResultSet rs = ps.executeQuery();
 			if (sqlFragment.getResultType() == null)
-				throw new RuntimeException("Query result type is not allowed to be empty");
+				throw new SqlExecuteException("Query result type is not allowed to be empty");
 			// 通过orm Builder 来组装返回结果
 			OrmBuilder builder = PlugsFactory.getPlugsInstanceByAttributeStrict(OrmBuilder.class,
 					sqlFragment.getResultType());
 			List<Object> result = builder.builder(rs, sqlFragment);
 			if (result.size() > 1)
-				throw new RuntimeException("query result rows should \"1\" but has \"" + result.size() + "\"");
+				throw new SqlExecuteException("query result rows should \"1\" but has \"" + result.size() + "\"");
 			log.debug("result rows:" + result.size());
 			rs.close();
 			ps.close();

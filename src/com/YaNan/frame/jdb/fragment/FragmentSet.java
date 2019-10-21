@@ -14,6 +14,7 @@ import javax.script.ScriptException;
 
 import com.YaNan.frame.jdb.JDBContext;
 import com.YaNan.frame.jdb.entity.TagSupport;
+import com.YaNan.frame.jdb.exception.SqlExecuteException;
 import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.plugin.ProxyModel;
 import com.YaNan.frame.plugin.annotations.Register;
@@ -175,7 +176,7 @@ public class FragmentSet implements FragmentBuilder {
 						try {
 							arguments.add(scriptEngine.eval(variables.get(i),(Bindings)object));
 						} catch (ScriptException e) {
-							throw new RuntimeException("failed to execute \"" + variables.get(i) + "\" expression! at mapping file '"
+							throw new SqlExecuteException("failed to execute \"" + variables.get(i) + "\" expression! at mapping file '"
 									+ this.sqlFragment.baseMapping.getXmlFile() + "' at id '" + this.sqlFragment.baseMapping.getId()
 									+ "' at item data " + object, e);
 						}
@@ -185,7 +186,7 @@ public class FragmentSet implements FragmentBuilder {
 						for (int i = 0; i < variables.size(); i++)
 							arguments.add(object);
 					else
-						throw new RuntimeException("failed to prepared parameter \"" + variables
+						throw new SqlExecuteException("failed to prepared parameter \"" + variables
 								+ "\"because the parameter size at last \""+variables.size()+"\"! at mapping file '" + this.sqlFragment.baseMapping.getXmlFile()
 								+ "' at id '" + this.sqlFragment.baseMapping.getId() + "'");
 				} else {
@@ -252,7 +253,7 @@ public class FragmentSet implements FragmentBuilder {
 						return parameterLoader.get(parameterName);
 					}
 				} catch ( Exception e) {
-					throw new RuntimeException("failed to get parameter \"" + parameterName
+					throw new SqlExecuteException("failed to get parameter \"" + parameterName
 							+ "\" at parameterType " + parameterLoader.getLoadedClass() + " at mapping file '"
 							+ this.sqlFragment.baseMapping.getXmlFile() + "' at id '"
 							+ this.sqlFragment.baseMapping.getId() + "'", e);
@@ -381,7 +382,7 @@ public class FragmentSet implements FragmentBuilder {
 					binder.put(argument.get(0), object);
 				}
 				else
-					throw new RuntimeException(
+					throw new SqlExecuteException(
 							"failed to execute \"" + express + "\" expression because the need parameter \""
 									+ argument + "\" but found one! at mapping file '" + this.sqlFragment.baseMapping.getXmlFile()
 									+ "' at id '" + this.sqlFragment.baseMapping.getId() + "'");
@@ -392,7 +393,7 @@ public class FragmentSet implements FragmentBuilder {
 						binder.put(argument.get(i), loader.get(argument.get(i)));
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 							| IllegalArgumentException | InvocationTargetException e) {
-						throw new RuntimeException("failed to get need parameter \"" + argument.get(i)
+						throw new SqlExecuteException("failed to get need parameter \"" + argument.get(i)
 								+ "\" at express \"" + express + "\" at parameterType " + loader.getLoadedClass(),
 								e);
 					}
@@ -407,12 +408,12 @@ public class FragmentSet implements FragmentBuilder {
 			if (result.getClass().equals(Boolean.class))
 				return (boolean) result;
 			else
-				throw new RuntimeException("failed to execute \"" + express
+				throw new SqlExecuteException("failed to execute \"" + express
 						+ "\" expression,because the result type is not boolean! at mapping file '"
 						+ this.sqlFragment.baseMapping.getXmlFile() + "' at id '" + this.sqlFragment.baseMapping.getId()
 						+ "'");
 		} catch (ScriptException e) {
-			throw new RuntimeException("failed to execute \"" + express + "\" expression! at mapping file '"
+			throw new SqlExecuteException("failed to execute \"" + express + "\" expression! at mapping file '"
 					+ this.sqlFragment.baseMapping.getXmlFile() + "' at id '" + this.sqlFragment.baseMapping.getId()
 					+ "'", e);
 		}
@@ -426,7 +427,7 @@ public class FragmentSet implements FragmentBuilder {
 //		try {
 //			return engine.eval("stu.getAid()", bind);
 //		} catch (ScriptException e) {
-//			throw new RuntimeException("failed to execute \"" + variable + "\" expression! at mapping file '"
+//			throw new SqlExecuteException("failed to execute \"" + variable + "\" expression! at mapping file '"
 //					+ this.sqlFragment.baseMapping.getXmlFile() + "' at id '" + this.sqlFragment.baseMapping.getId()
 //					+ "' at item data " + binds, e);
 //		}

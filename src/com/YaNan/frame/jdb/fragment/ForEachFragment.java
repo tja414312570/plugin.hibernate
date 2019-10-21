@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.script.Bindings;
 
 import com.YaNan.frame.jdb.entity.ForEach;
+import com.YaNan.frame.jdb.exception.SqlExecuteException;
 import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.plugin.ProxyModel;
 import com.YaNan.frame.plugin.annotations.Register;
@@ -111,12 +112,12 @@ public class ForEachFragment extends FragmentSet implements FragmentBuilder {
 					result = getBySignleParameter(obj);
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 						| IllegalArgumentException | InvocationTargetException e) {
-					throw new RuntimeException("failed to get need parameter \"" + this.forEach.getCollection()
+					throw new SqlExecuteException("failed to get need parameter \"" + this.forEach.getCollection()
 							+ "\" at parameterType " + loader.getLoadedClass(), e);
 				}
 			}
 		} else {
-			throw new RuntimeException("failed to get need parameter \"" + this.forEach.getCollection() + "\"");
+			throw new SqlExecuteException("failed to get need parameter \"" + this.forEach.getCollection() + "\"");
 		}
 		return result;
 	}
