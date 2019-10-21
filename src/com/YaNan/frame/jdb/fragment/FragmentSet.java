@@ -364,7 +364,8 @@ public class FragmentSet implements FragmentBuilder {
 		}
 	}
 
-	public boolean eval(String express, List<String> argument, Object object) {
+	@SuppressWarnings("unchecked")
+	public boolean test(String express, List<String> argument, Object object) {
 		Bindings binder = scriptEngine.createBindings();
 		if (object != null) {
 			if(ClassLoader.implementsOf(object.getClass(), Bindings.class)){ 
@@ -372,7 +373,7 @@ public class FragmentSet implements FragmentBuilder {
 			}
 			// 如果参数类型为Map
 			else if (ClassLoader.implementsOf(object.getClass(), Map.class)) {
-				this.buildMapBinder(binder, argument, (Map<?, ?>) object);
+				binder.putAll((Map<? extends String, ? extends Object>) object);
 				// 如果参数为List
 			} else if (ClassLoader.implementsOf(object.getClass(), List.class)) {
 				this.buldListBinder(binder, argument, (List<?>) object);
@@ -446,14 +447,6 @@ public class FragmentSet implements FragmentBuilder {
 	public String switchExpress(String test) {
 		test = test.replace(" and ", " && ").replace(" or ", " || ").replace(" not ", " ! ");
 		return test;
-	}
-
-	private void buildMapBinder(Bindings binder, List<String> argument, Map<?, ?> parameter) {
-		Iterator<String> iterator = argument.iterator();
-		while (iterator.hasNext()) {
-			String key = iterator.next();
-			binder.put(key, parameter.get(key));
-		}
 	}
 
 	public FragmentSet getNextSet() {

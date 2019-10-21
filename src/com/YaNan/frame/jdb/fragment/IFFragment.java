@@ -16,7 +16,7 @@ public class IFFragment extends FragmentSet implements FragmentBuilder {
 	//	参数列表
 	@Override
 	public PreparedFragment prepared(Object object) {
-		if((boolean) this.eval(test,testArgument, object))
+		if((boolean) this.test(test,testArgument, object))
 			return super.prepared(object);
 		if(this.nextSet!=null)
 			return this.nextSet.prepared(object);
