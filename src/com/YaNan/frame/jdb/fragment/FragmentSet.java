@@ -165,6 +165,7 @@ public class FragmentSet implements FragmentBuilder {
 	 * @param parameter 调用接口传入的参数
 	 * @return
 	 */
+	@SuppressWarnings({ "rawtypes" })
 	public List<Object> preparedParameter(List<String> variables, Object parameter) {
 		List<Object> arguments = new ArrayList<Object>();
 		if (parameter != null && variables.size() > 0) {
@@ -179,7 +180,6 @@ public class FragmentSet implements FragmentBuilder {
 									+ "' at item data " + object, e);
 						}
 					}
-					//如果是Map类型的参数
 				}else if (ClassLoader.isBaseType(object.getClass())) {
 					if (SqlFragment.removeDuplicate(variables).size() == 1)
 						for (int i = 0; i < variables.size(); i++)
@@ -189,12 +189,18 @@ public class FragmentSet implements FragmentBuilder {
 								+ "\"because the parameter size at last \""+variables.size()+"\"! at mapping file '" + this.sqlFragment.baseMapping.getXmlFile()
 								+ "' at id '" + this.sqlFragment.baseMapping.getId() + "'");
 				} else {
-					//如果参数是一个POJO类型
-					Iterator<String> iterator = variables.iterator();
-					while (iterator.hasNext()) {
-						String key = iterator.next();
-						Object value = this.decodeParameter(key,object);
-						arguments.add(value);
+					//如果所需参数和准备的参数都只有一个时，直接赋值
+					if(variables.size() == 1 && object != null &&
+							ClassLoader.implementsOf(object.getClass(), Map.class) &&
+							((Map) object).size() ==1) {
+							arguments.add(((Map) object).values().iterator().next());
+					}else {
+						Iterator<String> iterator = variables.iterator();
+						while (iterator.hasNext()) {
+							String key = iterator.next();
+							Object value = this.decodeParameter(key,object);
+							arguments.add(value);
+						}
 					}
 				}
 			}
