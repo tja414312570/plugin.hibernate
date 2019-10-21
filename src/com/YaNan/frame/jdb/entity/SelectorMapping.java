@@ -3,7 +3,8 @@ package com.YaNan.frame.jdb.entity;
 public class SelectorMapping extends BaseMapping{
 	@Override
 	public String toString() {
-		return "SelectorMapping [id=" + id + ", resultType=" + resultType+ ", xmlFile=" + this.xmlFile + ", parameterType=" + parameterType
-				+ ", content=" + content + ", xml=" + xml + ", tags=" + tags + "]";
+		return "SelectorMapping [xmlFile=" + xmlFile + ", node=" + node + ", id=" + id + ", resultType=" + resultType
+				+ ", parameterType=" + parameterType + ", content=" + content 
+				+ ", xml=" + xml + ", tags=" + tags + "]";
 	}
 }

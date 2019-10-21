@@ -27,16 +27,38 @@ public class IncludeFragment extends FragmentSet implements FragmentBuilder {
 		}else{
 			throw new JDBContextInitException("mapper \""+this.sqlFragment.getId()+"\" not id attr at file "+this.sqlFragment.getBaseMapping().getXmlFile());
 		}
-		if(id.indexOf(".")==-1)
-			id = this.sqlFragment.getBaseMapping().getWrapperMapping().getNamespace()+"."+id;
-		try{
-			this.sql = this.context.getSqlFragmentManger().getSqlFragment(this.id);
-		}catch (Exception e) {
-		}
+//		if(id.indexOf(".")==-1) {
+//			try{
+//				 System.out.println("id:"+id);
+//				this.sql = this.context.getSqlFragmentManger().getSqlFragment(this.id);
+//			}catch (Exception e) {
+//			}
+//		}
 		if(sql==null){
 			BaseMapping mapping =this.context.getWrapper(id);
+			String nid;
+			String ids = "["+id+"]";
+			if(mapping==null && id.indexOf(".")==-1) {
+				nid = this.sqlFragment.getBaseMapping().getWrapperMapping().getNamespace()+"."+id;
+				mapping =this.context.getWrapper(nid);
+				ids += ","+"["+nid+"]";
+			}
+			if(this.sql == null && this.getSqlFragment().getBaseMapping().getParentMapping()!= null) {
+				nid = this.sqlFragment.getBaseMapping().getParentMapping().getWrapperMapping().getNamespace()+"."+id;
+				mapping =this.context.getWrapper(nid);
+				ids += ","+"["+nid+"]";
+			}
 			if(mapping==null)
-				throw new JDBContextInitException("mapper \""+id+"\" could not be found at wrap id \""+this.sqlFragment.getId()+"\" at file "+this.sqlFragment.getBaseMapping().getXmlFile());
+				if(this.getSqlFragment().getBaseMapping().getParentMapping() == null)
+					throw new JDBContextInitException("mapper \""+ids+"\" could not be found at wrap id \""
+						+this.sqlFragment.getId()+"\" at file "
+						+this.sqlFragment.getBaseMapping().getXmlFile());
+				else
+					throw new JDBContextInitException("mapper \""+ids+"\" could not be found at wrap id \""
+							+this.sqlFragment.getId()+"\" at file "
+							+this.sqlFragment.getBaseMapping().getXmlFile()+",at parent file "
+							+this.getSqlFragment().getBaseMapping().getParentMapping().getXmlFile());
+			mapping.setParentMapping(this.getSqlFragment().getBaseMapping());
 			this.sql = this.context.buildFragment(mapping);
 		}
 		for(String args : sql.getArguments()){

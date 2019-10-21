@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.YaNan.frame.utils.beans.xml.AsXml;
 import com.YaNan.frame.utils.beans.xml.Attribute;
+import com.YaNan.frame.utils.beans.xml.Ignore;
 import com.YaNan.frame.utils.beans.xml.Mapping;
 import com.YaNan.frame.utils.beans.xml.NodeName;
 import com.YaNan.frame.utils.beans.xml.Value;
@@ -23,6 +24,8 @@ public abstract class BaseMapping {
 	@Value
 	protected String content;
 	protected WrapperMapping wrapperMapping;
+	@Ignore
+	protected BaseMapping parentMapping;
 	@AsXml
 	protected String xml;
 	@Mapping(node = "trim", target = Trim.class)
@@ -84,5 +87,11 @@ public abstract class BaseMapping {
 	}
 	public void setWrapperMapping(WrapperMapping wrapperMapping) {
 		this.wrapperMapping = wrapperMapping;
+	}
+	public BaseMapping getParentMapping() {
+		return parentMapping;
+	}
+	public void setParentMapping(BaseMapping parentMapping) {
+		this.parentMapping = parentMapping;
 	}
 }

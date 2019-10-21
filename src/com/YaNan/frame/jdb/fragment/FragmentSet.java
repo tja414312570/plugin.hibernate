@@ -47,7 +47,7 @@ public class FragmentSet implements FragmentBuilder {
 	public TagSupport getTagSupport() {
 		return tagSupport;
 	}
-
+	
 	public void setTagSupport(TagSupport tagSupport) {
 		this.tagSupport = tagSupport;
 	}
@@ -374,6 +374,10 @@ public class FragmentSet implements FragmentBuilder {
 			// 如果参数类型为Map
 			else if (ClassLoader.implementsOf(object.getClass(), Map.class)) {
 				binder.putAll((Map<? extends String, ? extends Object>) object);
+				for(String key : argument) {
+					if(!binder.containsKey(key))
+						binder.put(key, null);
+				}
 				// 如果参数为List
 			} else if (ClassLoader.implementsOf(object.getClass(), List.class)) {
 				this.buldListBinder(binder, argument, (List<?>) object);
