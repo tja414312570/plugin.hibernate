@@ -18,7 +18,7 @@
 * 重新设计架构依赖关系，支持多数据源，多上下文。
 * 接口映射文件中新增@Param注解，用于指定接口的参数名
 * 当前xml中支持的标签（select,insert,sql,update,delete,if,trim,foreach,include)
-# 2019-10-16:
+# 2019-10-21:
 * 放弃了当初的可变参数的传参方式，虽然可变参数处理逻辑更复杂，但不可控bug永远存在，当前FragmentSet中仅能使用单个参数，虽然接口中同样提供可变参数，但会被组装成Map参数，其中直接调用SqlSession的传参时多个参数(Pojo类型除外)封装成Parameter_(n)的形式，Mapper接口如果没有@Param注解时根据Parameter.getName()作为Map的Key
 ![avatar](https://ufomedia.oss-cn-beijing.aliyuncs.com/WX20191014-173332.png)
 ```java
