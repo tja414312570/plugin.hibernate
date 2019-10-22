@@ -21,10 +21,11 @@
 # 2019-10-21:
 * 放弃了当初的可变参数的传参方式，虽然可变参数处理逻辑更复杂，但不可控bug永远存在，当前FragmentSet中仅能使用单个参数，虽然接口中同样提供可变参数，但会被组装成Map参数，其中直接调用SqlSession的传参时多个参数(Pojo类型除外)封装成Parameter_(n)的形式，Mapper接口如果没有@Param注解时根据Parameter.getName()作为Map的Key
 # 2019-10-22:
-* includ标签的子包含sql支持引用父类的sql
+* includ标签的子包含sql支持引用父类的sql,当include中的id没有指定命名空间时，搜索空间循序为当前mapper>父类mapper;
+* 新增mapper文件类型为ref（wrapper标签属性ref=true)，被修饰的mapper文件中的sql将不会寻址include标签，可以把sql看做赋值，include为使用值
 ```xml
 child.xml
-<wrapper namespace="child">
+<wrapper namespace="child" ref="true">
 	<sql id="pages">
 		rowid in (
 		select rid from  (
