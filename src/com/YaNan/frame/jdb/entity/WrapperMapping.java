@@ -18,12 +18,20 @@ public class WrapperMapping{
 	private String namespace;
 	@Attribute
 	private String database;
+	@Attribute
+	private boolean ref;
 	@Mapping(node = "select", target = SelectorMapping.class)
 	@Mapping(node = "insert", target = SelectorMapping.class)
 	@Mapping(node = "update", target = SelectorMapping.class)
 	@Mapping(node = "delete", target = SelectorMapping.class)
 	@Mapping(node = "sql", target = SelectorMapping.class)
 	private List<BaseMapping> baseMappings;
+	public boolean isRef() {
+		return ref;
+	}
+	public void setRef(boolean ref) {
+		this.ref = ref;
+	}
 	public String getNamespace() {
 		return namespace;
 	}

@@ -1,5 +1,9 @@
 package com.YaNan.frame.jdb.fragment;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.YaNan.frame.jdb.JDBContext;
 import com.YaNan.frame.jdb.entity.BaseMapping;
 import com.YaNan.frame.jdb.entity.Include;
 import com.YaNan.frame.jdb.exception.JDBContextInitException;
@@ -8,6 +12,7 @@ import com.YaNan.frame.plugin.annotations.Register;
 
 @Register(attribute = "*.Include.fragment", model = ProxyModel.CGLIB, signlTon = false)
 public class IncludeFragment extends FragmentSet implements FragmentBuilder {
+	private static final Logger logger = LoggerFactory.getLogger(JDBContext.class);
 	// 逻辑表达式
 	private String id;
 	private SqlFragment sql;
@@ -35,8 +40,8 @@ public class IncludeFragment extends FragmentSet implements FragmentBuilder {
 //			}
 //		}
 		if(sql==null){
-			BaseMapping mapping =this.context.getWrapper(id);
-			String nid;
+			String nid = id;
+			BaseMapping mapping =this.context.getWrapper(nid);
 			String ids = "["+id+"]";
 			if(mapping==null && id.indexOf(".")==-1) {
 				nid = this.sqlFragment.getBaseMapping().getWrapperMapping().getNamespace()+"."+id;
@@ -58,6 +63,7 @@ public class IncludeFragment extends FragmentSet implements FragmentBuilder {
 							+this.sqlFragment.getId()+"\" at file "
 							+this.sqlFragment.getBaseMapping().getXmlFile()+",at parent file "
 							+this.getSqlFragment().getBaseMapping().getParentMapping().getXmlFile());
+			logger.debug("sql fragment \""+this.getSqlFragment().getBaseMapping().getId()+"\" child fragment use id ["+nid+"]");
 			mapping.setParentMapping(this.getSqlFragment().getBaseMapping());
 			this.sql = this.context.buildFragment(mapping);
 		}

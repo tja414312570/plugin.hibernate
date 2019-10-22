@@ -166,21 +166,17 @@ public class JDBContext {
 			}
 		}
 		SqlFragment sqlFragment = null;
-		try {
-			sqlFragment = sqlFragmentManger
-					.getSqlFragment(mapping.getWrapperMapping().getNamespace() + "." + mapping.getId());
-		} catch (Exception e) {
-		}
-		if (sqlFragment == null) {
-			PlugsHandler handler = PlugsFactory.getPlugsHandler(mapping);
-			FragmentBuilder fragmentBuilder = PlugsFactory.getPlugsInstanceByAttributeStrict(FragmentBuilder.class,
-					handler.getProxyClass().getName() + ".root");
-			logger.debug("build " + mapping.getNode().toUpperCase() + " wrapper fragment , wrapper id : \""
-					+ mapping.getWrapperMapping().getNamespace() + "." + mapping.getId() + "\" ;");
-			sqlFragment = (SqlFragment) fragmentBuilder;
-			sqlFragment.setContext(this);
+		PlugsHandler handler = PlugsFactory.getPlugsHandler(mapping);
+		FragmentBuilder fragmentBuilder = PlugsFactory.getPlugsInstanceByAttributeStrict(FragmentBuilder.class,
+				handler.getProxyClass().getName() + ".root");
+		logger.debug("build " + mapping.getNode().toUpperCase() + " wrapper fragment , wrapper id : \""
+				+ mapping.getWrapperMapping().getNamespace() + "." + mapping.getId() + "\" ,ref : "+mapping.getWrapperMapping().isRef());
+		sqlFragment = (SqlFragment) fragmentBuilder;
+		sqlFragment.setContext(this);
+		if(!mapping.getWrapperMapping().isRef() || mapping.getParentMapping() != null) {
 			fragmentBuilder.build(mapping);
-			sqlFragmentManger.addWarp(sqlFragment);
+			if(mapping.getParentMapping() == null)
+				sqlFragmentManger.addWarp(sqlFragment);
 		}
 		return sqlFragment;
 	}
