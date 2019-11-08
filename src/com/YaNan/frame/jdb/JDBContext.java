@@ -1,6 +1,5 @@
 package com.YaNan.frame.jdb;
 
-import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import com.YaNan.frame.jdb.entity.WrapperMapping;
 import com.YaNan.frame.jdb.exception.JDBContextInitException;
 import com.YaNan.frame.jdb.fragment.FragmentBuilder;
 import com.YaNan.frame.jdb.fragment.SqlFragment;
-import com.YaNan.frame.jdb.mapper.SqlSessionMapper;
 import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.plugin.PlugsFactory.STREAM_TYPT;
 import com.YaNan.frame.plugin.annotations.Register;
@@ -31,6 +29,7 @@ import com.YaNan.frame.plugin.autowired.property.Property;
 import com.YaNan.frame.plugin.handler.PlugsHandler;
 import com.YaNan.frame.utils.beans.xml.XMLHelper;
 import com.YaNan.frame.utils.reflect.cache.ClassHelper;
+import com.YaNan.frame.utils.resource.AbstractResourceEntry;
 import com.YaNan.frame.utils.resource.PackageScanner;
 import com.YaNan.frame.utils.resource.ResourceManager;
 import com.YaNan.frame.utils.resource.PackageScanner.ClassInter;
@@ -70,7 +69,6 @@ public class JDBContext {
 		this.sqlFragmentManger = sqlFragmentManger;
 	}
 
-	private SqlSessionMapper sqlSessionMapper;
 	public Map<String, BaseMapping> getWrapMap() {
 		return wrapMap;
 	}
@@ -79,13 +77,6 @@ public class JDBContext {
 		this.wrapMap = wrapMap;
 	}
 
-	public SqlSessionMapper getSqlSessionMapper() {
-		return sqlSessionMapper;
-	}
-
-	public void setSqlSessionMapper(SqlSessionMapper sqlSessionMapper) {
-		this.sqlSessionMapper = sqlSessionMapper;
-	}
 
 	public String[] getScanPather() {
 		return scanPather;
@@ -108,20 +99,19 @@ public class JDBContext {
 		PlugsFactory.getInstance().addPlugs(pluginConf, STREAM_TYPT.CONF, null);
 		if (!PlugsFactory.getInstance().isAvailable())
 			PlugsFactory.init();
-		this.sqlSessionMapper = new SqlSessionMapper(this);
 		logger.debug("init hibernate configure!");
 		String[] wrappers = mapperLocations;
 		if (wrappers == null || wrappers.length == 0)
 			return;
 		buildMappingTable();
 		// 获取所有的wrapper xml文件
-		List<File> files = ResourceManager.getResource(wrappers[0]);
+		List<AbstractResourceEntry> files = ResourceManager.getResource(wrappers[0]);
 		logger.debug("get wrap file num : " + files.size());
-		Iterator<File> fileIterator = files.iterator();
+		Iterator<AbstractResourceEntry> fileIterator = files.iterator();
 		while (fileIterator.hasNext()) {
-			File file = fileIterator.next();
-			logger.debug("scan wrap file : " + file.getAbsolutePath());
-			XMLHelper helper = new XMLHelper(file, WrapperMapping.class);
+			AbstractResourceEntry file = fileIterator.next();
+			logger.debug("scan wrap file : " + file.getName());
+			XMLHelper helper = new XMLHelper(file.getInputStream(), WrapperMapping.class);
 			List<WrapperMapping> wrapps = helper.read();
 			if (wrapps != null && wrapps.size() != 0) {
 				List<BaseMapping> baseMapping = wrapps.get(0).getBaseMappings();
@@ -144,7 +134,7 @@ public class JDBContext {
 						if (!find)
 							throw new JDBContextInitException(
 									"wrapper method \"" + mapping.getId() + "\" at interface class \"" + namespace
-											+ "\" is not exists ! at file \"" + file.getAbsolutePath() + "\"");
+											+ "\" is not exists ! at file \"" + file.getPath() + "\"");
 					}
 					String sqlId = namespace + "." + mapping.getId();
 					wrapMap.put(sqlId, mapping);
