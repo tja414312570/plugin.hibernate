@@ -105,7 +105,7 @@ public class JDBContext {
 			return;
 		buildMappingTable();
 		// 获取所有的wrapper xml文件
-		List<AbstractResourceEntry> files = ResourceManager.getResource(wrappers[0]);
+		List<AbstractResourceEntry> files = ResourceManager.getResources(wrappers[0]);
 		logger.debug("get wrap file num : " + files.size());
 		Iterator<AbstractResourceEntry> fileIterator = files.iterator();
 		while (fileIterator.hasNext()) {
