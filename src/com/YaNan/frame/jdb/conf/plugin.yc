@@ -3,6 +3,8 @@ plugins:[
 		## Fragment
 		"com.YaNan.frame.jdb.fragment.ForEachFragment",
 		"com.YaNan.frame.jdb.fragment.IFFragment",
+		"com.YaNan.frame.jdb.fragment.ValFragment",
+		"com.YaNan.frame.jdb.fragment.VarFragment",
 		"com.YaNan.frame.jdb.fragment.IncludeFragment",
 		"com.YaNan.frame.jdb.fragment.SelectorFragment",
 		"com.YaNan.frame.jdb.fragment.TrimFragment",

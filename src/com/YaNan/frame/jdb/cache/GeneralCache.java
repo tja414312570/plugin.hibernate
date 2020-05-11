@@ -2,17 +2,27 @@ package com.YaNan.frame.jdb.cache;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GeneralCache {
-	private static SqlCache sqlCache;
+	private static GeneralCache generalCache;
 	private Map<Integer,String> cache = new HashMap<Integer,String>();
-	public static SqlCache getCache(){
-		if(sqlCache==null)
+	private ConcurrentHashMap<String, Object> safeCache = new ConcurrentHashMap<String, Object>();
+	public static GeneralCache getCache(){
+		if(generalCache==null)
 			synchronized (SqlCache.class) {
-				if(sqlCache==null)
-					sqlCache=new SqlCache();
+				if(generalCache==null)
+					generalCache=new GeneralCache();
 			}
-		return sqlCache;
+		return generalCache;
+	}
+	@SuppressWarnings("unchecked")
+	public <T> T set(String key,Object value) {
+		return (T) this.safeCache.put(key, value);
+	}
+	@SuppressWarnings("unchecked")
+	public <T> T get(String key) {
+		return (T) this.safeCache.get(key);
 	}
 	public String getSql(int ident){
 		return this.cache.get(ident);

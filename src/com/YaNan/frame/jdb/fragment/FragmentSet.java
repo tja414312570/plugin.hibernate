@@ -116,11 +116,13 @@ public class FragmentSet implements FragmentBuilder {
 			preparedFragment.addAllVariable(child.getVariable());
 			preparedFragment.addAllVariable(next.getVariable());
 		} else if (this.childSet != null) {
+			this.childSet.setSqlFragment(this.sqlFragment);
 			PreparedFragment child = this.childSet.prepared(objects);
 			preparedFragment.setSql(child.getSql());
 			preparedFragment.addParameter(child.getArguments());
 			preparedFragment.addAllVariable(child.getVariable());
 		} else if (this.nextSet != null) {
+			this.nextSet.setSqlFragment(this.sqlFragment);
 			PreparedFragment next = this.nextSet.prepared(objects);
 			preparedFragment.setSql(this.preparedParameterSql(this.value, objects).trim()+ " "+next.getSql());
 			preparedFragment.addParameter(this.parameters, next.getArguments());

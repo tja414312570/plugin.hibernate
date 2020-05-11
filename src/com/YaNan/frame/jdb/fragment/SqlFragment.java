@@ -31,7 +31,7 @@ public abstract class SqlFragment implements FragmentBuilder {
 	protected Class<?> resultTypeClass;
 	protected Class<?> parameterTypeClass;
 	protected String scheml;
-
+	
 	public String getScheml() {
 		return scheml;
 	}
@@ -171,6 +171,7 @@ public abstract class SqlFragment implements FragmentBuilder {
 
 	@Override
 	public PreparedFragment prepared(Object objects) {
+		this.fragemntSet.setSqlFragment(this);
 		return null;
 	}
 

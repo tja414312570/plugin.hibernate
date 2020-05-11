@@ -2,16 +2,14 @@ package com.YaNan.frame.jdb.entity;
 
 import java.util.List;
 
-import com.YaNan.frame.utils.beans.xml.AsXml;
 import com.YaNan.frame.utils.beans.xml.Attribute;
 import com.YaNan.frame.utils.beans.xml.Ignore;
-import com.YaNan.frame.utils.beans.xml.Mapping;
 import com.YaNan.frame.utils.beans.xml.NodeName;
 import com.YaNan.frame.utils.beans.xml.Value;
-import com.YaNan.frame.utils.beans.xml.XmlFile;
+import com.YaNan.frame.utils.beans.xml.XmlResource;
 
-public abstract class BaseMapping {
-	@XmlFile
+public abstract class BaseMapping extends TagSupport{
+	@XmlResource
 	protected String xmlFile;
 	@NodeName
 	protected String node;
@@ -26,13 +24,6 @@ public abstract class BaseMapping {
 	protected WrapperMapping wrapperMapping;
 	@Ignore
 	protected BaseMapping parentMapping;
-	@AsXml
-	protected String xml;
-	@Mapping(node = "trim", target = Trim.class)
-	@Mapping(node = "if", target = IF.class)
-	@Mapping(node = "foreach", target = ForEach.class)
-	@Mapping(node = "include", target = Include.class)
-	protected List<TagSupport> tags;
 	public List<TagSupport> getTags() {
 		return tags;
 	}

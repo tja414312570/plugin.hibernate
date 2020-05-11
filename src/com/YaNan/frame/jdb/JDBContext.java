@@ -95,7 +95,7 @@ public class JDBContext {
 
 	public void init() {
 		// 获取mapper配置
-		InputStream pluginConf = JDBContext.class.getResourceAsStream("./conf/plugin.conf");
+		InputStream pluginConf = JDBContext.class.getResourceAsStream("./conf/plugin.yc");
 		PlugsFactory.getInstance().addPlugs(pluginConf, STREAM_TYPT.CONF, null);
 		if (!PlugsFactory.getInstance().isAvailable())
 			PlugsFactory.init();
@@ -111,7 +111,7 @@ public class JDBContext {
 		while (fileIterator.hasNext()) {
 			AbstractResourceEntry file = fileIterator.next();
 			logger.debug("scan wrap file : " + file.getName());
-			XMLHelper helper = new XMLHelper(file.getInputStream(), WrapperMapping.class);
+			XMLHelper helper = new XMLHelper(file, WrapperMapping.class);
 			List<WrapperMapping> wrapps = helper.read();
 			if (wrapps != null && wrapps.size() != 0) {
 				List<BaseMapping> baseMapping = wrapps.get(0).getBaseMappings();

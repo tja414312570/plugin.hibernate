@@ -11,6 +11,8 @@ public class TagSupport{
 	protected String xml;
 	@Value
 	protected String value;
+	@Mapping(node = "var", target = Var.class)
+	@Mapping(node = "val", target = Val.class)
 	@Mapping(node = "trim", target = Trim.class)
 	@Mapping(node = "if", target = IF.class)
 	@Mapping(node = "foreach", target = ForEach.class)
