@@ -24,7 +24,7 @@
 * includ标签的子包含sql支持引用父类的sql,当include中的id没有指定命名空间时，搜索空间循序为当前mapper>父类mapper;
 * 新增mapper文件类型为ref（wrapper标签属性ref=true)，被修饰的mapper文件中的sql将不会寻址include标签，可以把sql看做赋值，include为使用值
 # 2020-05-11:
-* 新增var和val两个注解，var用以定义变量，val用以使用变量,要使用的变量必须在val之前定义，同时var的作用域仅为当前的SqlFragment上下文;
+* 新增var和val两个注解，var用以定义变量，val用以使用变量,要使用的变量必须在val之前定义，同时var的作用域仅为当前的SqlFragment上下文;与include和sql不同，var和val将更灵活，也更安全
 * 修改读取xml的使用方法和部分解析逻辑
 
 * 变量支持var与val
