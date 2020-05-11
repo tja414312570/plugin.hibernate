@@ -26,6 +26,8 @@
 # 2020-05-11:
 * 新增var和val两个注解，var用以定义变量，val用以使用变量,要使用的变量必须在val之前定义，同时var的作用域仅为当前的SqlFragment上下文;
 * 修改读取xml的使用方法和部分解析逻辑
+
+* 变量支持var与val
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <wrapper namespace="TestSql">
@@ -49,6 +51,7 @@
 PreparedSql [sql=select * from student where name like '%'||?||'%', parameter=[1024], sqlFragment=com.YaNan.frame.jdb.fragment.SelectorFragment$$EnhancerByCGLIB$$bafd3d4e@81d9a72]
 PreparedSql [sql=select * from demo, parameter=[], sqlFragment=com.YaNan.frame.jdb.fragment.SelectorFragment$$EnhancerByCGLIB$$bafd3d4e@747f281]
 ```
+* 父子引用 include标签
 ```xml
 child.xml
 <wrapper namespace="child" ref="true">
