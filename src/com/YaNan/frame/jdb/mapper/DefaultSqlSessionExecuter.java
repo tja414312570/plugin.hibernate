@@ -21,8 +21,11 @@ import com.YaNan.frame.utils.reflect.cache.ClassHelper;
  */
 @Register
 public class DefaultSqlSessionExecuter implements SqlSession{
-	@Service
 	private JDBContext context;
+	public DefaultSqlSessionExecuter(JDBContext context) {
+		super();
+		this.context = context;
+	}
 	/**
 	 * 从数据库中查询数据</br>
 	 * 除非为java基础数据类型和String，否则参数只有第一个有效，无须再mapper中定义参数类型</br>

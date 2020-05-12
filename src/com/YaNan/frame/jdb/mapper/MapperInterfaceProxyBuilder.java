@@ -8,7 +8,6 @@ import com.YaNan.frame.plugin.Plug;
 import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.plugin.RegisterDescription;
 import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.plugin.annotations.Service;
 import com.YaNan.frame.plugin.autowired.property.Property;
 import com.YaNan.frame.utils.PathMatcher;
 
@@ -22,13 +21,16 @@ public class MapperInterfaceProxyBuilder {
 	/**
 	 * 上下文
 	 */
-	@Service
 	private JDBContext hibernateBuilder;
+	public MapperInterfaceProxyBuilder(JDBContext hibernateBuilder) {
+		super();
+		this.hibernateBuilder = hibernateBuilder;
+	}
 	private GeneralMapperInterfaceProxy generalMapperInterfaceProxy;
 	@Property("classpath:")
 	private String scanPath[];
 	public void execute() {
-		generalMapperInterfaceProxy = PlugsFactory.getPlugsInstance(GeneralMapperInterfaceProxy.class,hibernateBuilder);
+		generalMapperInterfaceProxy = PlugsFactory.getPlugsInstanceByParamType(GeneralMapperInterfaceProxy.class,new Class<?>[] {JDBContext.class},hibernateBuilder);
 		RegisterDescription register = new RegisterDescription(GeneralMapperInterfaceProxy.class);
 		//创建一个此注册器的代理容器
 		register.createProxyContainer();

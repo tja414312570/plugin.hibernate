@@ -24,7 +24,6 @@ import com.YaNan.frame.jdb.fragment.SqlFragment;
 import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.plugin.PlugsFactory.STREAM_TYPT;
 import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.plugin.annotations.Service;
 import com.YaNan.frame.plugin.autowired.property.Property;
 import com.YaNan.frame.plugin.handler.PlugsHandler;
 import com.YaNan.frame.utils.beans.xml.XMLHelper;
@@ -54,8 +53,12 @@ public class JDBContext {
 	/**
 	 * 数据源
 	 */
-	@Service
 	private DataSource dataSource;
+	public JDBContext(DataSource dataSource) {
+		super();
+		this.dataSource = dataSource;
+	}
+
 	/**
 	 * Sql片段容器
 	 */
