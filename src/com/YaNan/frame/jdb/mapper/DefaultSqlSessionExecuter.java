@@ -12,7 +12,6 @@ import com.YaNan.frame.jdb.SqlSession;
 import com.YaNan.frame.jdb.exception.SqlExecuteException;
 import com.YaNan.frame.jdb.fragment.SqlFragment;
 import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.plugin.annotations.Service;
 import com.YaNan.frame.utils.reflect.cache.ClassHelper;
 /**
  * 框架默认sqlsession的实现类
