@@ -94,6 +94,8 @@ public class FragmentSet implements FragmentBuilder {
 		 * if next node is not null and child node is not null
 		 */
 		if (this.nextSet != null && this.childSet != null) {
+			this.childSet.setSqlFragment(this.sqlFragment);
+			this.nextSet.setSqlFragment(this.sqlFragment);
 			/**
 			 * invoke child node's prepared method to build child node's PreparedFragment object;
 			 */
