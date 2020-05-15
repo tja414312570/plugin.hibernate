@@ -6,12 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import javax.sql.ConnectionEventListener;
 import javax.sql.PooledConnection;
@@ -35,10 +37,13 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class ConnectionPools implements PooledConnection{
-	 private Vector<ProxyConnection> all = null; // 存放连接池中数据库连接的向量 , 初始时为 null 
-     private Vector<ProxyConnection> free = null; //空闲的连接
+	 private List<ProxyConnection> all = null; // 存放连接池中数据库连接的向量 , 初始时为 null 
+     private List<ProxyConnection> free = null; //空闲的连接
      private Logger log = LoggerFactory.getLogger(ConnectionPools.class);
      private ConcurrentLinkedQueue<Lock> lockList = new ConcurrentLinkedQueue<Lock>();
+     private ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
+     private ReadLock readLock = reentrantReadWriteLock.readLock();
+     private WriteLock writeLock = reentrantReadWriteLock.writeLock();
      public List<Lock> getWaitList() {
 		return new ArrayList<Lock>(lockList);
 	}
@@ -48,8 +53,8 @@ public class ConnectionPools implements PooledConnection{
 	}
 		public ConnectionPools(DefaultDataSource dataSource) {
 	    	 this.dataSource = dataSource;
-	    	 this.all = new Vector<ProxyConnection>();
-	    	 this.free = new Vector<ProxyConnection>();
+	    	 this.all = new ArrayList<ProxyConnection>();
+	    	 this.free = new LinkedList<ProxyConnection>();
 		}
 	private ProxyConnection createConnection() throws SQLException {
 		Properties props = new Properties();
@@ -73,10 +78,10 @@ public class ConnectionPools implements PooledConnection{
        }
        return new ProxyConnection(connection, this);
 	}
-     public Vector<ProxyConnection> getAllProxyConnections(){
+     public List<ProxyConnection> getAllProxyConnections(){
     	 return this.all;
      }
-     public Vector<ProxyConnection> getFreeProxyConnections(){
+     public List<ProxyConnection> getFreeProxyConnections(){
     	 return this.free;
      }
 	/**
@@ -84,24 +89,41 @@ public class ConnectionPools implements PooledConnection{
 	 * 从DataBase中创建一个ProxyConnection并保存在all与free中
 	 * @throws SQLException 
 	 */
-	synchronized void initial() throws SQLException{
-		log.debug("initial connection pools for datasource ["+this.dataSource.getId()+"]");
-		this.create(this.dataSource.getMin_connection());
-	}
-	private synchronized void create(int num) throws SQLException{
-		for(int i=0;i< num;i++){
-			ProxyConnection connection = createConnection();
-			this.all.add(connection);
-			this.free.add(connection);
+	void initial() throws SQLException{
+		try {
+			writeLock.lock();
+			log.debug("initial connection pools for datasource ["+this.dataSource.getId()+"]");
+			this.create(this.dataSource.getMin_connection());
+		}finally {
+			writeLock.unlock();
 		}
+		
+	}
+	private void create(int num) throws SQLException{
+		try {
+			writeLock.lock();
+			for(int i=0;i< num;i++){
+				ProxyConnection connection = createConnection();
+				this.all.add(connection);
+				this.free.add(connection);
+			}
+		}finally {
+			writeLock.unlock();
+		}
+		
 	}
 	/**
 	 * 自动增加连接
 	 * @throws SQLException 
 	 */
-	private synchronized void increase() throws SQLException{
-		if(this.all.size()<this.dataSource.getMax_connection()){
-			this.create(this.dataSource.getAdd_connection());
+	private void increase() throws SQLException{
+		try {
+			writeLock.lock();
+			if(this.all.size()<this.dataSource.getMax_connection()){
+				this.create(this.dataSource.getAdd_connection());
+			}
+		}finally {
+			writeLock.unlock();
 		}
 	}
 	/**
@@ -111,7 +133,8 @@ public class ConnectionPools implements PooledConnection{
 	 */
 	public void refresh(){
 		if(this.free.size()>this.getDataSource().getMin_connection()){
-			synchronized (free) {
+			try {
+				readLock.lock();
 				if(this.free.size()>this.getDataSource().getMin_connection()){
 					ProxyConnection connection;
 					Iterator<ProxyConnection> iterator = this.free.iterator();
@@ -130,6 +153,8 @@ public class ConnectionPools implements PooledConnection{
 						}
 					}
 				}
+			}finally{
+				readLock.unlock();
 			}
 		}
 	}
@@ -140,26 +165,29 @@ public class ConnectionPools implements PooledConnection{
 	 */
 	public ProxyConnection getConnection() throws SQLException{
 		ProxyConnection connection;
-		synchronized (this) {
+		try {
+			writeLock.lock();
 			if(this.free.size()==0){
-					if(this.all.size()>=this.dataSource.getMax_connection()){//如果没有空闲连接，首先判断当前所有的连接数量
-							//获取一个锁
-						Lock lock = Lock.getLock(Thread.currentThread());
-						lockList.add(lock);
-						try {
-							lock.lock();
-						} catch ( Throwable e) {
-							new SQLException("connection get exception!", e);
-						}finally{
-							lockList.remove(lock);
-						}
-						return this.getConnection();
-					}else{
-						this.increase();
+				if(this.all.size()>=this.dataSource.getMax_connection()){//如果没有空闲连接，首先判断当前所有的连接数量
+						//获取一个锁
+					Lock lock = Lock.getLock(Thread.currentThread());
+					lockList.add(lock);
+					try {
+						lock.await();
+					} catch ( Throwable e) {
+						new SQLException("connection get exception!", e);
+					}finally{
+						lockList.remove(lock);
 					}
+					return this.getConnection();
+				}else{
+					this.increase();
+				}
 			}//存在空闲连接
 			connection = this.free.get(0);
 			this.free.remove(0);
+		}finally {
+			writeLock.unlock();
 		}
 		return connection;
 	}
@@ -168,11 +196,14 @@ public class ConnectionPools implements PooledConnection{
 	 */
 	public void release(ProxyConnection connection){
 		if(connection!=null){
-			synchronized (free) {
+			try {
+				writeLock.lock();
 				this.free.add(connection);
 				if(!lockList.isEmpty()) {
-					lockList.poll().unLock();
+					lockList.poll().signal();
 				}
+			}finally {
+				writeLock.unlock();
 			}
 		}
 	}
@@ -188,14 +219,14 @@ public class ConnectionPools implements PooledConnection{
 		}
 		//关闭所有连接
 		if(this.all!=null){
-			Enumeration<ProxyConnection> elements = this.all.elements();
-			while(elements.hasMoreElements()){
+			this.all.forEach((proxyConnection) -> {
 				try {
-					elements.nextElement().destory();
+					proxyConnection.destory();
 				} catch (SQLException e) {
+					log.error("failed to close connection "+proxyConnection,e);
 					e.printStackTrace();
 				}
-			}
+			});
 			this.all.clear();
 			this.all = null;
 			JdbConnectionPoolsManger.getJdbConnectionPools(dataSource);

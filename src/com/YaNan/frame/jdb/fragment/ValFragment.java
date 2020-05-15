@@ -28,21 +28,10 @@ public class ValFragment extends FragmentSet implements FragmentBuilder {
 				+this.sqlFragment.getBaseMapping().getXmlFile()));
 		//构建子项目
 		return varFragment.preparedVar(object);
-//		return super.prepared(object);
 	}
 	//构建sql片段
 	@Override
 	public void build(Object wrapper) {
-//		if(id.indexOf(".")==-1) {
-//			try{
-//				 System.out.println("id:"+id);
-//				this.sql = this.context.getSqlFragmentManger().getSqlFragment(this.id);
-//			}catch (Exception e) {
-//			}
-//		}
-		
 		super.build(wrapper);
-		return;
-//		super.build(wrapper);
 	}
 }

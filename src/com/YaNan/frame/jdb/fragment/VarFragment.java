@@ -26,8 +26,6 @@ public class VarFragment extends FragmentSet implements FragmentBuilder {
 	@Override
 	public void build(Object wrapper) {
 		super.build(wrapper);
-		return;
-//		super.build(wrapper);
 	}
 	@SuppressWarnings("unchecked")
 	public PreparedFragment preparedVar(Object objects) {

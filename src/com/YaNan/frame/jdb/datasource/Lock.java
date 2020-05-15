@@ -1,11 +1,12 @@
 package com.YaNan.frame.jdb.datasource;
 
+import java.util.concurrent.locks.LockSupport;
 
 public class Lock {
 	/**
-	 * 锁持有对象
+	 * 锁持有线程
 	 */
-	private Object lockObject;
+	private Thread lockThread;
 	/**
 	 * 锁的时间
 	 */
@@ -19,44 +20,43 @@ public class Lock {
 		return times;
 	}
 
-	public Object getLockObject() {
-		return lockObject;
+	public Thread getLockThread() {
+		return lockThread;
 	}
 
-	public Lock(Object lockObject) {
+	public Lock(Thread lockThread) {
 		times = System.currentTimeMillis();
-		this.lockObject = lockObject;
+		this.lockThread = lockThread;
 	}
 	/**
 	 * 锁定
+	 * @return 
 	 * @throws Throwable 
 	 */
-	public void lock() throws Throwable {
-		synchronized (this) {
-				if(locked)
-					this.wait();
+	public boolean await() throws Throwable {
+		if(!this.locked){
+			LockSupport.park(this);
 			if(interruptCause != null)
 				throw interruptCause;
+			return true;
+		}else {
+			return false;
 		}
 	}
 	/**
 	 * 释放锁
 	 */
-	public void unLock() {
-		synchronized (this) {
-			locked = false;
-			this.notifyAll();
-		}
+	public void signal() {
+		locked = false;
+		LockSupport.unpark(lockThread);
 	}
 	public void interrupt(Throwable cause) {
-		synchronized (this) {
+			lockThread.interrupt();
 			locked = false;
 			this.interruptCause = cause;
-			this.notifyAll();
-		}
 	}
-	public static Lock getLock(Object lockObject) {
-		return new Lock(lockObject);
+	public static Lock getLock(Thread threadLock) {
+		return new Lock(threadLock);
 	}
 
 	public boolean isLocked() {
