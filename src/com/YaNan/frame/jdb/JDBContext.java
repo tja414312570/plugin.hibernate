@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.management.RuntimeErrorException;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;

@@ -12,13 +12,9 @@ plugins:[
 		"com.YaNan.frame.jdb.fragment.FragmentSet",
 		## sqlsession
 		"com.YaNan.frame.jdb.SqlSession",
-		"com.YaNan.frame.jdb.mapper.DefaultSqlSessionExecuter",
 		## orm 
 		"com.YaNan.frame.jdb.orm.OrmBuilder",
 		"com.YaNan.frame.jdb.orm.DefaultOrmBuilder",
-		##"com.YaNan.frame.jdb.mapper.GeneralMapperInterfaceProxy",
-		## Mapper接口构建
-		com.YaNan.frame.jdb.mapper.MapperInterfaceProxyBuilder,
 		##事物切面
 		"com.YaNan.frame.transaction.TransactionMethodHandler",
 		##事物实现

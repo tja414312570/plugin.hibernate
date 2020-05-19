@@ -84,14 +84,14 @@ public class DefaultDataSource implements DataSource{
         return connection;
 	}
 	public void init() throws SQLException, ClassNotFoundException {
-		logger.debug("init datasource");
-		logger.debug(this.toString());
+		logger.debug("init datasource ["+this.id+"]");
 		//写入属性
 		if(this.driverProperties == null) {
 			driverProperties = new Properties();
 			driverProperties.put("user", this.username);
 			driverProperties.put("password", this.password);
 		}
+		logger.debug(this.toString());
 		//注册驱动
 		Class.forName(this.driver);
 		//初始化连接池

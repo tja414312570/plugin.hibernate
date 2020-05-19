@@ -160,8 +160,8 @@ public class ConnectionPools implements PooledConnection{
 	}
 	/**
 	 * 获取可用的连接
-	 * @return
-	 * @throws SQLException 
+	 * @return ProxyConnection
+	 * @throws SQLException a SQL exception
 	 */
 	public ProxyConnection getConnection() throws SQLException{
 		ProxyConnection connection;
@@ -193,6 +193,7 @@ public class ConnectionPools implements PooledConnection{
 	}
 	/**
 	 * 归还连接
+	 * @param connection a proxy connection
 	 */
 	public void release(ProxyConnection connection){
 		if(connection!=null){
@@ -209,7 +210,6 @@ public class ConnectionPools implements PooledConnection{
 	}
 	/**
 	 * 关闭连接池
-	 * @return
 	 */
 	public void destory(){
 		//清空free
