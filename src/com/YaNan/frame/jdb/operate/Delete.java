@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.YaNan.frame.jdb.DataTable;
 import com.YaNan.frame.jdb.DBInterface.OperateImplement;
+import com.YaNan.frame.jdb.cache.Class2TabMappingCache;
 
 /**
  * 该类用于提供给DATab的query一个查询的SQL语句的生成方法 提过一个构造器，传入一个DBTab型的表对象，应为他需要使用DBTab context
@@ -36,11 +37,11 @@ public class Delete extends OperateImplement{
 	}
 
 	public Delete(Object object) {
-		this.dbTab = new DataTable(object);
+		this.dbTab = Class2TabMappingCache.getDBTab(object.getClass());
 		this.object = object;
 	}
 	public Delete(Class<?> tabClass) {
-		this.dbTab = new DataTable(tabClass);
+		this.dbTab = Class2TabMappingCache.getDBTab(tabClass);
 	}
 
 	public void setFields(List<String> key) {

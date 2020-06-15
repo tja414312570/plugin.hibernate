@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.YaNan.frame.jdb.DBColumn;
 import com.YaNan.frame.jdb.DataTable;
+import com.YaNan.frame.jdb.cache.Class2TabMappingCache;
 import com.YaNan.frame.jdb.fragment.SqlFragment;
 import com.YaNan.frame.plugin.annotations.Register;
 import com.YaNan.frame.utils.reflect.ClassLoader;
@@ -46,7 +47,7 @@ public class DefaultOrmBuilder implements OrmBuilder{
 		}
 	}
 	private void wrapperBean(ResultSet resultSet, List<Object> result, Class<?> resultType) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, SQLException {
-		DataTable tab = new DataTable(resultType);
+		DataTable tab = Class2TabMappingCache.getDBTab4Orm(resultType);
 		Iterator<DBColumn> columnIterator = tab.getDBColumns().values().iterator();
 		stringBuffer.setLength(0);
 		DBColumn[] colNameArray = new DBColumn[tab.getDBColumns().values().size()];

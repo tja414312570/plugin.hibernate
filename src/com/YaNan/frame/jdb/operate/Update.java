@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 
 import com.YaNan.frame.jdb.DataTable;
 import com.YaNan.frame.jdb.DBInterface.OperateImplement;
+import com.YaNan.frame.jdb.cache.Class2TabMappingCache;
+import com.YaNan.frame.utils.reflect.ClassLoader;
 
 /**
  * 该类用于提供给DATab的query一个查询的SQL语句的生成方法 提过一个构造器，传入一个DBTab型的表对象，应为他需要使用DBTab context
@@ -30,18 +32,18 @@ public class Update extends OperateImplement {
 
 	public Update(DataTable dataTables, Object object) {
 		this.setDbTab(dataTables);
-		dataTables.setLoaderObject(object);
-		this.preparedUpdateColumn();
+		this.preparedUpdateColumn(object);
 	}
 	/**
 	 * prepared updates columns data
 	 */
-	public void preparedUpdateColumn(){
+	public void preparedUpdateColumn(Object object){
+		ClassLoader loader = new ClassLoader(object);
 		Iterator<Field> fI = this.getDbTab().getFieldMap().keySet().iterator();
 		while (fI.hasNext()) {
 			Field field = fI.next();
 			try {
-				Object value = this.dataTables.getLoader().get(field);
+				Object value = loader.get(field);
 				if (value != null){
 					String columnName=this.dataTables.getFieldMap().get(field).getName();
 					if(columnName!=null){
@@ -66,8 +68,9 @@ public class Update extends OperateImplement {
 	 * @param object
 	 */
 	public Update(Object object) {
-		this.setDbTab(new DataTable(object));
-		this.preparedUpdateColumn();
+		this.dataTables = Class2TabMappingCache.getDBTab(object.getClass());
+		
+		this.preparedUpdateColumn(object);
 	}
 
 	/**
@@ -75,8 +78,8 @@ public class Update extends OperateImplement {
 	 * @param object
 	 */
 	public Update(Object object, boolean updateNull) {
-		this.setDbTab(new DataTable(object));
-		this.preparedUpdateColumn();
+		this.dataTables = Class2TabMappingCache.getDBTab(object.getClass());
+		this.preparedUpdateColumn(object);
 	}
 
 	/**
@@ -87,10 +90,11 @@ public class Update extends OperateImplement {
 	 */
 	public Update(Object object, String... fields) {
 		try {
-			this.setDbTab(new DataTable(object));
+			this.dataTables = Class2TabMappingCache.getDBTab(object.getClass());
+			ClassLoader loader = new ClassLoader(object);
 			for (String strField : fields) {
 				Field field = this.getDbTab().getDataTablesClass().getDeclaredField(strField);
-				Object value = this.dataTables.getLoader().get(field);
+				Object value = loader.get(field);
 				if (value != null)
 					this.updateList.put(this.getDbTab().getDBColumn(field).getName(),value);
 			}
@@ -105,21 +109,11 @@ public class Update extends OperateImplement {
 	 * @param cls
 	 */
 	public Update(Class<?> cls) {
-		this.setDbTab(new DataTable(cls));
+		this.dataTables = Class2TabMappingCache.getDBTab(cls);
 	}
 
 	public Update(Class<?> cls, String... fields) {
-		try {
-			this.setDbTab(new DataTable(cls));
-			for (String strField : fields) {
-				Field field = this.getDbTab().getDataTablesClass().getDeclaredField(strField);
-				Object value = this.dataTables.getLoader().get(field);
-				if (value != null)
-					this.updateList.put(this.getDbTab().getDBColumn(field).getName(),value);
-			}
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
-		}
+		this.dataTables = Class2TabMappingCache.getDBTab(cls);
 	}
 
 	/**

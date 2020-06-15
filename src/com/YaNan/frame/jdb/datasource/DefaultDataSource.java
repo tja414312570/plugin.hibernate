@@ -22,7 +22,7 @@ import com.YaNan.frame.plugin.autowired.property.Property;
  * @author yanan
  *
  */
-@Register(method="init",register=DataSource.class)
+@Register(init="init",register=DataSource.class)
 public class DefaultDataSource implements DataSource{
 	static org.slf4j.Logger logger = LoggerFactory.getLogger(DefaultDataSource.class);
 	ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<Connection>();

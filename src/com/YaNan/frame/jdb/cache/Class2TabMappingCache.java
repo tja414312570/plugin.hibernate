@@ -2,12 +2,15 @@ package com.YaNan.frame.jdb.cache;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.YaNan.frame.jdb.DataTable;
+import com.YaNan.frame.jdb.exception.SqlExecuteException;
 
 public class Class2TabMappingCache {
 	private static Class2TabMappingCache dbManager;
-	private static Map<Class<?>, DataTable> map = new HashMap<Class<?>, DataTable>();
+	private static Map<Class<?>, DataTable> map = new ConcurrentHashMap<Class<?>, DataTable>();
+	private static Map<Class<?>, DataTable> orm = new HashMap<Class<?>, DataTable>();
 
 	public static Map<Class<?>, DataTable> getDBTabelsMap() {
 		return map;
@@ -20,19 +23,10 @@ public class Class2TabMappingCache {
 	}
 
 	public static DataTable getDBTab(Class<?> cls) {
-		if (map.containsKey(cls))
-			return map.get(cls);
-		DataTable tab = new DataTable(cls);
-		map.put(tab.getDataTablesClass(), tab);
-		return tab;
-	}
-
-	public static DataTable getDBTab(Object obj) {
-		if (map.containsKey(obj.getClass()))
-			return map.get(obj.getClass());
-		DataTable tab = new DataTable(obj);
-		map.put(tab.getDataTablesClass(), tab);
-		return tab;
+		DataTable dataTable = map.get(cls);
+		if (dataTable == null) 
+			throw new SqlExecuteException("could not found data table template for class "+cls);
+		return dataTable;
 	}
 
 	public static boolean hasTab(Class<?> cls) {
@@ -40,11 +34,19 @@ public class Class2TabMappingCache {
 
 	}
 
-	public static boolean hasTab(Object obj) {
-		return map.containsKey(obj.getClass());
-	}
-
 	public static void addTab(DataTable tab) {
 		map.put(tab.getDataTablesClass(), tab);
+	}
+
+	public static DataTable getDBTab4Orm(Class<?> resultType) {
+		DataTable table = orm.get(resultType);
+		if (table != null)
+			return table;
+		table = map.get(resultType);
+		if (table != null)
+			return table;
+		table = new DataTable(resultType);
+		orm.put(table.getDataTablesClass(), table);
+		return table;
 	}
 }

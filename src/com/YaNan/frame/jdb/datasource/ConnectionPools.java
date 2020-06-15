@@ -7,9 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ConnectionPools implements PooledConnection{
 	 private List<ProxyConnection> all = null; // 存放连接池中数据库连接的向量 , 初始时为 null 
-     private List<ProxyConnection> free = null; //空闲的连接
+     private Queue<ProxyConnection> free = null; //空闲的连接 队列
      private Logger log = LoggerFactory.getLogger(ConnectionPools.class);
      private ConcurrentLinkedQueue<Lock> lockList = new ConcurrentLinkedQueue<Lock>();
      private ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
@@ -54,7 +54,7 @@ public class ConnectionPools implements PooledConnection{
 		public ConnectionPools(DefaultDataSource dataSource) {
 	    	 this.dataSource = dataSource;
 	    	 this.all = new ArrayList<ProxyConnection>();
-	    	 this.free = new LinkedList<ProxyConnection>();
+	    	 this.free = new ConcurrentLinkedQueue<ProxyConnection>();
 		}
 	private ProxyConnection createConnection() throws SQLException {
 		Properties props = new Properties();
@@ -82,7 +82,7 @@ public class ConnectionPools implements PooledConnection{
     	 return this.all;
      }
      public List<ProxyConnection> getFreeProxyConnections(){
-    	 return this.free;
+    	 return new ArrayList<ProxyConnection>(this.free);
      }
 	/**
 	 * 初始化连接池
@@ -184,8 +184,7 @@ public class ConnectionPools implements PooledConnection{
 					this.increase();
 				}
 			}//存在空闲连接
-			connection = this.free.get(0);
-			this.free.remove(0);
+			connection = this.free.poll();
 		}finally {
 			writeLock.unlock();
 		}
@@ -199,10 +198,12 @@ public class ConnectionPools implements PooledConnection{
 		if(connection!=null){
 			try {
 				writeLock.lock();
+				if(free.contains(connection))
+					return;
 				this.free.add(connection);
-				if(!lockList.isEmpty()) {
-					lockList.poll().signal();
-				}
+				if(lockList.isEmpty())
+					return;
+				lockList.poll().signal();
 			}finally {
 				writeLock.unlock();
 			}

@@ -143,5 +143,9 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 			throw new SqlExecuteException("faild to execute query \""+sqlId+"\"",e);
 		}
 	}
+	@Override
+	public JDBContext getContext() {
+		return this.context;
+	}
 
 }

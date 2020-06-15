@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.YaNan.frame.jdb.JDBContext;
 import com.YaNan.frame.jdb.SqlSession;
+import com.YaNan.frame.jdb.annotation.Sql;
 import com.YaNan.frame.jdb.entity.BaseMapping;
 import com.YaNan.frame.jdb.exception.SqlExecuteException;
 import com.YaNan.frame.jdb.mapper.annotations.Param;
-import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.plugin.ProxyModel;
 import com.YaNan.frame.plugin.annotations.Register;
+import com.YaNan.frame.plugin.annotations.Support;
 import com.YaNan.frame.plugin.handler.InvokeHandler;
 import com.YaNan.frame.plugin.handler.MethodHandler;
 import com.YaNan.frame.utils.reflect.cache.ClassHelper;
@@ -24,12 +24,13 @@ import com.YaNan.frame.utils.reflect.cache.ParameterHelper;
  * @author yanan
  *
  */
+@Support(Sql.class)
 @Register(priority=1,model = ProxyModel.JDK)
 public class GeneralMapperInterfaceProxy implements InvokeHandler{
-	private JDBContext context;
-	public GeneralMapperInterfaceProxy(JDBContext context) {
+	private SqlSession sqlSession;
+	public GeneralMapperInterfaceProxy(SqlSession sqlSession) {
 		super();
-		this.context = context;
+		this.sqlSession = sqlSession;
 	}
 	/**
 	 * sql的接口进行拦截，才能知道具体调用了接口哪个方法
@@ -37,7 +38,6 @@ public class GeneralMapperInterfaceProxy implements InvokeHandler{
 	 */
 	public void before(MethodHandler methodHandler) {
 		//获取SqlSession
-		SqlSession sqlSession = PlugsFactory.getPlugsInstance(SqlSession.class);
 		//获取类名和方法并组装为sqlId
 		String clzz = methodHandler.getPlugsProxy().getInterfaceClass().getName();
 		String method = methodHandler.getMethod().getName();
@@ -46,7 +46,7 @@ public class GeneralMapperInterfaceProxy implements InvokeHandler{
 		//此部分代码用于判断是否接口参数中使用了@Param注解
 		parameter = decodeParamerters(methodHandler);
 		//从映射中获取sqlId对应的映射，并通过映射获取SQL的类型，对应增删查改
-		BaseMapping mapping = context.getWrapper(sqlId);
+		BaseMapping mapping = sqlSession.getContext().getWrapper(sqlId);
 		if(mapping==null)
 			throw new SqlExecuteException("could not found sql mapper id \""+method+"\" at namespace \""+clzz+"\"");
 		if(mapping.getNode().trim().toLowerCase().equals("select")){
@@ -94,8 +94,5 @@ public class GeneralMapperInterfaceProxy implements InvokeHandler{
 	public void error(MethodHandler methodHandler, Throwable e) {
 		// TODO Auto-generated method stub
 		
-	}
-	public JDBContext getContext() {
-		return context;
 	}
 }

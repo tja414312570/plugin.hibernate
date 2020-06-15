@@ -108,7 +108,7 @@ public class JdbConnectionPoolsManger {
 									lock.interrupt(new ConnectionWaitTimeout());
 							}
 						}
-						logger.debug("connection pools usag:"+connectionPool.getDataSource().getId()+":"+connectionPool.getAllNum()+":"+connectionPool.getFreeNum()+":"+locks.size());
+//						logger.debug("connection pools usag:"+connectionPool.getDataSource().getId()+":"+connectionPool.getAllNum()+":"+connectionPool.getFreeNum()+":"+locks.size());
 					}
 					sleepType = 0;
 					Thread.sleep(delay);

@@ -19,6 +19,11 @@ public interface SqlSession {
 	 */
 	<T> T selectOne(String sqlId,Object...parameters);
 	/**
+	 * 获取数据上下文
+	 * @return
+	 */
+	JDBContext getContext();
+	/**
 	 * 查询作为列表返回
 	 * @param sqlId
 	 * @param parameters

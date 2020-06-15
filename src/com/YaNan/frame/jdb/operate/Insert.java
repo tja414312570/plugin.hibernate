@@ -12,8 +12,9 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.DataTable;
 import com.YaNan.frame.jdb.DBInterface.OperateImplement;
+import com.YaNan.frame.jdb.cache.Class2TabMappingCache;
+import com.YaNan.frame.utils.reflect.ClassLoader;
 
 /**
  * 该类用于提供给DATab的query一个查询的SQL语句的生成方法 提过一个构造器，传入一个DBTab型的表对象，应为他需要使用DBTab context
@@ -46,7 +47,7 @@ public class Insert extends OperateImplement{
 	 * @param obj
 	 */
 	public Insert(Object obj) {
-		this.dataTables = new DataTable(obj);
+		this.dataTables = Class2TabMappingCache.getDBTab(obj.getClass());
 		this.obj = obj;
 		Iterator<Field> fI = this.dataTables.getFieldMap().keySet().iterator();
 		Field field;
@@ -61,6 +62,7 @@ public class Insert extends OperateImplement{
 //				| SecurityException e1) {
 //			e1.printStackTrace();
 //		}
+		ClassLoader loader = new ClassLoader(obj);
 		while(fI.hasNext()&&(field = fI.next())!=null){
 			try {
 //				这段代码和下面代码作用在本程序中等同
@@ -70,7 +72,7 @@ public class Insert extends OperateImplement{
 //						&&this.parameters.add(this.dataTables.getLoader().get(field.getName())));
 				
 				if(!this.dataTables.getDBColumn(field).isAuto_Increment()){
-					Object value = this.dataTables.getLoader().get(field);
+					Object value = loader.get(field);
 					if(value!=null){
 						String columnName=this.dataTables.getFieldMap().get(field).getName();
 						if(columnName!=null){

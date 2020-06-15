@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.YaNan.frame.jdb.DBColumn;
-import com.YaNan.frame.jdb.DataTable;
 import com.YaNan.frame.jdb.DBInterface.OperateImplement;
+import com.YaNan.frame.jdb.cache.Class2TabMappingCache;
 import com.YaNan.frame.utils.reflect.ClassLoader;
 
 /**
@@ -32,7 +32,7 @@ public class BatchInsert extends OperateImplement{
 	public BatchInsert(Object[] objects){
 		if(objects==null||objects.length==0)
 			throw new RuntimeException("Batch Insert object length is 0");
-		this.dataTables = new DataTable(objects[0]);
+		this.dataTables = Class2TabMappingCache.getDBTab(objects[0].getClass());
 		this.columns = this.dataTables.getFieldMap().values();
 		for(Object object : objects){
 			this.preparedParameter(object);
@@ -52,7 +52,7 @@ public class BatchInsert extends OperateImplement{
 	public BatchInsert(List<Object> objects){
 		if(objects==null||objects.size()==0)
 			throw new RuntimeException("Batch Insert object length is 0");
-		this.dataTables = new DataTable(objects.get(0));
+		this.dataTables = Class2TabMappingCache.getDBTab(objects.get(0).getClass());
 		this.columns = this.dataTables.getFieldMap().values();
 		for(Object object : objects){
 			this.preparedParameter(object);
@@ -63,7 +63,7 @@ public class BatchInsert extends OperateImplement{
 	 * @param objects
 	 */
 	public BatchInsert(Class<?> tabClass,String...columns){
-		this.dataTables = new DataTable(tabClass);
+		this.dataTables = Class2TabMappingCache.getDBTab(tabClass);
 		if(columns.length>0){
 			this.columns = new ArrayList<DBColumn>();
 			this.addColumn(columns);

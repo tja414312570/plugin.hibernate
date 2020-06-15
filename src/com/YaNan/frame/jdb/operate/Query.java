@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.YaNan.frame.jdb.DBColumn;
 import com.YaNan.frame.jdb.DataTable;
 import com.YaNan.frame.jdb.DBInterface.OperateImplement;
+import com.YaNan.frame.jdb.cache.Class2TabMappingCache;
 import com.YaNan.frame.jdb.cache.SqlCache;
 import com.YaNan.frame.utils.StringUtil;
 
@@ -161,7 +162,7 @@ public class Query extends OperateImplement {
 	}
 
 	public Query(Object obj, String... strings) {
-		this.dataTables = new DataTable(obj);
+		this.dataTables = Class2TabMappingCache.getDBTab(obj.getClass());
 		dataTablesObject = obj;
 		this.queryTab = this.dataTables;
 		if (strings.length != 0) {
@@ -189,7 +190,7 @@ public class Query extends OperateImplement {
 	}
 
 	public Query(Object obj, boolean starReplace) {
-		this.dataTables = new DataTable(obj);
+		this.dataTables = Class2TabMappingCache.getDBTab(obj.getClass());
 		this.queryTab = this.dataTables;
 		dataTablesObject = obj;
 		this.fieldMap.putAll(dataTables.getFieldMap());
@@ -203,12 +204,7 @@ public class Query extends OperateImplement {
 	}
 
 	public Query(Class<?> dataTablesClass, String... strings) {
-		int dataTablesClassHash = dataTablesClass.hashCode();
-		this.dataTables = SqlCache.getCache().getAttribute(dataTablesClassHash);
-		if (this.dataTables == null) {
-			this.dataTables = new DataTable(dataTablesClass);
-			SqlCache.getCache().addAttribute(dataTablesClassHash, this.dataTables);
-		}
+		this.dataTables = Class2TabMappingCache.getDBTab(dataTablesClass);
 		this.queryTab = this.dataTables;
 		if (strings.length != 0) {
 			StringBuilder sb = new StringBuilder();
@@ -262,7 +258,7 @@ public class Query extends OperateImplement {
 	}
 
 	public Query(Class<?> dataTablesClass, boolean trans) {
-		this.dataTables = new DataTable(dataTablesClass);
+		this.dataTables = Class2TabMappingCache.getDBTab(dataTablesClass);
 		this.queryTab = this.dataTables;
 		this.fieldMap.putAll(dataTables.getFieldMap());
 		if (trans) {
@@ -281,14 +277,14 @@ public class Query extends OperateImplement {
 	 * @param saveCls
 	 */
 	public Query(Class<?> queryCls, Class<?> saveCls) {
-		this.dataTables = new DataTable(queryCls);
-		this.queryTab = new DataTable(saveCls);
+		this.dataTables = Class2TabMappingCache.getDBTab(queryCls);
+		this.queryTab = Class2TabMappingCache.getDBTab(saveCls);
 		this.fieldMap.putAll(queryTab.getFieldMap());
 	}
 
 	public Query(Class<?> queryCls, Class<?> saveCls, String... strings) {
-		this.dataTables = new DataTable(queryCls);
-		this.queryTab = new DataTable(saveCls);
+		this.dataTables = Class2TabMappingCache.getDBTab(queryCls);
+		this.queryTab = Class2TabMappingCache.getDBTab(saveCls);
 		if (strings.length != 0) {
 			for (String str : strings) {
 				this.key.add(str);
@@ -324,8 +320,8 @@ public class Query extends OperateImplement {
 	}
 
 	public Query(Class<?> queryCls, Class<?> saveCls, boolean trans, String... strings) {
-		this.dataTables = new DataTable(queryCls);
-		this.queryTab = new DataTable(saveCls);
+		this.dataTables = Class2TabMappingCache.getDBTab(queryCls);
+		this.queryTab = Class2TabMappingCache.getDBTab(saveCls);
 		this.fieldMap.putAll(queryTab.getFieldMap());
 		if (strings.length != 0) {
 			for (String str : strings) {
@@ -633,7 +629,7 @@ public class Query extends OperateImplement {
 	public Query setJoinLeft(Class<?> dataTablesClass, boolean trans, String... conditions) {
 		if (conditions.length == 0)
 			return this;
-		DataTable rTab = new DataTable(dataTablesClass);
+		DataTable rTab =  Class2TabMappingCache.getDBTab(dataTablesClass);
 		this.joinObject = new JoinObject(this.dataTables.getName(), rTab.getName());
 		this.joinObject.setConditions(conditions);
 		if (trans)
@@ -650,7 +646,7 @@ public class Query extends OperateImplement {
 	public Query setInnnerJoin(Class<?> dataTablesClass, boolean trans, String... conditions) {
 		if (conditions.length == 0)
 			return this;
-		DataTable rTab = new DataTable(dataTablesClass);
+		DataTable rTab =  Class2TabMappingCache.getDBTab(dataTablesClass);
 		this.joinObject = new JoinObject(this.dataTables.getName(), rTab.getName());
 		this.joinObject.setConditions(conditions);
 		this.joinObject.setInnerJoin(true);

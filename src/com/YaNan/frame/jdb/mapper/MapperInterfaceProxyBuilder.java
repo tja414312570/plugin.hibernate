@@ -3,12 +3,16 @@ package com.YaNan.frame.jdb.mapper;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import com.YaNan.frame.jdb.JDBContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.YaNan.frame.jdb.SqlSession;
 import com.YaNan.frame.plugin.Plug;
 import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.plugin.RegisterDescription;
 import com.YaNan.frame.plugin.annotations.Register;
 import com.YaNan.frame.plugin.autowired.property.Property;
+import com.YaNan.frame.plugin.handler.InvokeHandler;
 import com.YaNan.frame.utils.PathMatcher;
 
 /**
@@ -16,21 +20,22 @@ import com.YaNan.frame.utils.PathMatcher;
  * @author yanan
  *
  */
-@Register(method="execute")
+@Register(init="execute")
 public class MapperInterfaceProxyBuilder {
 	/**
 	 * 上下文
 	 */
-	private JDBContext hibernateBuilder;
-	public MapperInterfaceProxyBuilder(JDBContext hibernateBuilder) {
+	private SqlSession sqlSession;
+	private static final Logger logger = LoggerFactory.getLogger(MapperInterfaceProxyBuilder.class);
+	public MapperInterfaceProxyBuilder(SqlSession sqlSession) {
 		super();
-		this.hibernateBuilder = hibernateBuilder;
+		this.sqlSession = sqlSession;
 	}
-	private GeneralMapperInterfaceProxy generalMapperInterfaceProxy;
+	private InvokeHandler generalMapperInterfaceProxy;
 	@Property("classpath:")
 	private String scanPath[];
 	public void execute() {
-		generalMapperInterfaceProxy = PlugsFactory.getPlugsInstanceByParamType(GeneralMapperInterfaceProxy.class,new Class<?>[] {JDBContext.class},hibernateBuilder);
+		generalMapperInterfaceProxy = PlugsFactory.getPlugsInstanceByParamType(GeneralMapperInterfaceProxy.class,new Class<?>[] {SqlSession.class},sqlSession);
 		RegisterDescription register = new RegisterDescription(GeneralMapperInterfaceProxy.class);
 		//创建一个此注册器的代理容器
 		register.createProxyContainer();
@@ -39,11 +44,12 @@ public class MapperInterfaceProxyBuilder {
 		for(Plug plug : plugs.values()){
 			// 查找具有Sql注解的接口
 			if(isCurrentProxy(plug)){
+				logger.debug("prepared interface class "+plug.getDescription().getPlugClass().getName());
 				//将生成的注册描述添加到接口组件
 				plug.addRegister(register);
 				//设置默认实例为此实例的目标对象的本类实现
 				Object proxy =PlugsFactory.getPlugsInstanceByInsClass(plug.getDescription().getPlugClass(),
-						GeneralMapperInterfaceProxy.class,hibernateBuilder);
+						GeneralMapperInterfaceProxy.class,sqlSession);
 				//对接口方法进行代理，代理对象为本身，目的是为了拦截方法的执行
 				for(Method method : plug.getDescription().getPlugClass().getMethods()){
 					register.addMethodHandler(method, generalMapperInterfaceProxy);
@@ -68,6 +74,6 @@ public class MapperInterfaceProxyBuilder {
 				return false;
 			}
 		}
-		return hibernateBuilder.hasNamespace(plug.getDescription().getPlugClass().getName());
+		return this.sqlSession.getContext().hasNamespace(plug.getDescription().getPlugClass().getName());
 	}
 }

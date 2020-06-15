@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.management.RuntimeErrorException;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.YaNan.frame.jdb.cache.Class2TabMappingCache;
 import com.YaNan.frame.jdb.entity.BaseMapping;
 import com.YaNan.frame.jdb.entity.SqlFragmentManger;
 import com.YaNan.frame.jdb.entity.WrapperMapping;
@@ -29,20 +29,20 @@ import com.YaNan.frame.utils.resource.AbstractResourceEntry;
 import com.YaNan.frame.utils.resource.PackageScanner;
 import com.YaNan.frame.utils.resource.ResourceManager;
 
-@Register(method = "init")
+@Register(init = "init")
 public class JDBContext {
 	private static final Logger logger = LoggerFactory.getLogger(JDBContext.class);
 
 	/**
 	 * Mapper  位置
 	 */
-	@Property("jdb.mapperLocations")
+	@Property("jdb.mapper.path")
 	private String[] mapperLocations;
 	private Map<String, BaseMapping> wrapMap = new HashMap<String, BaseMapping>();
 	/**
 	 * 扫描资源路径
 	 */
-	@Property("jdb.scanPather")
+	@Property("jdb.template.package")
 	private String[] scanPather;
 
 	private List<String> nameSpaces = new ArrayList<String>();
@@ -164,18 +164,20 @@ public class JDBContext {
 		return sqlFragment;
 	}
 	public void buildMappingTable() {
+		if(this.scanPather != null && this.scanPather.length != 0)
+			logger.debug("jdb template path "+Arrays.toString(this.scanPather));
 		if(this.scanPather != null && this.scanPather.length != 0) {
 			PackageScanner scanner = new PackageScanner();
 			for(String path : this.scanPather) {
-				path =  ResourceManager.getPathExress(path);
-				scanner.addScanPath(path);
+				scanner.addScanPath(ResourceManager.getPathExress(path));
 			}
 			scanner.doScanner((Class<?> cls) -> {
 				if (cls.getAnnotation(com.YaNan.frame.jdb.annotation.Tab.class) != null) {
-					logger.debug("scan hibernate class:" + cls.getName());
+					logger.debug("scan template class:" + cls.getName());
 					DataTable table = new DataTable(cls);
 					table.setDataSource(dataSource);
 					table.init();
+					Class2TabMappingCache.addTab(table);
 				}
 			});
 		}
