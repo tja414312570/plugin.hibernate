@@ -11,7 +11,7 @@ import com.YaNan.frame.jdb.exception.SqlExecuteException;
 import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.plugin.ProxyModel;
 import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.utils.reflect.ClassLoader;
+import com.YaNan.frame.utils.reflect.AppClassLoader;
 import com.YaNan.frame.utils.StringUtil;
 
 /**
@@ -91,10 +91,10 @@ public class ForEachFragment extends FragmentSet implements FragmentBuilder {
 			exArgs.removeAll(args);
 		}
 		if (object != null) {
-			if (ClassLoader.implementsOf(object.getClass(), Map.class)) {
+			if (AppClassLoader.implementsOf(object.getClass(), Map.class)) {
 				Object obj = ((Map) object).get(this.forEach.getCollection());
 				result = getBySignleParameter(obj);
-			} else if (ClassLoader.implementsOf(object.getClass(), List.class)) {
+			} else if (AppClassLoader.implementsOf(object.getClass(), List.class)) {
 				Object obj;
 				if (exArgs.size() > 1) {
 					int pos = this.sqlFragment.getArguments().indexOf(this.forEach.getCollection());
@@ -103,10 +103,10 @@ public class ForEachFragment extends FragmentSet implements FragmentBuilder {
 					obj = ((List) object);
 				}
 				result = getBySignleParameter(obj);
-			} else if (ClassLoader.isBaseType(object.getClass())) {
+			} else if (AppClassLoader.isBaseType(object.getClass())) {
 				result = getBySignleParameter(object);
 			} else {
-				ClassLoader loader = new ClassLoader(object);
+				AppClassLoader loader = new AppClassLoader(object);
 				try {
 					Object obj = loader.get(this.forEach.getCollection());
 					result = getBySignleParameter(obj);
@@ -125,9 +125,9 @@ public class ForEachFragment extends FragmentSet implements FragmentBuilder {
 	@SuppressWarnings("unchecked")
 	private List<Object> getBySignleParameter(Object object) {
 		List<Object> results = new ArrayList<Object>();
-		if (object == null || ClassLoader.isBaseType(object.getClass())) {
+		if (object == null || AppClassLoader.isBaseType(object.getClass())) {
 			results.add(object);
-		} else if (ClassLoader.implementsOf(object.getClass(), List.class)) {
+		} else if (AppClassLoader.implementsOf(object.getClass(), List.class)) {
 			results = (List<Object>) object;
 		}
 		return results;

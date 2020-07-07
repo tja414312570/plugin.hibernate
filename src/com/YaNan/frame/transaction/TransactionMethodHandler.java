@@ -10,7 +10,7 @@ import com.YaNan.frame.plugin.annotations.Register;
 import com.YaNan.frame.plugin.annotations.Support;
 import com.YaNan.frame.plugin.handler.InvokeHandler;
 import com.YaNan.frame.plugin.handler.MethodHandler;
-import com.YaNan.frame.utils.reflect.ClassLoader;
+import com.YaNan.frame.utils.reflect.AppClassLoader;
 
 /**
  * 注解事物支持方法切面控制器
@@ -58,7 +58,7 @@ public class TransactionMethodHandler implements InvokeHandler {
 		boolean rollback = false;
 		//判断是否需要回滚
 		for(Class<?> clzz : transactions.value()) {
-			if(ClassLoader.extendsOf(e.getClass(), clzz)) {
+			if(AppClassLoader.extendsOf(e.getClass(), clzz)) {
 				if(transactionManager.checkReference()) {
 					logger.debug("transaction rollback when execute ["+methodHandler.getMethod().getName()+"] transaction ["+transactionManager+"]");
 					rollback = true;

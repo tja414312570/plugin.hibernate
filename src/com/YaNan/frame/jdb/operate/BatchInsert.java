@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.YaNan.frame.jdb.DBColumn;
 import com.YaNan.frame.jdb.DBInterface.OperateImplement;
 import com.YaNan.frame.jdb.cache.Class2TabMappingCache;
-import com.YaNan.frame.utils.reflect.ClassLoader;
+import com.YaNan.frame.utils.reflect.AppClassLoader;
 
 /**
  * 该类用于提供给DATab的query一个查询的SQL语句的生成方法 提过一个构造器，传入一个DBTab型的表对象，应为他需要使用DBTab context
@@ -179,7 +179,7 @@ public class BatchInsert extends OperateImplement{
 		Object[] parameters = new Object[this.dataTables.getFieldMap().size()];
 		Iterator<DBColumn> fI = this.columns.iterator();
 		DBColumn column;
-		ClassLoader loader = new ClassLoader(object);
+		AppClassLoader loader = new AppClassLoader(object);
 		int i = 0;
 		//获取需要插入的列值
 		while(fI.hasNext()&&(column = fI.next())!=null&&!column.isAuto_Increment()){

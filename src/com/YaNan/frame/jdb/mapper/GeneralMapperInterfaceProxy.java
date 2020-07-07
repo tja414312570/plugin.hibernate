@@ -50,7 +50,7 @@ public class GeneralMapperInterfaceProxy implements InvokeHandler{
 		if(mapping==null)
 			throw new SqlExecuteException("could not found sql mapper id \""+method+"\" at namespace \""+clzz+"\"");
 		if(mapping.getNode().trim().toLowerCase().equals("select")){
-			if(com.YaNan.frame.utils.reflect.ClassLoader.implementsOf(methodHandler.getMethod().getReturnType(), List.class)){
+			if(com.YaNan.frame.utils.reflect.AppClassLoader.implementsOf(methodHandler.getMethod().getReturnType(), List.class)){
 				methodHandler.interrupt(sqlSession.selectList(sqlId, parameter));
 			}else{
 				methodHandler.interrupt(sqlSession.selectOne(sqlId, parameter));

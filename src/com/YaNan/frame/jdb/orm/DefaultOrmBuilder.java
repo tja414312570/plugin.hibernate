@@ -19,7 +19,7 @@ import com.YaNan.frame.jdb.DataTable;
 import com.YaNan.frame.jdb.cache.Class2TabMappingCache;
 import com.YaNan.frame.jdb.fragment.SqlFragment;
 import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.utils.reflect.ClassLoader;
+import com.YaNan.frame.utils.reflect.AppClassLoader;
 
 @Register(priority=Integer.MAX_VALUE)
 public class DefaultOrmBuilder implements OrmBuilder{
@@ -32,12 +32,12 @@ public class DefaultOrmBuilder implements OrmBuilder{
 			//1获取返回值类型
 			Class<?> resultType = sqlFragment.getResultTypeClass();
 			//2判断类型时否是List map 等聚合函数
-			if(ClassLoader.implementsOf(resultType, Map.class)){
+			if(AppClassLoader.implementsOf(resultType, Map.class)){
 				this.wrapperMap(resultSet, results,resultType);
 			}else{
-				if(ClassLoader.isBaseType(resultType))
+				if(AppClassLoader.isBaseType(resultType))
 					while(resultSet.next())
-						results.add(ClassLoader.castType( resultSet.getObject(1), resultType));
+						results.add(AppClassLoader.castType( resultSet.getObject(1), resultType));
 				else
 					this.wrapperBean(resultSet,results,resultType);
 			}
@@ -67,7 +67,7 @@ public class DefaultOrmBuilder implements OrmBuilder{
 		while (resultSet.next()) {
 			//可以使用PlugsHandler代理类，实现aop。但对Gson序列化有影响
 //			Object beanInstance = PlugsFactory.getPlugsInstance(resultType);
-			ClassLoader loader = new ClassLoader(resultType);
+			AppClassLoader loader = new AppClassLoader(resultType);
 			stringBuffer.setLength(0);
 			for(i=0;i< colNameArray.length;i++) {
 				DBColumn column = colNameArray[i];
@@ -80,7 +80,7 @@ public class DefaultOrmBuilder implements OrmBuilder{
 				}
 				if(object==null)
 					continue;
-				loader.set(field,ClassLoader.castType(object,field.getType()));
+				loader.set(field,AppClassLoader.castType(object,field.getType()));
 			}
 			if(log.isDebugEnabled())
 				log.debug(stringBuffer.toString());

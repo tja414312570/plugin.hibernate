@@ -19,7 +19,7 @@ import com.YaNan.frame.plugin.PlugsFactory;
 import com.YaNan.frame.plugin.ProxyModel;
 import com.YaNan.frame.plugin.annotations.Register;
 import com.YaNan.frame.plugin.handler.PlugsHandler;
-import com.YaNan.frame.utils.reflect.ClassLoader;
+import com.YaNan.frame.utils.reflect.AppClassLoader;
 import com.YaNan.frame.utils.StringUtil;
 
 /**
@@ -175,7 +175,7 @@ public class FragmentSet implements FragmentBuilder {
 		List<Object> arguments = new ArrayList<Object>();
 		if (parameter != null && variables.size() > 0) {
 				Object object = parameter;
-				if(ClassLoader.implementsOf(object.getClass(), Bindings.class)){ 
+				if(AppClassLoader.implementsOf(object.getClass(), Bindings.class)){ 
 					for(int i = 0;i<variables.size();i++){
 						try {
 							arguments.add(scriptEngine.eval(variables.get(i),(Bindings)object));
@@ -185,7 +185,7 @@ public class FragmentSet implements FragmentBuilder {
 									+ "' at item data " + object, e);
 						}
 					}
-				}else if (ClassLoader.isBaseType(object.getClass())) {
+				}else if (AppClassLoader.isBaseType(object.getClass())) {
 					if (SqlFragment.removeDuplicate(variables).size() == 1)
 						for (int i = 0; i < variables.size(); i++)
 							arguments.add(object);
@@ -196,7 +196,7 @@ public class FragmentSet implements FragmentBuilder {
 				} else {
 					//如果所需参数和准备的参数都只有一个时，直接赋值
 					if(variables.size() == 1 && object != null &&
-							ClassLoader.implementsOf(object.getClass(), Map.class) &&
+							AppClassLoader.implementsOf(object.getClass(), Map.class) &&
 							((Map) object).size() ==1) {
 							arguments.add(((Map) object).values().iterator().next());
 					}else {
@@ -219,7 +219,7 @@ public class FragmentSet implements FragmentBuilder {
 		//如果是Map集合
 		String express;
 		Object value;
-		if(ClassLoader.implementsOf(parameter.getClass(), Map.class)) {
+		if(AppClassLoader.implementsOf(parameter.getClass(), Map.class)) {
 			Map<String,Object> parameterMap = (Map<String,Object>) parameter;
 			value = parameterMap.get(parameterName);
 			if(value != null) {
@@ -237,7 +237,7 @@ public class FragmentSet implements FragmentBuilder {
 				return value;
 			}
 		}else {
-			ClassLoader parameterLoader = new ClassLoader(parameter);
+			AppClassLoader parameterLoader = new AppClassLoader(parameter);
 			String header = parameterLoader.getLoadedClass().getSimpleName()+".";
 				if(parameterName.startsWith(header)) {
 					parameterName = parameterName.substring(header.length()); 
@@ -372,21 +372,21 @@ public class FragmentSet implements FragmentBuilder {
 	public boolean test(String express, List<String> argument, Object object) {
 		Bindings binder = scriptEngine.createBindings();
 		if (object != null) {
-			if(ClassLoader.implementsOf(object.getClass(), Bindings.class)){ 
+			if(AppClassLoader.implementsOf(object.getClass(), Bindings.class)){ 
 				binder = (Bindings) object;
 			}
 			// 如果参数类型为Map
-			else if (ClassLoader.implementsOf(object.getClass(), Map.class)) {
+			else if (AppClassLoader.implementsOf(object.getClass(), Map.class)) {
 				binder.putAll((Map<? extends String, ? extends Object>) object);
 				for(String key : argument) {
 					if(!binder.containsKey(key))
 						binder.put(key, null);
 				}
 				// 如果参数为List
-			} else if (ClassLoader.implementsOf(object.getClass(), List.class)) {
+			} else if (AppClassLoader.implementsOf(object.getClass(), List.class)) {
 				this.buldListBinder(binder, argument, (List<?>) object);
 				// 如果参数时基本类型
-			} else if (ClassLoader.isBaseType(object.getClass())) {
+			} else if (AppClassLoader.isBaseType(object.getClass())) {
 				if (argument.size() == 1){
 					binder.put(argument.get(0), object);
 				}
@@ -396,7 +396,7 @@ public class FragmentSet implements FragmentBuilder {
 									+ argument + "\" but found one! at mapping file '" + this.sqlFragment.baseMapping.getXmlFile()
 									+ "' at id '" + this.sqlFragment.baseMapping.getId() + "'");
 			} else {
-				ClassLoader loader = new ClassLoader(object);
+				AppClassLoader loader = new AppClassLoader(object);
 				for (int i = 0; i < argument.size(); i++)
 					try {
 						binder.put(argument.get(i), loader.get(argument.get(i)));

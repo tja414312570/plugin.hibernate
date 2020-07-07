@@ -13,7 +13,7 @@ import com.YaNan.frame.jdb.entity.BaseMapping;
 import com.YaNan.frame.jdb.exception.SqlExecuteException;
 import com.YaNan.frame.jdb.mapper.PreparedSql;
 import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.utils.reflect.ClassLoader;
+import com.YaNan.frame.utils.reflect.AppClassLoader;
 
 /**
  * sal片段，用于存储动态sql语句片段
@@ -196,9 +196,9 @@ public abstract class SqlFragment implements FragmentBuilder {
 					arguments.add(parameter[i]);
 			} else if (parameter.length == 1) {
 				Object object = parameter[0];
-				if (ClassLoader.implementsOf(object.getClass(), Map.class)) {
+				if (AppClassLoader.implementsOf(object.getClass(), Map.class)) {
 					this.buildMapParameter(this.arguments, arguments, (Map<?, ?>) object);
-				} else if (ClassLoader.implementsOf(object.getClass(), List.class)) {
+				} else if (AppClassLoader.implementsOf(object.getClass(), List.class)) {
 					this.buldListParameter(this.arguments, arguments, (List<?>) object);
 				} else {
 					arguments.add(object);
@@ -227,11 +227,11 @@ public abstract class SqlFragment implements FragmentBuilder {
 				Object object = parameter[0];
 				if(object==null){
 					arguments.add(object);
-				}else if (ClassLoader.implementsOf(object.getClass(), Map.class)) {
+				}else if (AppClassLoader.implementsOf(object.getClass(), Map.class)) {
 					this.buildMapParameter(variables, arguments, (Map<?, ?>) object);
-				} else if (ClassLoader.implementsOf(object.getClass(), List.class)) {
+				} else if (AppClassLoader.implementsOf(object.getClass(), List.class)) {
 					this.buldListParameter(variables, arguments, (List<?>) object);
-				} else if (ClassLoader.isBaseType(object.getClass())) {
+				} else if (AppClassLoader.isBaseType(object.getClass())) {
 					if (SqlFragment.removeDuplicate(variables).size() == 1)
 						for(int i = 0 ;i<variables.size();i++)
 							arguments.add(object);
@@ -241,7 +241,7 @@ public abstract class SqlFragment implements FragmentBuilder {
 								+ parameter.length + "\"! at mapping file '" + this.baseMapping.getXmlFile()
 								+ "' at id '" + this.baseMapping.getId() + "'");
 				} else {
-					ClassLoader loader = new ClassLoader(object);
+					AppClassLoader loader = new AppClassLoader(object);
 					for (int i = 0; i < variables.size(); i++)
 						try {
 							arguments.add(loader.get(variables.get(i)));

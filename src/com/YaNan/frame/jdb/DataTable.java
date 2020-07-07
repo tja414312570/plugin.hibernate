@@ -29,7 +29,7 @@ import com.YaNan.frame.jdb.operate.Delete;
 import com.YaNan.frame.jdb.operate.Insert;
 import com.YaNan.frame.jdb.operate.Query;
 import com.YaNan.frame.jdb.operate.Update;
-import com.YaNan.frame.utils.reflect.ClassLoader;
+import com.YaNan.frame.utils.reflect.AppClassLoader;
 import com.YaNan.frame.utils.StringUtil;
 
 public class DataTable implements mySqlInterface {
@@ -42,7 +42,7 @@ public class DataTable implements mySqlInterface {
 	private DataSource dataSource;
 	private String include;
 	private boolean isMust;
-	private ClassLoader loader;
+	private AppClassLoader loader;
 	private Map<Field, DBColumn> map = new LinkedHashMap<Field, DBColumn>();
 	private Map<String, DBColumn> nameMap = new HashMap<String, DBColumn>();
 	private String name;
@@ -70,19 +70,19 @@ public class DataTable implements mySqlInterface {
 	 * @param dataTablesClass
 	 */
 	public DataTable(Class<?> dataTablesClass) {
-		this(new ClassLoader(dataTablesClass).getLoadedObject());
+		this(new AppClassLoader(dataTablesClass).getLoadedObject());
 	}
 	
 	DataTable(com.YaNan.frame.jdb.entity.Tab tabEntity)
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-		this(new ClassLoader(tabEntity.getCLASS()).getLoadedClass());
+		this(new AppClassLoader(tabEntity.getCLASS()).getLoadedClass());
 
 	}
 
 	DataTable(Object obj) {
 		this.dataTablesClass = obj.getClass();
 		this.dataTablesObject = obj;
-		this.loader = new ClassLoader(obj);
+		this.loader = new AppClassLoader(obj);
 		try {
 			Tab tab = this.loader.getLoadedClass().getAnnotation(Tab.class);
 			if (tab == null) {
@@ -436,7 +436,7 @@ public class DataTable implements mySqlInterface {
 			PreparedStatement ps = connection.prepareStatement(insert.create());
 			QueryCache.getCache().cleanTable(this.getSchmel(),this.getName());
 			ResultSet rs = ps.getGeneratedKeys();
-			ClassLoader loader = new ClassLoader(obj);
+			AppClassLoader loader = new AppClassLoader(obj);
 			try {
 				if (this.AIField != null && rs.next())
 					loader.set(AIField, rs.getInt(1));
@@ -487,7 +487,7 @@ public class DataTable implements mySqlInterface {
 		ResultSet rs = ps.executeQuery();
 		List<Object> dataTablesObjects = new ArrayList<Object>();
 		while (rs.next()) {
-			loader = new ClassLoader(dataTablesClass, true);
+			loader = new AppClassLoader(dataTablesClass, true);
 			 this.map.keySet().forEach(field->{
 				 try {
 					String columnName = this.map.get(field) == null ? field.getName() : this.map.get(field).getName();
@@ -528,7 +528,7 @@ public class DataTable implements mySqlInterface {
 			preparedParameter(ps, query.getParameters());
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				loader = new ClassLoader(this.dataTablesClass);
+				loader = new AppClassLoader(this.dataTablesClass);
 				Iterator<Field> iterator = query.getFieldMap().keySet().iterator();
 				while (iterator.hasNext()) {
 					Field field = iterator.next();
@@ -570,7 +570,7 @@ public class DataTable implements mySqlInterface {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				loader = new ClassLoader(this.dataTablesClass);
+				loader = new AppClassLoader(this.dataTablesClass);
 				Iterator<Field> iterator = this.map.keySet().iterator();
 				while (iterator.hasNext()) {
 					Field field = iterator.next();
@@ -607,7 +607,7 @@ public class DataTable implements mySqlInterface {
 		ResultSet rs = ps.executeQuery();
 		List<Object> dataTablesObjects = new ArrayList<Object>();
 		while (rs.next()) {
-			loader = new ClassLoader(dataTablesClass, true);
+			loader = new AppClassLoader(dataTablesClass, true);
 			Iterator<Field> iterator = this.map.keySet().iterator();
 			while (iterator.hasNext()) {
 				Field field = iterator.next();
@@ -709,7 +709,7 @@ public class DataTable implements mySqlInterface {
 		this.include = include;
 	}
 
-	public void setLoader(ClassLoader loader) {
+	public void setLoader(AppClassLoader loader) {
 		this.loader = loader;
 	}
 
@@ -775,7 +775,7 @@ public class DataTable implements mySqlInterface {
 		return include;
 	}
 
-	public ClassLoader getLoader() {
+	public AppClassLoader getLoader() {
 		return loader;
 	}
 
@@ -794,7 +794,7 @@ public class DataTable implements mySqlInterface {
 	}
 
 	public void setLoaderObject(Object object) {
-		this.loader = new ClassLoader(object);
+		this.loader = new AppClassLoader(object);
 	}
 
 	public String getSchmel() {

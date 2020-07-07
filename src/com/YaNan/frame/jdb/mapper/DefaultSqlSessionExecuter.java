@@ -46,7 +46,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 		if(params!=null && params.length>1) {
 //			for(int i = 0;i<params.length-1;i++) {
 //				for(int j = i+1;j<params.length;j++) {
-//					if(params[j] != null && params[i] != null && !com.YaNan.frame.utils.reflect.ClassLoader.isBaseType(params[i].getClass()) && params[j].getClass().equals(params[i].getClass())) {
+//					if(params[j] != null && params[i] != null && !com.YaNan.frame.utils.reflect.AppClassLoader.isBaseType(params[i].getClass()) && params[j].getClass().equals(params[i].getClass())) {
 //						throw new JDBSqlExecuteException("could not build parameter map");
 //					}
 //				}
@@ -55,17 +55,17 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 			for(int i = 0;i<params.length;i++) {
 				if(i==0 && params[0] != null) {
 					if(com.YaNan.frame.utils.reflect.
-						ClassLoader.implementsOf(params[0].getClass(), Map.class))
+						AppClassLoader.implementsOf(params[0].getClass(), Map.class))
 					paramMap.putAll((Map)params[0]);
 					if(params[i] == null ||
 							com.YaNan.frame.utils.reflect.
-							ClassLoader.isBaseType(params[0].getClass())){
+							AppClassLoader.isBaseType(params[0].getClass())){
 						paramMap.put("parameter_"+i, params[i]);
 					}else {
 						Field[] fields = ClassHelper.getClassHelper(params[0].getClass()).getAllFields();
 						com.YaNan.frame.utils.reflect.
-						ClassLoader loader =new com.YaNan.frame.utils.reflect.
-								ClassLoader(params[0]);
+						AppClassLoader loader =new com.YaNan.frame.utils.reflect.
+								AppClassLoader(params[0]);
 						for(Field field : fields) {
 							try {
 								paramMap.put(field.getName(), loader.get(field));
@@ -79,7 +79,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 				}else {
 					if(params[i] == null ||
 							com.YaNan.frame.utils.reflect.
-							ClassLoader.isBaseType(params[0].getClass())){
+							AppClassLoader.isBaseType(params[0].getClass())){
 						paramMap.put("parameter_"+i, params[i]);
 					}else {
 						paramMap.put(params[i].getClass().getSimpleName(), params[i]);
