@@ -9,12 +9,17 @@ import org.slf4j.LoggerFactory;
 import com.yanan.frame.jdb.SqlSession;
 import com.yanan.frame.plugin.Plugin;
 import com.yanan.frame.plugin.PlugsFactory;
+import com.yanan.frame.plugin.annotations.AfterInstantiation;
 import com.yanan.frame.plugin.annotations.Register;
 import com.yanan.frame.plugin.autowired.property.Property;
 import com.yanan.frame.plugin.builder.PluginDefinitionBuilderFactory;
 import com.yanan.frame.plugin.builder.PluginInstanceFactory;
+import com.yanan.frame.plugin.decoder.ResourceDecoder;
+import com.yanan.frame.plugin.decoder.StandScanResource;
 import com.yanan.frame.plugin.definition.RegisterDefinition;
 import com.yanan.frame.plugin.handler.InvokeHandler;
+import com.yanan.utils.resource.Resource;
+import com.yanan.utils.resource.ResourceManager;
 import com.yanan.utils.string.PathMatcher;
 
 /**
@@ -22,12 +27,15 @@ import com.yanan.utils.string.PathMatcher;
  * @author yanan
  *
  */
-@Register(afterInstance="execute")
+@Register
 public class MapperInterfaceProxyBuilder {
 	/**
 	 * 上下文
 	 */
 	private SqlSession sqlSession;
+	/**
+	 * 
+	 */
 	private static final Logger logger = LoggerFactory.getLogger(MapperInterfaceProxyBuilder.class);
 	public MapperInterfaceProxyBuilder(SqlSession sqlSession) {
 		super();
@@ -36,12 +44,24 @@ public class MapperInterfaceProxyBuilder {
 	private InvokeHandler generalMapperInterfaceProxy;
 	@Property("classpath:")
 	private String scanPath[];
+	@SuppressWarnings("unchecked")
+	@AfterInstantiation
 	public void execute() {
 		generalMapperInterfaceProxy = PlugsFactory.getPluginsInstanceByParamType(GeneralMapperInterfaceProxy.class,new Class<?>[] {SqlSession.class},sqlSession);
 		RegisterDefinition register = PluginDefinitionBuilderFactory.getInstance().builderRegisterDefinition(GeneralMapperInterfaceProxy.class);
 		//创建一个此注册器的代理容器
 		register.createProxyContainer();
-		//从组件工厂获取所有的组件，就不必要重新扫描整个类了
+//		//从组件工厂获取所有的组件，就不必要重新扫描整个类了
+		//获取扫描路径
+		if(this.scanPath == null)
+			throw new NullPointerException("the scann path is null");
+		for(int i = 0;i<scanPath.length;i++) {
+			scanPath[i] = ResourceManager.getPathExress(scanPath[i])[0];
+		}
+		ResourceDecoder<Resource> resourceDecoder = PlugsFactory.getPluginsInstanceByAttributeStrict(ResourceDecoder.class, StandScanResource.class.getSimpleName());
+		for(String path : scanPath) {
+			resourceDecoder.decodeResource(PlugsFactory.getInstance(), new StandScanResource(path));
+		}
 		Map<Class<?>, Plugin> plugs = PlugsFactory.getInstance().getAllPlugin();
 		for(Plugin plug : plugs.values()){
 			// 查找具有Sql注解的接口
@@ -67,7 +87,10 @@ public class MapperInterfaceProxyBuilder {
 		if(scanPath != null) {
 			boolean is = false;
 			for(String reg : scanPath) {
-				if(PathMatcher.match(reg, plug.getDefinition().getPlugClass().getName()).isMatch()) {
+				String classPath = plug.getDefinition().getPlugClass()
+						.getResource(plug.getDefinition().getPlugClass()
+								.getSimpleName()+".class").getPath();
+				if(PathMatcher.match(reg,classPath).isMatch()) {
 					is = true;
 					break;
 				}
