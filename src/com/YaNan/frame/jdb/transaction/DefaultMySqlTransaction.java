@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.transaction;
+package com.yanan.frame.jdb.transaction;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -8,11 +8,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.plugin.ProxyModel;
-import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.transaction.AbstractTransaction;
-import com.YaNan.frame.transaction.TransactionDefined;
-import com.YaNan.frame.transaction.exception.TransactionExecuteException;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.frame.transaction.AbstractTransaction;
+import com.yanan.frame.transaction.TransactionDefined;
+import com.yanan.frame.transaction.exception.TransactionExecuteException;
+import com.yanan.frame.plugin.ProxyModel;
 
 /**
  * Mysql事物实现

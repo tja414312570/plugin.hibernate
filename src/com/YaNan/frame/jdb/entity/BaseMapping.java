@@ -1,12 +1,12 @@
-package com.YaNan.frame.jdb.entity;
+package com.yanan.frame.jdb.entity;
 
 import java.util.List;
 
-import com.YaNan.frame.utils.beans.xml.Attribute;
-import com.YaNan.frame.utils.beans.xml.Ignore;
-import com.YaNan.frame.utils.beans.xml.NodeName;
-import com.YaNan.frame.utils.beans.xml.Value;
-import com.YaNan.frame.utils.beans.xml.XmlResource;
+import com.yanan.utils.beans.xml.Attribute;
+import com.yanan.utils.beans.xml.Ignore;
+import com.yanan.utils.beans.xml.NodeName;
+import com.yanan.utils.beans.xml.Value;
+import com.yanan.utils.beans.xml.XmlResource;
 
 public abstract class BaseMapping extends TagSupport{
 	@XmlResource

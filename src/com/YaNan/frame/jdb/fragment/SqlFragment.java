@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.fragment;
+package com.yanan.frame.jdb.fragment;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
@@ -8,12 +8,12 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
-import com.YaNan.frame.jdb.JDBContext;
-import com.YaNan.frame.jdb.entity.BaseMapping;
-import com.YaNan.frame.jdb.exception.SqlExecuteException;
-import com.YaNan.frame.jdb.mapper.PreparedSql;
-import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.utils.reflect.AppClassLoader;
+import com.yanan.frame.jdb.JDBContext;
+import com.yanan.frame.jdb.entity.BaseMapping;
+import com.yanan.frame.jdb.exception.SqlExecuteException;
+import com.yanan.frame.jdb.mapper.PreparedSql;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.utils.reflect.AppClassLoader;
 
 /**
  * sal片段，用于存储动态sql语句片段

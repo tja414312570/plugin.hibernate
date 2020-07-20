@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb;
+package com.yanan.frame.jdb;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -18,19 +18,19 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.DBInterface.mySqlInterface;
-import com.YaNan.frame.jdb.annotation.Column;
-import com.YaNan.frame.jdb.annotation.Tab;
-import com.YaNan.frame.jdb.cache.Class2TabMappingCache;
-import com.YaNan.frame.jdb.cache.QueryCache;
-import com.YaNan.frame.jdb.operate.BatchInsert;
-import com.YaNan.frame.jdb.operate.Create;
-import com.YaNan.frame.jdb.operate.Delete;
-import com.YaNan.frame.jdb.operate.Insert;
-import com.YaNan.frame.jdb.operate.Query;
-import com.YaNan.frame.jdb.operate.Update;
-import com.YaNan.frame.utils.reflect.AppClassLoader;
-import com.YaNan.frame.utils.StringUtil;
+import com.yanan.frame.jdb.DBInterface.mySqlInterface;
+import com.yanan.frame.jdb.annotation.Column;
+import com.yanan.frame.jdb.annotation.Tab;
+import com.yanan.frame.jdb.cache.Class2TabMappingCache;
+import com.yanan.frame.jdb.cache.QueryCache;
+import com.yanan.frame.jdb.operate.BatchInsert;
+import com.yanan.frame.jdb.operate.Create;
+import com.yanan.frame.jdb.operate.Delete;
+import com.yanan.frame.jdb.operate.Insert;
+import com.yanan.frame.jdb.operate.Query;
+import com.yanan.frame.jdb.operate.Update;
+import com.yanan.utils.reflect.AppClassLoader;
+import com.yanan.utils.string.StringUtil;
 
 public class DataTable implements mySqlInterface {
 	private Field AIField;
@@ -73,7 +73,7 @@ public class DataTable implements mySqlInterface {
 		this(new AppClassLoader(dataTablesClass).getLoadedObject());
 	}
 	
-	DataTable(com.YaNan.frame.jdb.entity.Tab tabEntity)
+	DataTable(com.yanan.frame.jdb.entity.Tab tabEntity)
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		this(new AppClassLoader(tabEntity.getCLASS()).getLoadedClass());
 

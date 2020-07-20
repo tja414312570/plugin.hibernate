@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.mapper;
+package com.yanan.frame.jdb.mapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,12 +10,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.exception.SqlExecuteException;
-import com.YaNan.frame.jdb.fragment.SqlFragment;
-import com.YaNan.frame.jdb.orm.OrmBuilder;
-import com.YaNan.frame.plugin.PlugsFactory;
-import com.YaNan.frame.transaction.AbstractTransaction;
-import com.YaNan.frame.transaction.TransactionManager;
+import com.yanan.frame.jdb.exception.SqlExecuteException;
+import com.yanan.frame.jdb.fragment.SqlFragment;
+import com.yanan.frame.jdb.orm.OrmBuilder;
+import com.yanan.frame.transaction.AbstractTransaction;
+import com.yanan.frame.transaction.TransactionManager;
+import com.yanan.frame.plugin.PlugsFactory;
 
 /**
  * sql执行类 所有sqlsession提供的方法都在此处实现
@@ -57,7 +57,7 @@ public class PreparedSql {
 			this.preparedParameter(ps, collect);
 			ResultSet rs = ps.executeQuery();
 			// 通过orm Builder 来组装返回结果
-			OrmBuilder builder = PlugsFactory.getPlugsInstanceByAttributeStrict(OrmBuilder.class,
+			OrmBuilder builder = PlugsFactory.getPluginsInstanceByAttributeStrict(OrmBuilder.class,
 					sqlFragment.getResultType());
 			List<Object> result = builder.builder(rs, sqlFragment);
 			log.debug("result rows:" + result.size());
@@ -90,7 +90,7 @@ public class PreparedSql {
 			if (sqlFragment.getResultType() == null)
 				throw new SqlExecuteException("Query result type is not allowed to be empty");
 			// 通过orm Builder 来组装返回结果
-			OrmBuilder builder = PlugsFactory.getPlugsInstanceByAttributeStrict(OrmBuilder.class,
+			OrmBuilder builder = PlugsFactory.getPluginsInstanceByAttributeStrict(OrmBuilder.class,
 					sqlFragment.getResultType());
 			List<Object> result = builder.builder(rs, sqlFragment);
 			if (result.size() > 1)

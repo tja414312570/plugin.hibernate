@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.DBInterface;
+package com.yanan.frame.jdb.DBInterface;
 
 import java.util.regex.Pattern;
 

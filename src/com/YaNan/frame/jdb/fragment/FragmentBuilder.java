@@ -1,6 +1,6 @@
-package com.YaNan.frame.jdb.fragment;
+package com.yanan.frame.jdb.fragment;
 
-import com.YaNan.frame.plugin.annotations.Service;
+import com.yanan.frame.plugin.annotations.Service;
 
 @Service
 public interface FragmentBuilder {

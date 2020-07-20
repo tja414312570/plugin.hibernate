@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.fragment;
+package com.yanan.frame.jdb.fragment;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -12,15 +12,15 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import com.YaNan.frame.jdb.JDBContext;
-import com.YaNan.frame.jdb.entity.TagSupport;
-import com.YaNan.frame.jdb.exception.SqlExecuteException;
-import com.YaNan.frame.plugin.PlugsFactory;
-import com.YaNan.frame.plugin.ProxyModel;
-import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.plugin.handler.PlugsHandler;
-import com.YaNan.frame.utils.reflect.AppClassLoader;
-import com.YaNan.frame.utils.StringUtil;
+import com.yanan.frame.jdb.JDBContext;
+import com.yanan.frame.jdb.entity.TagSupport;
+import com.yanan.frame.jdb.exception.SqlExecuteException;
+import com.yanan.frame.plugin.PlugsFactory;
+import com.yanan.frame.plugin.ProxyModel;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.frame.plugin.handler.PlugsHandler;
+import com.yanan.utils.reflect.AppClassLoader;
+import com.yanan.utils.string.StringUtil;
 
 /**
  * sql片断的默认集合实现，基于二叉树结构
@@ -85,7 +85,7 @@ public class FragmentSet implements FragmentBuilder {
 		/**
 		 * 通过调用PlugsFactory生成PreparedFragment的实例。
 		 */
-		PreparedFragment preparedFragment = PlugsFactory.getPlugsInstance(PreparedFragment.class);
+		PreparedFragment preparedFragment = PlugsFactory.getPluginsInstance(PreparedFragment.class);
 		/**
 		 * 将所有的变量都添加到预执行片段中
 		 */
@@ -280,7 +280,7 @@ public class FragmentSet implements FragmentBuilder {
 			List<TagSupport> tags = this.tagSupport.getTags();
 			for (TagSupport tag : tags) {
 				// 获得TagSupport的类型
-				PlugsHandler plugsHandler = PlugsFactory.getPlugsHandler(tag);
+				PlugsHandler plugsHandler = PlugsFactory.getPluginsHandler(tag);
 				Class<?> tagClass = plugsHandler.getProxyClass();
 				// 截取类容
 				int predex = sql.indexOf(tag.getXml());
@@ -288,7 +288,7 @@ public class FragmentSet implements FragmentBuilder {
 				String preffix = sql.substring(0, predex);
 				if (preffix != null && !preffix.trim().equals("")) {
 					currentFragmentSet = (FragmentSet) PlugsFactory
-							.getPlugsInstanceByAttributeStrict(FragmentBuilder.class, "DEFAULT.fragment");
+							.getPluginsInstanceByAttributeStrict(FragmentBuilder.class, "DEFAULT.fragment");
 					currentFragmentSet.setXml(preffix);
 					currentFragmentSet.setValue(preffix);
 					currentFragmentSet.setSqlFragment(this.sqlFragment);
@@ -300,7 +300,7 @@ public class FragmentSet implements FragmentBuilder {
 					preFragmentSet = currentFragmentSet;
 				}
 				// 根据类型获取对应FragmentSet
-				currentFragmentSet = (FragmentSet) PlugsFactory.getPlugsInstanceByAttributeStrict(FragmentBuilder.class,
+				currentFragmentSet = (FragmentSet) PlugsFactory.getPluginsInstanceByAttributeStrict(FragmentBuilder.class,
 						tagClass.getName() + ".fragment");
 				// 判断根FragmentSet是否为空
 				if (this.childSet == null)
@@ -316,7 +316,7 @@ public class FragmentSet implements FragmentBuilder {
 				sql = sql.substring(predex + len);
 			}
 			if (sql != null && !sql.trim().equals("")) {
-				currentFragmentSet = (FragmentSet) PlugsFactory.getPlugsInstanceByAttributeStrict(FragmentBuilder.class,
+				currentFragmentSet = (FragmentSet) PlugsFactory.getPluginsInstanceByAttributeStrict(FragmentBuilder.class,
 						"DEFAULT.fragment");
 				currentFragmentSet.setXml(sql);
 				currentFragmentSet.setValue(sql);

@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.orm;
+package com.yanan.frame.jdb.orm;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -14,12 +14,12 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.DBColumn;
-import com.YaNan.frame.jdb.DataTable;
-import com.YaNan.frame.jdb.cache.Class2TabMappingCache;
-import com.YaNan.frame.jdb.fragment.SqlFragment;
-import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.utils.reflect.AppClassLoader;
+import com.yanan.frame.jdb.DBColumn;
+import com.yanan.frame.jdb.DataTable;
+import com.yanan.frame.jdb.cache.Class2TabMappingCache;
+import com.yanan.frame.jdb.fragment.SqlFragment;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.utils.reflect.AppClassLoader;
 
 @Register(priority=Integer.MAX_VALUE)
 public class DefaultOrmBuilder implements OrmBuilder{

@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb;
+package com.yanan.frame.jdb;
 
 public class DataBaseConfigure {
 	private String id;//数据库ID

@@ -1,7 +1,7 @@
-package com.YaNan.frame.jdb.entity;
+package com.yanan.frame.jdb.entity;
 
 
-import com.YaNan.frame.utils.beans.xml.Attribute;
+import com.yanan.utils.beans.xml.Attribute;
 
 public class ForEach extends TagSupport{
 	@Attribute

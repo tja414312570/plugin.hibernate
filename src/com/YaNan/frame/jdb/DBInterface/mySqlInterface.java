@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.DBInterface;
+package com.yanan.frame.jdb.DBInterface;
 
 public interface mySqlInterface {
 	public static final String COLUMN_TYPE_INT = "INT";

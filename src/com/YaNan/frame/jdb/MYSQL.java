@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb;
+package com.yanan.frame.jdb;
 
 public interface MYSQL {
 	public interface CHARSET{

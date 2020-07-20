@@ -1,10 +1,10 @@
-package com.YaNan.frame.jdb.fragment;
+package com.yanan.frame.jdb.fragment;
 
-import com.YaNan.frame.jdb.cache.GeneralCache;
-import com.YaNan.frame.jdb.entity.Var;
-import com.YaNan.frame.plugin.PlugsFactory;
-import com.YaNan.frame.plugin.ProxyModel;
-import com.YaNan.frame.plugin.annotations.Register;
+import com.yanan.frame.jdb.cache.GeneralCache;
+import com.yanan.frame.jdb.entity.Var;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.frame.plugin.PlugsFactory;
+import com.yanan.frame.plugin.ProxyModel;
 
 @Register(attribute = "*.Var.fragment", model = ProxyModel.CGLIB, signlTon = false)
 public class VarFragment extends FragmentSet implements FragmentBuilder {
@@ -32,7 +32,7 @@ public class VarFragment extends FragmentSet implements FragmentBuilder {
 		/**
 		 * 通过调用PlugsFactory生成PreparedFragment的实例。
 		 */
-		PreparedFragment preparedFragment = PlugsFactory.getPlugsInstance(PreparedFragment.class);
+		PreparedFragment preparedFragment = PlugsFactory.getPluginsInstance(PreparedFragment.class);
 		/**
 		 * 将所有的变量都添加到预执行片段中
 		 */

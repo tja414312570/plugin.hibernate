@@ -1,14 +1,14 @@
-package com.YaNan.frame.jdb.fragment;
+package com.yanan.frame.jdb.fragment;
 
 import java.util.List;
 
-import com.YaNan.frame.jdb.entity.SelectorMapping;
-import com.YaNan.frame.jdb.entity.TagSupport;
-import com.YaNan.frame.jdb.mapper.PreparedSql;
-import com.YaNan.frame.plugin.PlugsFactory;
-import com.YaNan.frame.plugin.ProxyModel;
-import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.plugin.handler.PlugsHandler;
+import com.yanan.frame.jdb.entity.SelectorMapping;
+import com.yanan.frame.jdb.entity.TagSupport;
+import com.yanan.frame.jdb.mapper.PreparedSql;
+import com.yanan.frame.plugin.PlugsFactory;
+import com.yanan.frame.plugin.ProxyModel;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.frame.plugin.handler.PlugsHandler;
 
 /**
  * 
@@ -46,7 +46,7 @@ public class SelectorFragment extends SqlFragment implements FragmentBuilder {
 		if (tags.size() == 0)// 如果没有动态标签
 		{
 			this.fragemntSet = currentFragmentSet = (FragmentSet) PlugsFactory
-					.getPlugsInstanceByAttributeStrict(FragmentBuilder.class, "DEFAULT.fragment");
+					.getPluginsInstanceByAttributeStrict(FragmentBuilder.class, "DEFAULT.fragment");
 			currentFragmentSet.setXml(this.baseMapping.getXml());
 			currentFragmentSet.setContext(getContext());
 			currentFragmentSet.setValue(this.baseMapping.getContent());
@@ -55,7 +55,7 @@ public class SelectorFragment extends SqlFragment implements FragmentBuilder {
 		} else {
 			for (TagSupport tag : tags) {
 				// 获得TagSupport的类型
-				PlugsHandler plugsHandler = PlugsFactory.getPlugsHandler(tag);
+				PlugsHandler plugsHandler = PlugsFactory.getPluginsHandler(tag);
 				Class<?> tagClass = plugsHandler.getProxyClass();
 				// 截取类容
 				int predex = sql.indexOf(tag.getXml());
@@ -63,7 +63,7 @@ public class SelectorFragment extends SqlFragment implements FragmentBuilder {
 				String preffix = sql.substring(0, predex);
 				if (preffix != null && !preffix.trim().equals("")) {
 					currentFragmentSet = (FragmentSet) PlugsFactory
-							.getPlugsInstanceByAttributeStrict(FragmentBuilder.class, "DEFAULT.fragment");
+							.getPluginsInstanceByAttributeStrict(FragmentBuilder.class, "DEFAULT.fragment");
 					currentFragmentSet.setXml(preffix);
 					currentFragmentSet.setValue(preffix);
 					currentFragmentSet.setContext(getContext());
@@ -76,7 +76,7 @@ public class SelectorFragment extends SqlFragment implements FragmentBuilder {
 					preFragmentSet = currentFragmentSet;
 				}
 				// 根据类型获取对应FragmentSet
-				currentFragmentSet = (FragmentSet) PlugsFactory.getPlugsInstanceByAttributeStrict(FragmentBuilder.class,
+				currentFragmentSet = (FragmentSet) PlugsFactory.getPluginsInstanceByAttributeStrict(FragmentBuilder.class,
 						tagClass.getName() + ".fragment");
 				// 判断根FragmentSet是否为空
 				if (this.fragemntSet == null)
@@ -94,7 +94,7 @@ public class SelectorFragment extends SqlFragment implements FragmentBuilder {
 			}
 			// 截取类容
 			if (sql != null && !sql.trim().equals("")) {
-				currentFragmentSet = (FragmentSet) PlugsFactory.getPlugsInstanceByAttributeStrict(FragmentBuilder.class,
+				currentFragmentSet = (FragmentSet) PlugsFactory.getPluginsInstanceByAttributeStrict(FragmentBuilder.class,
 						"DEFAULT.fragment");
 				currentFragmentSet.setXml(sql);
 				currentFragmentSet.setValue(sql);

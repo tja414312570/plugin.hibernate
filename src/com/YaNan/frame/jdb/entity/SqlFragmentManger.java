@@ -1,10 +1,10 @@
-package com.YaNan.frame.jdb.entity;
+package com.yanan.frame.jdb.entity;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.YaNan.frame.jdb.JDBContext;
-import com.YaNan.frame.jdb.fragment.SqlFragment;
+import com.yanan.frame.jdb.JDBContext;
+import com.yanan.frame.jdb.fragment.SqlFragment;
 
 public class SqlFragmentManger {
 	private Map<String,WrapMapping> wrapMapping = new HashMap<String,WrapMapping>();

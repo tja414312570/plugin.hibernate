@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.DBInterface;
+package com.yanan.frame.jdb.DBInterface;
 
 public interface LOGIC_STATUS {
 	public static final int NORMAL=24;//逻辑正常

@@ -1,9 +1,9 @@
-package com.YaNan.frame.jdb.entity;
+package com.yanan.frame.jdb.entity;
 
 import java.util.Arrays;
 
-import com.YaNan.frame.jdb.DataBaseConfigure;
-import com.YaNan.frame.utils.beans.xml.Element;
+import com.yanan.frame.jdb.DataBaseConfigure;
+import com.yanan.utils.beans.xml.Element;
 
 @Element(name="/Hibernate")
 public class WrapperConfgureMapping {

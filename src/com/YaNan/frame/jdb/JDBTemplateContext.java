@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb;
+package com.yanan.frame.jdb;
 
 import java.util.Arrays;
 
@@ -7,9 +7,9 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.plugin.autowired.property.Property;
-import com.YaNan.frame.utils.asserts.Assert;
-import com.YaNan.frame.utils.resource.PackageScanner;
+import com.yanan.frame.plugin.autowired.property.Property;
+import com.yanan.utils.asserts.Assert;
+import com.yanan.utils.resource.scanner.PackageScanner;
 
 
 public class JDBTemplateContext {

@@ -1,23 +1,23 @@
-package com.YaNan.frame.jdb.mapper;
+package com.yanan.frame.jdb.mapper;
 
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.YaNan.frame.jdb.SqlSession;
-import com.YaNan.frame.jdb.annotation.Sql;
-import com.YaNan.frame.jdb.entity.BaseMapping;
-import com.YaNan.frame.jdb.exception.SqlExecuteException;
-import com.YaNan.frame.jdb.mapper.annotations.Param;
-import com.YaNan.frame.plugin.ProxyModel;
-import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.plugin.annotations.Support;
-import com.YaNan.frame.plugin.handler.InvokeHandler;
-import com.YaNan.frame.plugin.handler.MethodHandler;
-import com.YaNan.frame.utils.reflect.cache.ClassHelper;
-import com.YaNan.frame.utils.reflect.cache.MethodHelper;
-import com.YaNan.frame.utils.reflect.cache.ParameterHelper;
+import com.yanan.frame.jdb.SqlSession;
+import com.yanan.frame.jdb.annotation.Sql;
+import com.yanan.frame.jdb.entity.BaseMapping;
+import com.yanan.frame.jdb.exception.SqlExecuteException;
+import com.yanan.frame.jdb.mapper.annotations.Param;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.frame.plugin.annotations.Support;
+import com.yanan.frame.plugin.handler.InvokeHandler;
+import com.yanan.frame.plugin.handler.MethodHandler;
+import com.yanan.utils.reflect.cache.ClassHelper;
+import com.yanan.utils.reflect.cache.MethodHelper;
+import com.yanan.utils.reflect.cache.ParameterHelper;
+import com.yanan.frame.plugin.ProxyModel;
 
 /**
  * 通用Sql映射接口调用实现
@@ -50,7 +50,7 @@ public class GeneralMapperInterfaceProxy implements InvokeHandler{
 		if(mapping==null)
 			throw new SqlExecuteException("could not found sql mapper id \""+method+"\" at namespace \""+clzz+"\"");
 		if(mapping.getNode().trim().toLowerCase().equals("select")){
-			if(com.YaNan.frame.utils.reflect.AppClassLoader.implementsOf(methodHandler.getMethod().getReturnType(), List.class)){
+			if(com.yanan.utils.reflect.AppClassLoader.implementsOf(methodHandler.getMethod().getReturnType(), List.class)){
 				methodHandler.interrupt(sqlSession.selectList(sqlId, parameter));
 			}else{
 				methodHandler.interrupt(sqlSession.selectOne(sqlId, parameter));

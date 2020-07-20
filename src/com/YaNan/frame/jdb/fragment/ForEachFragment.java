@@ -1,18 +1,19 @@
-package com.YaNan.frame.jdb.fragment;
+package com.yanan.frame.jdb.fragment;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.script.Bindings;
 
-import com.YaNan.frame.jdb.entity.ForEach;
-import com.YaNan.frame.jdb.exception.SqlExecuteException;
-import com.YaNan.frame.plugin.PlugsFactory;
-import com.YaNan.frame.plugin.ProxyModel;
-import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.utils.reflect.AppClassLoader;
-import com.YaNan.frame.utils.StringUtil;
+import com.yanan.frame.jdb.entity.ForEach;
+import com.yanan.frame.jdb.exception.SqlExecuteException;
+import com.yanan.frame.plugin.PlugsFactory;
+import com.yanan.frame.plugin.ProxyModel;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.utils.reflect.AppClassLoader;
+import com.yanan.utils.string.StringUtil;
 
 /**
  * 用于处理Trim标签产生的sql片段
@@ -31,7 +32,7 @@ public class ForEachFragment extends FragmentSet implements FragmentBuilder {
 	@Override
 	public PreparedFragment prepared(Object objects) {
 		List<Object> param = this.getParameter(objects);
-		PreparedFragment preparedFragment = PlugsFactory.getPlugsInstance(PreparedFragment.class);
+		PreparedFragment preparedFragment = PlugsFactory.getPluginsInstance(PreparedFragment.class);
 		if (this.nextSet != null && this.childSet != null) {
 			StringBuffer sb = new StringBuffer();
 			// 先处理替换的字符

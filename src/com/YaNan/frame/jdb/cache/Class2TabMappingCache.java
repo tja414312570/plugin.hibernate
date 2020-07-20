@@ -1,11 +1,11 @@
-package com.YaNan.frame.jdb.cache;
+package com.yanan.frame.jdb.cache;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.YaNan.frame.jdb.DataTable;
-import com.YaNan.frame.jdb.exception.SqlExecuteException;
+import com.yanan.frame.jdb.DataTable;
+import com.yanan.frame.jdb.exception.SqlExecuteException;
 
 public class Class2TabMappingCache {
 	private static Class2TabMappingCache dbManager;

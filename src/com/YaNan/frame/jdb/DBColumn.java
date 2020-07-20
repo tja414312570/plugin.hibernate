@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb;
+package com.yanan.frame.jdb;
 
 import java.lang.reflect.Field;
 import java.sql.Date;
@@ -6,9 +6,9 @@ import java.sql.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.DBInterface.MySql;
-import com.YaNan.frame.jdb.DBInterface.mySqlInterface;
-import com.YaNan.frame.jdb.annotation.Column;
+import com.yanan.frame.jdb.DBInterface.MySql;
+import com.yanan.frame.jdb.DBInterface.mySqlInterface;
+import com.yanan.frame.jdb.annotation.Column;
 
 /**
  * java字段与数据库的列的映射实体类</br>

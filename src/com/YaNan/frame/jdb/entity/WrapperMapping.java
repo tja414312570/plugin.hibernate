@@ -1,14 +1,14 @@
-package com.YaNan.frame.jdb.entity;
+package com.yanan.frame.jdb.entity;
 
 import java.util.List;
 
-import com.YaNan.frame.utils.beans.xml.Attribute;
-import com.YaNan.frame.utils.beans.xml.ENCODEING;
-import com.YaNan.frame.utils.beans.xml.Element;
-import com.YaNan.frame.utils.beans.xml.Encode;
-import com.YaNan.frame.utils.beans.xml.FieldType;
-import com.YaNan.frame.utils.beans.xml.FieldTypes;
-import com.YaNan.frame.utils.beans.xml.Mapping;
+import com.yanan.utils.beans.xml.Attribute;
+import com.yanan.utils.beans.xml.ENCODEING;
+import com.yanan.utils.beans.xml.Element;
+import com.yanan.utils.beans.xml.Encode;
+import com.yanan.utils.beans.xml.FieldType;
+import com.yanan.utils.beans.xml.FieldTypes;
+import com.yanan.utils.beans.xml.Mapping;
 
 @Encode(ENCODEING.UTF16)
 @Element(name="wrapper")

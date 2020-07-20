@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.entity;
+package com.yanan.frame.jdb.entity;
 
 import java.util.ArrayList;
 import java.util.List;

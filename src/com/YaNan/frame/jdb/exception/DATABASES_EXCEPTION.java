@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.exception;
+package com.yanan.frame.jdb.exception;
 
 public interface DATABASES_EXCEPTION {
 	public static final  int NOT_INIT = 4280;

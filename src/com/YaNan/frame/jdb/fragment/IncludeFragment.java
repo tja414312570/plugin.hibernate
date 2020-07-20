@@ -1,14 +1,14 @@
-package com.YaNan.frame.jdb.fragment;
+package com.yanan.frame.jdb.fragment;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.JDBContext;
-import com.YaNan.frame.jdb.entity.BaseMapping;
-import com.YaNan.frame.jdb.entity.Include;
-import com.YaNan.frame.jdb.exception.JDBContextInitException;
-import com.YaNan.frame.plugin.ProxyModel;
-import com.YaNan.frame.plugin.annotations.Register;
+import com.yanan.frame.jdb.JDBContext;
+import com.yanan.frame.jdb.entity.BaseMapping;
+import com.yanan.frame.jdb.entity.Include;
+import com.yanan.frame.jdb.exception.JDBContextInitException;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.frame.plugin.ProxyModel;
 
 @Register(attribute = "*.Include.fragment", model = ProxyModel.CGLIB, signlTon = false)
 public class IncludeFragment extends FragmentSet implements FragmentBuilder {

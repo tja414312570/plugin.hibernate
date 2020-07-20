@@ -1,4 +1,4 @@
-package com.YaNan.frame.transaction;
+package com.yanan.frame.transaction;
 
 /**
  * 事物传播行为

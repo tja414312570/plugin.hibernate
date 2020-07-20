@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.annotation;
+package com.yanan.frame.jdb.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

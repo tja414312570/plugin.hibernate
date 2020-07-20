@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.datasource;
+package com.yanan.frame.jdb.datasource;
 
 public class ConnectionWaitTimeout extends RuntimeException {
 

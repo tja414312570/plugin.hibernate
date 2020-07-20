@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.mapper;
+package com.yanan.frame.jdb.mapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -7,12 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.YaNan.frame.jdb.JDBContext;
-import com.YaNan.frame.jdb.SqlSession;
-import com.YaNan.frame.jdb.exception.SqlExecuteException;
-import com.YaNan.frame.jdb.fragment.SqlFragment;
-import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.utils.reflect.cache.ClassHelper;
+import com.yanan.frame.jdb.JDBContext;
+import com.yanan.frame.jdb.SqlSession;
+import com.yanan.frame.jdb.exception.SqlExecuteException;
+import com.yanan.frame.jdb.fragment.SqlFragment;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.utils.reflect.cache.ClassHelper;
 /**
  * 框架默认sqlsession的实现类
  * @author yanan
@@ -46,7 +46,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 		if(params!=null && params.length>1) {
 //			for(int i = 0;i<params.length-1;i++) {
 //				for(int j = i+1;j<params.length;j++) {
-//					if(params[j] != null && params[i] != null && !com.YaNan.frame.utils.reflect.AppClassLoader.isBaseType(params[i].getClass()) && params[j].getClass().equals(params[i].getClass())) {
+//					if(params[j] != null && params[i] != null && !com.yanan.utils.reflect.AppClassLoader.isBaseType(params[i].getClass()) && params[j].getClass().equals(params[i].getClass())) {
 //						throw new JDBSqlExecuteException("could not build parameter map");
 //					}
 //				}
@@ -54,17 +54,17 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 			Map<String,Object> paramMap = new HashMap<>();;
 			for(int i = 0;i<params.length;i++) {
 				if(i==0 && params[0] != null) {
-					if(com.YaNan.frame.utils.reflect.
+					if(com.yanan.utils.reflect.
 						AppClassLoader.implementsOf(params[0].getClass(), Map.class))
 					paramMap.putAll((Map)params[0]);
 					if(params[i] == null ||
-							com.YaNan.frame.utils.reflect.
+							com.yanan.utils.reflect.
 							AppClassLoader.isBaseType(params[0].getClass())){
 						paramMap.put("parameter_"+i, params[i]);
 					}else {
 						Field[] fields = ClassHelper.getClassHelper(params[0].getClass()).getAllFields();
-						com.YaNan.frame.utils.reflect.
-						AppClassLoader loader =new com.YaNan.frame.utils.reflect.
+						com.yanan.utils.reflect.
+						AppClassLoader loader =new com.yanan.utils.reflect.
 								AppClassLoader(params[0]);
 						for(Field field : fields) {
 							try {
@@ -78,7 +78,7 @@ public class DefaultSqlSessionExecuter implements SqlSession{
 					}
 				}else {
 					if(params[i] == null ||
-							com.YaNan.frame.utils.reflect.
+							com.yanan.utils.reflect.
 							AppClassLoader.isBaseType(params[0].getClass())){
 						paramMap.put("parameter_"+i, params[i]);
 					}else {

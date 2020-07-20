@@ -1,9 +1,9 @@
-package com.YaNan.frame.jdb.orm;
+package com.yanan.frame.jdb.orm;
 
 import java.sql.ResultSet;
 import java.util.List;
 
-import com.YaNan.frame.jdb.fragment.SqlFragment;
+import com.yanan.frame.jdb.fragment.SqlFragment;
 /**
  * Orm构建接口
  * @author yanan

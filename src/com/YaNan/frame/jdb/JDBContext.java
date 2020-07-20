@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb;
+package com.yanan.frame.jdb;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -13,23 +13,27 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.cache.Class2TabMappingCache;
-import com.YaNan.frame.jdb.entity.BaseMapping;
-import com.YaNan.frame.jdb.entity.SqlFragmentManger;
-import com.YaNan.frame.jdb.entity.WrapperMapping;
-import com.YaNan.frame.jdb.fragment.FragmentBuilder;
-import com.YaNan.frame.jdb.fragment.SqlFragment;
-import com.YaNan.frame.plugin.PlugsFactory;
-import com.YaNan.frame.plugin.PlugsFactory.STREAM_TYPT;
-import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.plugin.autowired.property.Property;
-import com.YaNan.frame.plugin.handler.PlugsHandler;
-import com.YaNan.frame.utils.beans.xml.XMLHelper;
-import com.YaNan.frame.utils.resource.AbstractResourceEntry;
-import com.YaNan.frame.utils.resource.PackageScanner;
-import com.YaNan.frame.utils.resource.ResourceManager;
+import com.mchange.v2.async.StrandedTaskReporting;
+import com.yanan.frame.jdb.cache.Class2TabMappingCache;
+import com.yanan.frame.jdb.entity.BaseMapping;
+import com.yanan.frame.jdb.entity.SqlFragmentManger;
+import com.yanan.frame.jdb.entity.WrapperMapping;
+import com.yanan.frame.jdb.fragment.FragmentBuilder;
+import com.yanan.frame.jdb.fragment.SqlFragment;
+import com.yanan.utils.beans.xml.XMLHelper;
+import com.yanan.frame.plugin.PlugsFactory;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.frame.plugin.autowired.property.Property;
+import com.yanan.frame.plugin.decoder.ResourceDecoder;
+import com.yanan.frame.plugin.decoder.StandAbstractResourceDecoder;
+import com.yanan.frame.plugin.handler.PlugsHandler;
+import com.yanan.utils.resource.AbstractResourceEntry;
+import com.yanan.utils.resource.InputStreamResource;
+import com.yanan.utils.resource.Resource;
+import com.yanan.utils.resource.ResourceManager;
+import com.yanan.utils.resource.scanner.PackageScanner;
 
-@Register(init = "init")
+@Register(afterInstance = "init")
 public class JDBContext {
 	private static final Logger logger = LoggerFactory.getLogger(JDBContext.class);
 
@@ -92,12 +96,15 @@ public class JDBContext {
 		return mapperLocations;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void init() {
 		// 获取mapper配置
-		InputStream pluginConf = JDBContext.class.getResourceAsStream("./conf/plugin.yc");
-		PlugsFactory.getInstance().addPlugs(pluginConf, STREAM_TYPT.CONF, null);
-		if (!PlugsFactory.getInstance().isAvailable())
-			PlugsFactory.init();
+		InputStream inputStreamSource = JDBContext.class.getResourceAsStream("./conf/plugin.yc");
+		Resource resource = new InputStreamResource("plugin.yc",JDBContext.class.getResource("./conf/plugin.yc").getPath(),inputStreamSource);
+		ResourceDecoder<Resource> resourceDecoder = 
+				PlugsFactory.getPluginsInstanceByAttributeStrict(ResourceDecoder.class, AbstractResourceEntry.class.getSimpleName());
+		resourceDecoder.decodeResource(PlugsFactory.getInstance(), resource);
+//		PlugsFactory.getInstance().refresh();
 		logger.debug("init hibernate configure!");
 		String[] wrappers = mapperLocations;
 		if (wrappers == null || wrappers.length == 0)
@@ -149,8 +156,8 @@ public class JDBContext {
 			}
 		}
 		SqlFragment sqlFragment = null;
-		PlugsHandler handler = PlugsFactory.getPlugsHandler(mapping);
-		FragmentBuilder fragmentBuilder = PlugsFactory.getPlugsInstanceByAttributeStrict(FragmentBuilder.class,
+		PlugsHandler handler = PlugsFactory.getPluginsHandler(mapping);
+		FragmentBuilder fragmentBuilder = PlugsFactory.getPluginsInstanceByAttributeStrict(FragmentBuilder.class,
 				handler.getProxyClass().getName() + ".root");
 		logger.debug("build " + mapping.getNode().toUpperCase() + " wrapper fragment , wrapper id : \""
 				+ mapping.getWrapperMapping().getNamespace() + "." + mapping.getId() + "\" ,ref : "+mapping.getWrapperMapping().isRef());
@@ -172,7 +179,7 @@ public class JDBContext {
 				scanner.addScanPath(ResourceManager.getPathExress(path));
 			}
 			scanner.doScanner((Class<?> cls) -> {
-				if (cls.getAnnotation(com.YaNan.frame.jdb.annotation.Tab.class) != null) {
+				if (cls.getAnnotation(com.yanan.frame.jdb.annotation.Tab.class) != null) {
 					logger.debug("scan template class:" + cls.getName());
 					DataTable table = new DataTable(cls);
 					table.setDataSource(dataSource);

@@ -1,13 +1,13 @@
-package com.YaNan.frame.transaction;
+package com.yanan.frame.transaction;
 
 import java.util.Stack;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.plugin.PlugsFactory;
-import com.YaNan.frame.transaction.exception.TransactionExistsException;
-import com.YaNan.frame.transaction.exception.TransactionIsNotExistsException;
+import com.yanan.frame.plugin.PlugsFactory;
+import com.yanan.frame.transaction.exception.TransactionExistsException;
+import com.yanan.frame.transaction.exception.TransactionIsNotExistsException;
 
 /**
  * 事物管理
@@ -97,7 +97,7 @@ public class TransactionManager{
 	}
 	private static AbstractTransaction createTransaction(TransactionDefined transactionDefined, Stack<AbstractTransaction> transactionManagerStack) {
 		//创建获取事物的实现类
-		AbstractTransaction transaction = PlugsFactory.getPlugsInstanceAllowNull(AbstractTransaction.class,
+		AbstractTransaction transaction = PlugsFactory.getPluginsInstanceAllowNull(AbstractTransaction.class,
 				transactionDefined);
 		//将事物添加到栈里
 		transactionManagerStack.add(transaction);

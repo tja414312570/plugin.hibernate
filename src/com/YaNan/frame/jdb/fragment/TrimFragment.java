@@ -1,9 +1,9 @@
-package com.YaNan.frame.jdb.fragment;
+package com.yanan.frame.jdb.fragment;
 
-import com.YaNan.frame.jdb.entity.Trim;
-import com.YaNan.frame.plugin.PlugsFactory;
-import com.YaNan.frame.plugin.ProxyModel;
-import com.YaNan.frame.plugin.annotations.Register;
+import com.yanan.frame.jdb.entity.Trim;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.frame.plugin.PlugsFactory;
+import com.yanan.frame.plugin.ProxyModel;
 
 /**
  * 用于处理Trim标签产生的sql片段
@@ -55,7 +55,7 @@ public class TrimFragment extends FragmentSet implements FragmentBuilder {
 	@SuppressWarnings("unchecked")
 	@Override
 	public PreparedFragment prepared(Object object) {
-		PreparedFragment preparedFragment = PlugsFactory.getPlugsInstance(PreparedFragment.class);
+		PreparedFragment preparedFragment = PlugsFactory.getPluginsInstance(PreparedFragment.class);
 		if (this.nextSet != null && this.childSet != null) {
 			PreparedFragment child = this.childSet.prepared(object);
 			PreparedFragment next = this.nextSet.prepared(object);

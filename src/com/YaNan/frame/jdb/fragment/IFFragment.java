@@ -1,12 +1,12 @@
-package com.YaNan.frame.jdb.fragment;
+package com.yanan.frame.jdb.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.YaNan.frame.jdb.entity.IF;
-import com.YaNan.frame.jdb.fragment.Symbol.JAVASCRIPT;
-import com.YaNan.frame.plugin.ProxyModel;
-import com.YaNan.frame.plugin.annotations.Register;
+import com.yanan.frame.jdb.entity.IF;
+import com.yanan.frame.jdb.fragment.Symbol.JAVASCRIPT;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.frame.plugin.ProxyModel;
 
 @Register(attribute = "*.IF.fragment", model = ProxyModel.CGLIB, signlTon = false)
 public class IFFragment extends FragmentSet implements FragmentBuilder {

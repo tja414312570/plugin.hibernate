@@ -1,8 +1,8 @@
-package com.YaNan.frame.jdb;
+package com.yanan.frame.jdb;
 
 import java.util.List;
 
-import com.YaNan.frame.plugin.annotations.Service;
+import com.yanan.frame.plugin.annotations.Service;
 
 /**
  * sql会话即接口，未完善

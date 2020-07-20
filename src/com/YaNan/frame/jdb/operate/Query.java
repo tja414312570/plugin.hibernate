@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.operate;
+package com.yanan.frame.jdb.operate;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -11,12 +11,12 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.jdb.DBColumn;
-import com.YaNan.frame.jdb.DataTable;
-import com.YaNan.frame.jdb.DBInterface.OperateImplement;
-import com.YaNan.frame.jdb.cache.Class2TabMappingCache;
-import com.YaNan.frame.jdb.cache.SqlCache;
-import com.YaNan.frame.utils.StringUtil;
+import com.yanan.frame.jdb.DBColumn;
+import com.yanan.frame.jdb.DataTable;
+import com.yanan.frame.jdb.DBInterface.OperateImplement;
+import com.yanan.frame.jdb.cache.Class2TabMappingCache;
+import com.yanan.frame.jdb.cache.SqlCache;
+import com.yanan.utils.string.StringUtil;
 
 /**
  * 该类用于提供给DATab的query一个查询的SQL语句的生成方法 提过一个构造器，传入一个DBTab型的表对象，应为他需要使用DBTab context

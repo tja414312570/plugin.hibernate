@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.fragment;
+package com.yanan.frame.jdb.fragment;
 
 public interface Symbol {
 	public static enum JAVASCRIPT{

@@ -1,0 +1,62 @@
+###################### plugin list
+plugins:[
+		com.yanan.frame.plugin.autowired.plugin.PluginWiredHandler, ##服务注入提供
+		com.yanan.frame.plugin.autowired.resource.ResourceWiredHandler, ##资源类注入
+		com.yanan.frame.plugin.autowired.property.PropertyWiredHandler, ##属性注入
+		com.yanan.frame.plugin.autowired.exception.ErrorPlugsHandler, ##错误记录
+		com.yanan.frame.plugin.builder.resolver.ArrayParameterResolver,#数组解析
+		com.yanan.frame.plugin.builder.resolver.ReferenceParameterResolver,#引用解析
+		com.yanan.frame.plugin.builder.resolver.DateParameterResolver,#日期解析
+		##	 com.yanan.frame.util.quartz.QuartzManager,##Quartz corn注解服务
+		##   com.yanan.frame.servlets.validator.ParameterValitationRegister, ##参数验证拦截器
+		## com.yanan.frame.plugin.autowired.exception.ErrorPlugsHandler, ##异常捕获 @Error
+		##com.yanan.frame.plugin.hot.ClassHotUpdater,##动态更新服务
+		##{##slf4j注入
+		##	class:com.yanan.utils.logger.DefaultSlf4jWrideServices,
+		##	service:org.slf4j.Logger,
+		##	model:cglib
+		##	method:getLogger
+		##},
+		## 参数验证
+		##com.yanan.frame.plugin.hot.ClassHotUpdater,
+		## mysql数据库
+		{
+			id:dataSource,
+			class:com.yanan.frame.jdb.datasource.DefaultDataSource,
+		},
+		{
+			id:jdbContext,
+			class:com.yanan.frame.jdb.JDBContext,
+			args:[dataSource],
+			types:[ref]
+		},{
+			id:sqlSession,
+			class:com.yanan.frame.jdb.mapper.DefaultSqlSessionExecuter,
+			args:[jdbContext],
+			types:[ref]
+		},{
+			id:build,
+			class:com.yanan.frame.jdb.mapper.MapperInterfaceProxyBuilder,
+			args:[sqlSession],
+			types:[ref]
+		}
+		
+	]
+####################### global configure
+Plugin:{
+	ScanPackage:["**"], ##扫描包位置，多个包用逗号分开或使用数组ScanPackage:[com.yanan.DZCT,com.yanan.debug]
+												  ##可以写为ScanPackage:"com.yanan.DZCT,com.yanan.debug"
+},
+MVC:{
+	##ScanPackage:[**]
+},
+SecurityFilter:{
+	x-frame-options:true,
+	xss-wrapper:{"/**":true}
+	},
+Token:{
+	Timeout:4000,
+	Secure:false,
+	HttpOnly:true,
+},
+propertyScan:"classpath:*.properties"

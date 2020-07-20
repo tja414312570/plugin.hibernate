@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.datasource;
+package com.yanan.frame.jdb.datasource;
 
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -14,15 +14,15 @@ import javax.sql.DataSource;
 
 import org.slf4j.LoggerFactory;
 
-import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.plugin.autowired.property.Property;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.frame.plugin.autowired.property.Property;
 
 /**
  * 默认数据连接池
  * @author yanan
  *
  */
-@Register(init="init",register=DataSource.class)
+@Register(afterInstance="init",register=DataSource.class)
 public class DefaultDataSource implements DataSource{
 	static org.slf4j.Logger logger = LoggerFactory.getLogger(DefaultDataSource.class);
 	ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<Connection>();

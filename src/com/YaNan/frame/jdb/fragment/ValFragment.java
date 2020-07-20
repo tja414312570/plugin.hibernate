@@ -1,11 +1,11 @@
-package com.YaNan.frame.jdb.fragment;
+package com.yanan.frame.jdb.fragment;
 
-import com.YaNan.frame.jdb.cache.GeneralCache;
-import com.YaNan.frame.jdb.entity.Val;
-import com.YaNan.frame.jdb.exception.JDBContextInitException;
-import com.YaNan.frame.plugin.ProxyModel;
-import com.YaNan.frame.plugin.annotations.Register;
-import com.YaNan.frame.utils.asserts.Assert;
+import com.yanan.frame.jdb.cache.GeneralCache;
+import com.yanan.frame.jdb.entity.Val;
+import com.yanan.frame.jdb.exception.JDBContextInitException;
+import com.yanan.frame.plugin.annotations.Register;
+import com.yanan.utils.asserts.Assert;
+import com.yanan.frame.plugin.ProxyModel;
 
 @Register(attribute = "*.Val.fragment", model = ProxyModel.CGLIB, signlTon = false)
 public class ValFragment extends FragmentSet implements FragmentBuilder {

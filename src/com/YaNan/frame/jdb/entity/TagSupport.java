@@ -1,10 +1,10 @@
-package com.YaNan.frame.jdb.entity;
+package com.yanan.frame.jdb.entity;
 
 import java.util.List;
 
-import com.YaNan.frame.utils.beans.xml.AsXml;
-import com.YaNan.frame.utils.beans.xml.Mapping;
-import com.YaNan.frame.utils.beans.xml.Value;
+import com.yanan.utils.beans.xml.AsXml;
+import com.yanan.utils.beans.xml.Mapping;
+import com.yanan.utils.beans.xml.Value;
 
 public class TagSupport{
 	@AsXml

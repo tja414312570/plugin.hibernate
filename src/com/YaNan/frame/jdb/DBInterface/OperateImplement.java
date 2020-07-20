@@ -1,9 +1,9 @@
-package com.YaNan.frame.jdb.DBInterface;
+package com.yanan.frame.jdb.DBInterface;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import com.YaNan.frame.jdb.DataTable;
+import com.yanan.frame.jdb.DataTable;
 
 public abstract class OperateImplement {
 	/**

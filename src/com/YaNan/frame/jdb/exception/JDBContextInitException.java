@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.exception;
+package com.yanan.frame.jdb.exception;
 
 public class JDBContextInitException extends RuntimeException{
 

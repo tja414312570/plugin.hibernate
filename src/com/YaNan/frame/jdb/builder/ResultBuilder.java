@@ -1,8 +1,8 @@
-package com.YaNan.frame.jdb.builder;
+package com.yanan.frame.jdb.builder;
 
 import java.sql.ResultSet;
 
-import com.YaNan.frame.jdb.mapper.PreparedSql;
+import com.yanan.frame.jdb.mapper.PreparedSql;
 
 public interface ResultBuilder {
 	<T> T build(PreparedSql sql,ResultSet set);

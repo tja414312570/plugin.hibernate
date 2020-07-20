@@ -1,9 +1,9 @@
-package com.YaNan.frame.jdb.entity;
+package com.yanan.frame.jdb.entity;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.YaNan.frame.jdb.fragment.SqlFragment;
+import com.yanan.frame.jdb.fragment.SqlFragment;
 
 public class WrapMapping {
 	private String namespace;

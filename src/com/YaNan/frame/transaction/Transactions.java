@@ -1,4 +1,4 @@
-package com.YaNan.frame.transaction;
+package com.yanan.frame.transaction;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.SQLException;
 
-import com.YaNan.frame.jdb.exception.SqlExecuteException;
+import com.yanan.frame.jdb.exception.SqlExecuteException;
 
 /**
  * 事物注解

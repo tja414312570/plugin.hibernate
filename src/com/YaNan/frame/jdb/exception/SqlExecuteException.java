@@ -1,4 +1,4 @@
-package com.YaNan.frame.jdb.exception;
+package com.yanan.frame.jdb.exception;
 
 public class SqlExecuteException extends RuntimeException {
 	public SqlExecuteException(String msg, Throwable e) {

@@ -1,8 +1,8 @@
-package com.YaNan.frame.jdb.entity;
+package com.yanan.frame.jdb.entity;
 
 import java.util.List;
 
-import com.YaNan.frame.jdb.fragment.SqlFragment;
+import com.yanan.frame.jdb.fragment.SqlFragment;
 
 /**
  * sql映射mapper

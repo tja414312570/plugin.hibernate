@@ -1,23 +1,23 @@
 ###################### plugin
 plugins:[
 		## Fragment
-		"com.YaNan.frame.jdb.fragment.ForEachFragment",
-		"com.YaNan.frame.jdb.fragment.IFFragment",
-		"com.YaNan.frame.jdb.fragment.ValFragment",
-		"com.YaNan.frame.jdb.fragment.VarFragment",
-		"com.YaNan.frame.jdb.fragment.IncludeFragment",
-		"com.YaNan.frame.jdb.fragment.SelectorFragment",
-		"com.YaNan.frame.jdb.fragment.TrimFragment",
-		"com.YaNan.frame.jdb.fragment.SqlFragment",
-		"com.YaNan.frame.jdb.fragment.FragmentSet",
+		"com.yanan.frame.jdb.fragment.ForEachFragment",
+		"com.yanan.frame.jdb.fragment.IFFragment",
+		"com.yanan.frame.jdb.fragment.ValFragment",
+		"com.yanan.frame.jdb.fragment.VarFragment",
+		"com.yanan.frame.jdb.fragment.IncludeFragment",
+		"com.yanan.frame.jdb.fragment.SelectorFragment",
+		"com.yanan.frame.jdb.fragment.TrimFragment",
+		"com.yanan.frame.jdb.fragment.SqlFragment",
+		"com.yanan.frame.jdb.fragment.FragmentSet",
 		## sqlsession
-		"com.YaNan.frame.jdb.SqlSession",
+		"com.yanan.frame.jdb.SqlSession",
 		## orm 
-		"com.YaNan.frame.jdb.orm.OrmBuilder",
-		"com.YaNan.frame.jdb.orm.DefaultOrmBuilder",
+		"com.yanan.frame.jdb.orm.OrmBuilder",
+		"com.yanan.frame.jdb.orm.DefaultOrmBuilder",
 		##事物切面
-		"com.YaNan.frame.transaction.TransactionMethodHandler",
+		"com.yanan.frame.transaction.TransactionMethodHandler",
 		##事物实现
-		com.YaNan.frame.jdb.transaction.DefaultMySqlTransaction,
-		com.YaNan.frame.transaction.AbstractTransaction
+		com.yanan.frame.jdb.transaction.DefaultMySqlTransaction,
+		com.yanan.frame.transaction.AbstractTransaction
 	]
