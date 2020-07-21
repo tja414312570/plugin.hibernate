@@ -48,7 +48,7 @@ public class MapperInterfaceProxyBuilder {
 	@AfterInstantiation
 	public void execute() {
 		generalMapperInterfaceProxy = PlugsFactory.getPluginsInstanceByParamType(GeneralMapperInterfaceProxy.class,new Class<?>[] {SqlSession.class},sqlSession);
-		RegisterDefinition register = PluginDefinitionBuilderFactory.getInstance().builderRegisterDefinition(GeneralMapperInterfaceProxy.class);
+		RegisterDefinition register = PluginDefinitionBuilderFactory.builderRegisterDefinition(GeneralMapperInterfaceProxy.class);
 		//创建一个此注册器的代理容器
 		register.createProxyContainer();
 //		//从组件工厂获取所有的组件，就不必要重新扫描整个类了
