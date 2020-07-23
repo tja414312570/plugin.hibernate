@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wrapper namespace="main" ref="true">
+	<sql id="page">
+		<if test="RowBounds != null">
+			limit #{RowBounds.offset},#{RowBounds.limit}
+		</if>
+	</sql>
+	<sql id="pages">
+		rowid in (
+		select rid from  (
+		select rownum rn,rid from (
+		select rowid rid,cid from
+		<include id="tablename"></include>
+		order by cid desc)
+		where rownum <![CDATA[ < ]]> #{RowBounds.limit})
+		where rn <![CDATA[ > ]]> #{RowBounds.offset})
+	</sql>
+</wrapper>

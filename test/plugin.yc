@@ -39,24 +39,8 @@ plugins:[
 			class:com.yanan.frame.jdb.mapper.MapperInterfaceProxyBuilder,
 			args:[sqlSession],
 			types:[ref]
+			field.scanPath.array=["classpath:**"]
 		}
 		
 	]
-####################### global configure
-Plugin:{
-	ScanPackage:["**"], ##扫描包位置，多个包用逗号分开或使用数组ScanPackage:[com.yanan.DZCT,com.yanan.debug]
-												  ##可以写为ScanPackage:"com.yanan.DZCT,com.yanan.debug"
-},
-MVC:{
-	##ScanPackage:[**]
-},
-SecurityFilter:{
-	x-frame-options:true,
-	xss-wrapper:{"/**":true}
-	},
-Token:{
-	Timeout:4000,
-	Secure:false,
-	HttpOnly:true,
-},
 propertyScan:"classpath:*.properties"

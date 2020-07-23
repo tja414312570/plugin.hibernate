@@ -7,7 +7,7 @@ import com.yanan.utils.resource.scanner.Path.PathInter;
 
 public class GlobalReplace {
 	public static void main(String[] args) {
-		Path  path = new Path("/Volumes/GENERAL/git/plugin.hibernate/src");
+		Path  path = new Path("/Volumes/GENERAL/git/plugin.ant.core");
 		path.scanner(new PathInter() {
 			
 			@Override

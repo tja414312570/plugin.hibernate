@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wrapper namespace="testSql" database="YaNan_Demo">
+	<sql id="tablename">student2</sql>
 	<select id="query" resultType="map">
 		SELECT name FROM student
 		<trim prefix = "where" prefixoverride="and or" suffix="" suffixoverride="and or">
@@ -8,7 +9,7 @@
 			<if test = 'name!=null'>name like '%'||#{name}||'%'</if>
 		</trim>
 		<if test="id == null">id = 0</if>
-			
+		<include id="main.pages"></include>
 	</select>
 	<select id="query1" resultType="map">
 		SELECT * FROM student

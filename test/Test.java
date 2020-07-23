@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.YaNan.frame.jdb.database.SqlSession;
-import com.YaNan.frame.jdb.database.transaction.TransactionIsolocation;
-import com.YaNan.frame.jdb.database.transaction.TransactionPropagion;
-import com.YaNan.frame.jdb.database.transaction.Transactions;
+import com.YaNan.frame.jdb.SqlSession;
 import com.YaNan.frame.plugin.annotations.Service;
+import com.YaNan.frame.transaction.TransactionIsolocation;
+import com.YaNan.frame.transaction.TransactionPropagion;
+import com.YaNan.frame.transaction.Transactions;
 
 public class Test {
 	

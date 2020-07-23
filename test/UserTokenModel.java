@@ -2,10 +2,10 @@
 
 import java.util.Date;
 
-import com.YaNan.frame.jdb.database.annotation.Column;
-import com.YaNan.frame.jdb.database.annotation.Tab;
+import com.yanan.frame.jdb.annotation.Column;
+import com.yanan.frame.jdb.annotation.Tab;
 
-@Tab(DB="YaNan_Account",name="user_token")
+@Tab(dataSource="YaNan_Account",name="user_token")
 public class UserTokenModel {
 	@Column(type="datetime")
 	private Date createTime;

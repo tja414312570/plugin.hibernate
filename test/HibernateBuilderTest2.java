@@ -1,16 +1,8 @@
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
-import com.YaNan.frame.jdb.JDBContext;
-import com.YaNan.frame.jdb.SqlSession;
-import com.YaNan.frame.jdb.fragment.SqlFragment;
-import com.YaNan.frame.jdb.mapper.MapperInterfaceProxyBuilder;
-import com.YaNan.frame.jdb.operate.Query;
-import com.YaNan.frame.plugin.autowired.property.Property;
-import com.YaNan.frame.plugin.autowired.property.PropertyManager;
-import com.YaNan.frame.utils.resource.ResourceManager;
+import com.yanan.frame.jdb.SqlSession;
+import com.yanan.frame.jdb.operate.Query;
 import com.yanan.frame.plugin.PlugsFactory;
 
 public class HibernateBuilderTest2 {
@@ -33,13 +25,13 @@ public class HibernateBuilderTest2 {
 //		System.out.println(frag.getPreparedSql(params));
 		//SqlSession
 		PlugsFactory ins = PlugsFactory.getInstance();
-		System.out.println(PlugsFactory.getBean("sqlSession")+"");
-		SqlSession sql = PlugsFactory.getBean(SqlSession.class);
+		System.out.println(PlugsFactory.getPluginsInstance("sqlSession")+"");
+		SqlSession sql = PlugsFactory.getPluginsInstance(SqlSession.class);
 		System.out.println(sql.selectOne("TestSq.test", params)+"");
 		System.out.println(sql.selectOne("TestSq.test1", params)+"");
 		Query query = new Query(UserTokenModel.class);
 		query.query();
-		TestSql testSql = PlugsFactory.getPlugsInstance(TestSql.class);
+		TestSql testSql = PlugsFactory.getPluginsInstance(TestSql.class);
 		testSql.test("1024", "");
 	}
 }
