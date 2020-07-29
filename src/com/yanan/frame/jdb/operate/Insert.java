@@ -44,7 +44,7 @@ public class Insert extends OperateImplement{
 	}
 	/**
 	 * 默认构造方法
-	 * @param obj
+	 * @param obj obj
 	 */
 	public Insert(Object obj) {
 		this.dataTables = Class2TabMappingCache.getDBTab(obj.getClass());
@@ -112,18 +112,14 @@ public class Insert extends OperateImplement{
 	}
 	/**
 	 * 导入数据到数据库
-	 * @return
+	 * @return boolean
 	 */
 	public boolean insert() {
 		return this.insertGk()>=0;
 	}
 	/**
 	 * 导入数据库，传入一个接受改变的对象
-	 * @param object
-	 * @return
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws SQLException
+	 * @return int
 	 */
 	public int insertGk() {
 		this.generatedKey = this.dataTables.insert(this);
@@ -141,7 +137,8 @@ public class Insert extends OperateImplement{
 	}
 	/**
 	 * 导入或更新，如果纯在，则为导入，否则为更新
-	 * @return
+	 * @param fields field array
+	 * @return boolean
 	 */
 	public boolean insertOrUpdate(String... fields) {
 		if (fields.length > 0) {
@@ -174,11 +171,11 @@ public class Insert extends OperateImplement{
 	
 	/**
 	 * 移除不需要获取的字段
-	 * @param string
+	 * @param fields  field array
 	 */
 	@SuppressWarnings("unlikely-arg-type")
-	public void removeField(String... string) {
-		for(String str :string){
+	public void removeField(String... fields) {
+		for(String str : fields){
 			Field f;
 			try {
 				f = this.obj.getClass().getDeclaredField(str);

@@ -107,7 +107,7 @@ public class TransactionManager{
 
 	/**
 	 * 获取栈顶事物管理
-	 * @return
+	 * @return 抽象事物
 	 */
 	public static AbstractTransaction getCurrentTransaction() {
 		return currentTransactionLocal.get();

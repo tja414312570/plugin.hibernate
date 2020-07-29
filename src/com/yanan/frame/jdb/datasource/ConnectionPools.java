@@ -23,15 +23,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 数据库连接池，用于管理数据库连接，提供数据库连接的初始化、获取、释放</br>
- * 注意！！数据库使用完毕后，记得关闭ProxyConnectionPoolRefreshService服务，否则导致ProxyConnectionPoolRefreshService服务延迟关闭</br>
- * 具体关闭时间和设置的连接池空闲时等待时间有关（参数timeout）</br>
- * 通过ProxyConnectionPoolRefreshService.destory()或DBFactory.getDBFactory().destory()可销毁该线程</br>
- * 2018-6-20~2018-6-21 把连接池刷新从释放中独立出来，新添加一个连接池刷新逻辑服务，该服务使得连接刷新</br>
- * 从连接释放中独立出来，提高数据吞吐能力，同时该服务会自动启动和销毁。</br>
- * 2018-6-18 ~ 2018-6-20 优化连接池刷新、释放、获取、添加逻辑，降低各种锁的粒度，提高运行速度，降低运行内存，</br>
- * 2016-?-？~ 2018-6-17 添加数据库连接池用于管理所有DataBase中的数据连接</br>
- * 20190103 修改连接池管理进程为守护线程
+ * 数据库连接池，用于管理数据库连接，提供数据库连接的初始化、获取、释放
+ * <p>注意！！数据库使用完毕后，记得关闭ProxyConnectionPoolRefreshService服务，否则导致ProxyConnectionPoolRefreshService服务延迟关闭
+ * <p>具体关闭时间和设置的连接池空闲时等待时间有关（参数timeout）
+ * <p>通过ProxyConnectionPoolRefreshService.destory()或DBFactory.getDBFactory().destory()可销毁该线程
+ * <p>2018-6-20~2018-6-21 把连接池刷新从释放中独立出来，新添加一个连接池刷新逻辑服务，该服务使得连接刷新
+ * <p>从连接释放中独立出来，提高数据吞吐能力，同时该服务会自动启动和销毁。
+ * <p>2018-6-18 ~ 2018-6-20 优化连接池刷新、释放、获取、添加逻辑，降低各种锁的粒度，提高运行速度，降低运行内存，
+ * <p>2016-?-？~ 2018-6-17 添加数据库连接池用于管理所有DataBase中的数据连接
+ * <p>20190103 修改连接池管理进程为守护线程
  * 
  * @author yanan
  *
@@ -87,7 +87,7 @@ public class ConnectionPools implements PooledConnection{
 	/**
 	 * 初始化连接池
 	 * 从DataBase中创建一个ProxyConnection并保存在all与free中
-	 * @throws SQLException 
+	 * @throws SQLException  ex
 	 */
 	void initial() throws SQLException{
 		try {
@@ -114,7 +114,7 @@ public class ConnectionPools implements PooledConnection{
 	}
 	/**
 	 * 自动增加连接
-	 * @throws SQLException 
+	 * @throws SQLException  ex
 	 */
 	private void increase() throws SQLException{
 		try {
@@ -160,7 +160,7 @@ public class ConnectionPools implements PooledConnection{
 	}
 	/**
 	 * 获取可用的连接
-	 * @return ProxyConnection
+	 * @return ProxyConnection 代理连接
 	 * @throws SQLException a SQL exception
 	 */
 	public ProxyConnection getConnection() throws SQLException{

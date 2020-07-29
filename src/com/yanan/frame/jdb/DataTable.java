@@ -67,7 +67,7 @@ public class DataTable implements mySqlInterface {
 	 * 默认构造器，需要传入一个Class《？》的class 构造器会默认从DataBase中获得connection
 	 * 同时该构造器会对dataTablesClass进行处理，进行class与Field的映射
 	 * 
-	 * @param dataTablesClass
+	 * @param dataTablesClass mapping class
 	 */
 	public DataTable(Class<?> dataTablesClass) {
 		this(new AppClassLoader(dataTablesClass).getLoadedObject());
@@ -290,8 +290,8 @@ public class DataTable implements mySqlInterface {
 	/**
 	 * getDBColumn
 	 * 
-	 * @param field
-	 * @return
+	 * @param field 属性
+	 * @return 映射定义
 	 */
 	public DBColumn getDBColumn(Field field) {
 		if (this.map.containsKey(field))
@@ -369,11 +369,11 @@ public class DataTable implements mySqlInterface {
 		},this,sql,insert.getParameters());
 	}
 	/**
-	 * 尊卑参数
-	 * @param preparedStatement
-	 * @param parameters
-	 * @param columnNum 
-	 * @throws SQLException
+	 * 预备参数
+	 * @param preparedStatement 预备参数
+	 * @param parameters 参数
+	 * @param columnNum 列数
+	 * @throws SQLException ex
 	 */
 	private void preparedBatchParameter(PreparedStatement preparedStatement, List<Object> parameters, int columnNum) throws SQLException {
 		Iterator<Object> iterator = parameters.iterator();
@@ -386,9 +386,9 @@ public class DataTable implements mySqlInterface {
 	}
 	/**
 	 * 准备参数
-	 * @param preparedStatement
-	 * @param parameters
-	 * @throws SQLException
+	 * @param preparedStatement ps
+	 * @param parameters 参数
+	 * @throws SQLException ex
 	 */
 	private void preparedParameter(PreparedStatement preparedStatement,List<Object> parameters) throws SQLException {
 		Iterator<Object> iterator = parameters.iterator();
@@ -422,12 +422,12 @@ public class DataTable implements mySqlInterface {
 
 	/**
 	 * 
-	 * @param insert
-	 * @param obj
-	 * @return
-	 * @throws SQLException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
+	 * @param insert insert
+	 * @param obj object
+	 * @return object
+	 * @throws SQLException ex
+	 * @throws IllegalArgumentException ex
+	 * @throws IllegalAccessException ex
 	 */
 	public Object insert(Insert insert, Object obj)
 			throws SQLException, IllegalArgumentException, IllegalAccessException {

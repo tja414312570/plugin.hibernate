@@ -40,14 +40,14 @@ public class BatchInsert extends OperateImplement{
 	}
 	/**
 	 * get the columns for insert table
-	 * @return
+	 * @return cloumn set
 	 */
 	public Collection<DBColumn> getColumns() {
 		return columns;
 	}
 	/**
 	 * 批量导入支持
-	 * @param objects
+	 * @param objects object set
 	 */
 	public BatchInsert(List<Object> objects){
 		if(objects==null||objects.size()==0)
@@ -60,7 +60,8 @@ public class BatchInsert extends OperateImplement{
 	}
 	/**
 	 * 批量导入支持
-	 * @param objects
+	 * @param tabClass table orm class
+	 * @param columns object array
 	 */
 	public BatchInsert(Class<?> tabClass,String...columns){
 		this.dataTables = Class2TabMappingCache.getDBTab(tabClass);
@@ -73,7 +74,7 @@ public class BatchInsert extends OperateImplement{
 	}
 	/**
 	 * 添加需要修改的字段
-	 * @param columns
+	 * @param columns cloumn array
 	 */
 	public void addColumn(String...columns){
 		for(String columnName : columns){
@@ -88,7 +89,7 @@ public class BatchInsert extends OperateImplement{
 	}
 	/**
 	 * 移除不需要添加的字段
-	 * @param columns
+	 * @param columns column array
 	 */
 	public void removeColumn(String...columns){
 		for(String columnName : columns){
@@ -102,7 +103,7 @@ public class BatchInsert extends OperateImplement{
 	}
 	/**
 	 * 增加要导入的数据
-	 * @param objects
+	 * @param objects object list
 	 */
 	public void addInsert(List<Object> objects){
 		for(Object object : objects){
@@ -111,7 +112,7 @@ public class BatchInsert extends OperateImplement{
 	}
 	/**
 	 * 增加要导入的数据
-	 * @param objects
+	 * @param objects object array
 	 */
 	public void addInsert(Object... objects){
 		for(Object object : objects){
@@ -120,14 +121,14 @@ public class BatchInsert extends OperateImplement{
 	}
 	/**
 	 * 增加要导入的数据
-	 * @param object
+	 * @param object object
 	 */
 	public void addInsert(Object object){
 		this.preparedParameter(object);
 	}
 	/**
 	 * 增加要导入的数据
-	 * @param object
+	 * @param listData object list
 	 */
 	public void addInsertData(List<Object> listData){
 		Object[] parameters = new Object[this.dataTables.getFieldMap().size()];
@@ -138,7 +139,7 @@ public class BatchInsert extends OperateImplement{
 	}
 	/**
 	 * 增加要导入的数据
-	 * @param object
+	 * @param arrayData object array
 	 */
 	public void addInsertData(Object[] arrayData){
 		Object[] parameters = new Object[this.dataTables.getFieldMap().size()];
@@ -149,7 +150,7 @@ public class BatchInsert extends OperateImplement{
 	}
 	/**
 	 * 增加要导入的数据
-	 * @param object
+	 * @param mapDatas map 
 	 */
 	public void addInsertMapList(List<Map<String,Object>> mapDatas){
 		for(Map<String,Object> map: mapDatas){
@@ -158,7 +159,7 @@ public class BatchInsert extends OperateImplement{
 	}
 	/**
 	 * 准备参数
-	 * @param object
+	 * @param mapDatas map
 	 */
 	public void addInsertMap(Map<String,Object> mapDatas) {
 		Object[] parameters = new Object[this.dataTables.getFieldMap().size()];
@@ -173,7 +174,7 @@ public class BatchInsert extends OperateImplement{
 	}
 	/**
 	 * 准备参数
-	 * @param object
+	 * @param object obj
 	 */
 	private void preparedParameter(Object object) {
 		Object[] parameters = new Object[this.dataTables.getFieldMap().size()];
@@ -211,21 +212,21 @@ public class BatchInsert extends OperateImplement{
 	}
 	/**
 	 * 批量导入，导入数量不大于Integer.MAX_VALUE以下
-	 * @return
+	 * @return int array
 	 */
 	public int[] batchInsert(){
 		return (int[])this.dataTables.batchInsert(this,false);
 	}
 	/**
 	 * 批量导入，数量大于Integer.MAX_VALUE以下
-	 * @return
+	 * @return long array
 	 */
 	public long[] batchLargeInsert(){
 		return (long[])this.dataTables.batchInsert(this,true);
 	}
 	/**
 	 * 批量导入,返回可能为null，int[],long[]
-	 * @return
+	 * @return obj
 	 */
 	public Object insert(){
 		return this.dataTables.batchInsert(this,this.getParameters().size()>Integer.MAX_VALUE);

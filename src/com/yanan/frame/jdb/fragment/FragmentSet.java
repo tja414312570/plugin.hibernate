@@ -168,7 +168,7 @@ public class FragmentSet implements FragmentBuilder {
 	 * 获取创建sql时所涉及到的参数列表
 	 * @param variables 此片段锁涉及到的变量
 	 * @param parameter 调用接口传入的参数
-	 * @return
+	 * @return 集合
 	 */
 	@SuppressWarnings({ "rawtypes" })
 	public List<Object> preparedParameter(List<String> variables, Object parameter) {

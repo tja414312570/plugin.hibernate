@@ -18,17 +18,19 @@ import com.yanan.frame.jdb.exception.SqlExecuteException;
 public @interface Transactions {
 	/**
 	 * 回滚异常
-	 * @return
+	 * @return 异常上限类
 	 */
 	Class<?>[] value() default {SQLException.class,SqlExecuteException.class};
 	
 	/**
 	 * 事物传播行为
+	 * @return propagion 传播行为
 	 */
 	TransactionPropagion propagion() default TransactionPropagion.PROPAGATION_REQUIRED;
 	
 	/**
 	 * 事物隔离级别
+	 * @return isolocation 隔离级别
 	 */
 	TransactionIsolocation isolocation() default TransactionIsolocation.TRANSACTION_DEFAULT;
 }

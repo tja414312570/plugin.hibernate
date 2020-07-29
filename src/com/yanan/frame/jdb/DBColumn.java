@@ -11,7 +11,7 @@ import com.yanan.frame.jdb.DBInterface.mySqlInterface;
 import com.yanan.frame.jdb.annotation.Column;
 
 /**
- * java字段与数据库的列的映射实体类</br>
+ * java字段与数据库的列的映射实体类
  * @author yanan
  *
  */

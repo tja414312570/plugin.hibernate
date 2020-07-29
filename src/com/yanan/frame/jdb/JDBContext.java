@@ -19,6 +19,7 @@ import com.yanan.frame.jdb.entity.SqlFragmentManger;
 import com.yanan.frame.jdb.entity.WrapperMapping;
 import com.yanan.frame.jdb.fragment.FragmentBuilder;
 import com.yanan.frame.jdb.fragment.SqlFragment;
+import com.yanan.frame.plugin.Environment;
 import com.yanan.frame.plugin.PlugsFactory;
 import com.yanan.frame.plugin.annotations.Register;
 import com.yanan.frame.plugin.autowired.property.Property;
@@ -34,6 +35,8 @@ import com.yanan.utils.resource.scanner.PackageScanner;
 @Register(afterInstance = "init")
 public class JDBContext {
 	private static final Logger logger = LoggerFactory.getLogger(JDBContext.class);
+
+	private static final String JDB_INIT_PLUGIN_YC = "JDB_CONTEXT_PLUGIN_YC_INIT";
 
 	/**
 	 * Mapper  位置
@@ -96,12 +99,15 @@ public class JDBContext {
 
 	@SuppressWarnings("unchecked")
 	public void init() {
-		// 获取mapper配置
-		InputStream inputStreamSource = JDBContext.class.getResourceAsStream("./conf/plugin.yc");
-		Resource resource = new InputStreamResource("plugin.yc",JDBContext.class.getResource("./conf/plugin.yc").getPath(),inputStreamSource);
-		ResourceDecoder<Resource> resourceDecoder = 
-				PlugsFactory.getPluginsInstanceByAttributeStrict(ResourceDecoder.class, AbstractResourceEntry.class.getSimpleName());
-		resourceDecoder.decodeResource(PlugsFactory.getInstance(), resource);
+		boolean jdb_init_plugin_yc = Environment.getEnviroment().getVariable(JDB_INIT_PLUGIN_YC,false);
+		if(!jdb_init_plugin_yc) {
+			InputStream inputStreamSource = JDBContext.class.getResourceAsStream("./conf/plugin.yc");
+			Resource resource = new InputStreamResource("plugin.yc",JDBContext.class.getResource("./conf/plugin.yc").getPath(),inputStreamSource);
+			ResourceDecoder<Resource> resourceDecoder = 
+					PlugsFactory.getPluginsInstanceByAttributeStrict(ResourceDecoder.class, AbstractResourceEntry.class.getSimpleName());
+			resourceDecoder.decodeResource(PlugsFactory.getInstance(), resource);
+			Environment.getEnviroment().setVariable(JDB_INIT_PLUGIN_YC, true);
+		}
 //		PlugsFactory.getInstance().refresh();
 		logger.debug("init hibernate configure!");
 		String[] wrappers = mapperLocations;

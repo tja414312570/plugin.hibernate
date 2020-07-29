@@ -273,8 +273,8 @@ public class Query extends OperateImplement {
 	/**
 	 * 将查询表的数据库放到新的数据库，用于实现某些高级功能
 	 * 
-	 * @param queryCls
-	 * @param saveCls
+	 * @param queryCls query class
+	 * @param saveCls save class
 	 */
 	public Query(Class<?> queryCls, Class<?> saveCls) {
 		this.dataTables = Class2TabMappingCache.getDBTab(queryCls);

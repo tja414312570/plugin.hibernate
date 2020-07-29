@@ -28,7 +28,7 @@ public class Create extends OperateImplement{
 	private Logger log = LoggerFactory.getLogger(Create.class);
 	/**
 	 * 数据表的创建对象，传入一个DBTab对象 
-	 * @param tab
+	 * @param tab tab
 	 */
 	public Create(DataTable tab) {
 		this.dataTables = tab;
@@ -58,7 +58,7 @@ public class Create extends OperateImplement{
 	}
 	/**
 	 * 数据表的创建对象，传入一个数据表映射类
-	 * @param tab
+	 * @param cls cls
 	 */
 	public Create(Class<?> cls) {
 		this.dataTables = Class2TabMappingCache.getDBTab(cls);
@@ -66,8 +66,8 @@ public class Create extends OperateImplement{
 	}
 	/**
 	 * 数据表的创建对象，传入一个数据表映射类的对象
-	 * @param tab
-	 */
+	 * @param object obj
+	 */ 
 	public Create(Object object) {
 		this.dataTables = Class2TabMappingCache.getDBTab(object.getClass());
 		init();

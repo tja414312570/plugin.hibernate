@@ -3,9 +3,9 @@
 import java.io.File;
 import java.util.Arrays;
 
-import com.YaNan.frame.utils.resource.Path.PathInter;
-import com.YaNan.frame.utils.resource.ResourceManager;
-import com.YaNan.frame.utils.resource.Path;
+import com.yanan.utils.resource.ResourceManager;
+import com.yanan.utils.resource.scanner.Path;
+import com.yanan.utils.resource.scanner.Path.PathInter;
 
 /**
  * 支持通配符,按照PathMath匹配模式

@@ -14,52 +14,53 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Column {
 	/**
 	 * 是否忽略此域，忽略之后将不映射与数据表的关系
-	 * @return
+	 * @return boolean
 	 */
 	boolean ignore() default false;
 	/**
 	 * 列名
-	 * @return
+	 * @return cloumn
 	 */
 	String name() default "";
 	
 	String value() default "";
 	/**
 	 * 列的类型
-	 * @return
+	 * @return 类型
 	 */
 	String type() default "";
 	/**
 	 * 列的内容的长度
+	 * @return 长度
 	 */
 	int length() default 255;
 	/**
 	 * 数字等类型的长度
-	 * @return
+	 * @return 长度
 	 */
 	int size() default 11;
 
 	String format() default "";
 	/**
 	 * 是否非空
-	 * @return
+	 * @return 是否非空
 	 */
 	boolean Not_Null() default false;
 
 	boolean point() default false;
 	/**
 	 * 是否将列定义为自增
-	 * @return
+	 * @return 是否定义自增
 	 */
 	boolean Auto_Increment() default false;
 	/**
 	 * 是否将列定义为主键
-	 * @return
+	 * @return 主键
 	 */
 	boolean Primary_Key() default false;
 	/**
 	 * 是否将列添加到unique约束
-	 * @return
+	 * @return 约束
 	 */
 	boolean unique() default false;
 
@@ -68,7 +69,7 @@ public @interface Column {
 	boolean Auto_Fill() default false;
 	/**
 	 * 列的注释
-	 * @return
+	 * @return 注释
 	 */
 	String Annotations() default "";
 
@@ -77,12 +78,12 @@ public @interface Column {
 	boolean encrypt() default false;
     /**
      * 列的字符集
-     * @return
+     * @return 字符集
      */
 	String collate() default "";
 	/**
 	 * 列的编码
-	 * @return
+	 * @return 编码
 	 */
 	String charset() default "";
 	

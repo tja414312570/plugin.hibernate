@@ -30,8 +30,8 @@ public class Lock {
 	}
 	/**
 	 * 锁定
-	 * @return 
-	 * @throws Throwable 
+	 * @return 是否获取到锁
+	 * @throws Throwable  ex
 	 */
 	public boolean await() throws Throwable {
 		if(!this.locked){

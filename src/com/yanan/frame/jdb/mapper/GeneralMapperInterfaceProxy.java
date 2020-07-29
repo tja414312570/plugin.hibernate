@@ -65,9 +65,8 @@ public class GeneralMapperInterfaceProxy implements InvokeHandler{
 	}
 	/**
 	 * 查询参数是否有注解，有Param注解则将参数组装成Map返回。
-	 * @param methodHandler
-	 * @param parameter
-	 * @return
+	 * @param methodHandler method handler 
+	 * @return instance
 	 */
 	public Object decodeParamerters(MethodHandler methodHandler) {
 		Map<String,Object> parameter = new HashMap<>();

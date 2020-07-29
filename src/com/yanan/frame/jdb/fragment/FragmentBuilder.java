@@ -10,12 +10,13 @@ public interface FragmentBuilder {
 	public final static String SPLITPREFIX = ">";
 	/**
 	 * 构架FragmentSet
-	 * @return
+	 * @param wrapper 
 	 */
 	void build(Object wrapper);
 	/**
 	 * 准备sql
-	 * @return
+	 * @param objects obj
+	 * @return 准备片段
 	 */
 	PreparedFragment prepared(Object objects);
 }

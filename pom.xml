@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.tja414312570</groupId>
 	<artifactId>plugin.jdb</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>Hibernate</name>
 	<description>support mysql database</description>
 	<parent>
@@ -37,12 +37,12 @@
 		<dependency>
 			<groupId>com.github.tja414312570</groupId>
 			<artifactId>plugin.core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.tja414312570</groupId>
 			<artifactId>plugin.utils.ext</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
