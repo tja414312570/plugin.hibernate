@@ -1,0 +1,23 @@
+###################### plugin
+plugins:[
+		## Fragment
+		"com.yanan.framework.jdb.fragment.ForEachFragment",
+		"com.yanan.framework.jdb.fragment.IFFragment",
+		"com.yanan.framework.jdb.fragment.ValFragment",
+		"com.yanan.framework.jdb.fragment.VarFragment",
+		"com.yanan.framework.jdb.fragment.IncludeFragment",
+		"com.yanan.framework.jdb.fragment.SelectorFragment",
+		"com.yanan.framework.jdb.fragment.TrimFragment",
+		"com.yanan.framework.jdb.fragment.SqlFragment",
+		"com.yanan.framework.jdb.fragment.FragmentSet",
+		## sqlsession
+		"com.yanan.framework.jdb.SqlSession",
+		## orm 
+		"com.yanan.framework.jdb.orm.OrmBuilder",
+		"com.yanan.framework.jdb.orm.DefaultOrmBuilder",
+		##事物切面
+		"com.yanan.framework.transaction.TransactionMethodHandler",
+		##事物实现
+		com.yanan.framework.jdb.transaction.DefaultMySqlTransaction,
+		com.yanan.framework.transaction.AbstractTransaction
+	]
