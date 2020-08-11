@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
-import com.yanan.frame.jdb.fragment.FragmentSet;
+import com.yanan.framework.jdb.fragment.FragmentSet;
 
 public class FratmentSetParameterTest {
 

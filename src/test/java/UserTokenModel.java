@@ -2,8 +2,8 @@
 
 import java.util.Date;
 
-import com.yanan.frame.jdb.annotation.Column;
-import com.yanan.frame.jdb.annotation.Tab;
+import com.yanan.framework.jdb.annotation.Column;
+import com.yanan.framework.jdb.annotation.Tab;
 
 @Tab(dataSource="YaNan_Account",name="user_token")
 public class UserTokenModel {

@@ -1,9 +1,9 @@
 import java.util.HashMap;
 import java.util.Map;
 
-import com.yanan.frame.jdb.SqlSession;
-import com.yanan.frame.jdb.operate.Query;
-import com.yanan.frame.plugin.PlugsFactory;
+import com.yanan.framework.jdb.SqlSession;
+import com.yanan.framework.jdb.operate.Query;
+import com.yanan.framework.plugin.PlugsFactory;
 
 public class HibernateBuilderTest2 {
 	

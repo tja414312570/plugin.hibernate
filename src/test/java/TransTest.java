@@ -2,8 +2,8 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import com.yanan.frame.jdb.JDBContext;
-import com.yanan.frame.plugin.PlugsFactory;
+import com.yanan.framework.jdb.JDBContext;
+import com.yanan.framework.plugin.PlugsFactory;
 
 public class TransTest {
 	public static void main(String[] args) throws SQLException {

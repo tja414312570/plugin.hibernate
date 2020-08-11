@@ -1,11 +1,10 @@
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Objects;
 
 import javax.sql.DataSource;
 
-import com.yanan.frame.plugin.PlugsFactory;
-import com.yanan.frame.plugin.handler.PlugsHandler;
+import com.yanan.framework.plugin.PlugsFactory;
+import com.yanan.framework.plugin.handler.PlugsHandler;
 
 public class DataSourceTest {
 	public static void main(String[] args) {
