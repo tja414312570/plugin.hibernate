@@ -101,8 +101,8 @@ public class JDBContext {
 	public void init() {
 		boolean jdb_init_plugin_yc = Environment.getEnviroment().getVariable(JDB_INIT_PLUGIN_YC,false);
 		if(!jdb_init_plugin_yc) {
-			InputStream inputStreamSource = JDBContext.class.getResourceAsStream("./conf/jdb.yc");
-			Resource resource = new InputStreamResource("jdb.yc",JDBContext.class.getResource("./conf/jdb.yc").getPath(),inputStreamSource);
+			InputStream inputStreamSource = JDBContext.class.getResourceAsStream("./conf/plugin.yc");
+			Resource resource = new InputStreamResource("plugin.yc",JDBContext.class.getResource("./conf/plugin.yc").getPath(),inputStreamSource);
 			ResourceDecoder<Resource> resourceDecoder = 
 					PlugsFactory.getPluginsInstanceByAttributeStrict(ResourceDecoder.class, ClassPathResource.class.getSimpleName());
 			resourceDecoder.decodeResource(PlugsFactory.getInstance(), resource);
