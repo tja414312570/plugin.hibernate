@@ -192,4 +192,15 @@ public class PreparedSql {
 				connection.close();
 		}
 	}
+	public String getSql() {
+		return sql;
+	}
+
+	public List<Object> getParameter() {
+		return parameter;
+	}
+
+	public SqlFragment getSqlFragment() {
+		return sqlFragment;
+	}
 }

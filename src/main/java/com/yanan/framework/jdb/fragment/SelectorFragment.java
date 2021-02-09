@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yanan.framework.jdb.entity.SelectorMapping;
 import com.yanan.framework.jdb.entity.TagSupport;
+import com.yanan.framework.jdb.exception.SqlFragmentBuilderException;
 import com.yanan.framework.jdb.mapper.PreparedSql;
 import com.yanan.framework.plugin.PlugsFactory;
 import com.yanan.framework.plugin.ProxyModel;
@@ -76,21 +77,25 @@ public class SelectorFragment extends SqlFragment implements FragmentBuilder {
 					preFragmentSet = currentFragmentSet;
 				}
 				// 根据类型获取对应FragmentSet
-				currentFragmentSet = (FragmentSet) PlugsFactory.getPluginsInstanceByAttributeStrict(FragmentBuilder.class,
-						tagClass.getName() + ".fragment");
-				// 判断根FragmentSet是否为空
-				if (this.fragemntSet == null)
-					this.fragemntSet = currentFragmentSet;
-				if (preFragmentSet != null)
-					preFragmentSet.setNextSet(currentFragmentSet);
-				preFragmentSet = currentFragmentSet;
-				currentFragmentSet.setXml(tag.getXml());
-				currentFragmentSet.setValue(tag.getValue());
-				currentFragmentSet.setTagSupport(tag);
-				currentFragmentSet.setSqlFragment(this);
-				currentFragmentSet.setContext(getContext());
-				currentFragmentSet.build(null);
-				sql = sql.substring(predex + len);
+				try {
+					currentFragmentSet = (FragmentSet) PlugsFactory.getPluginsInstanceByAttributeStrict(FragmentBuilder.class,
+							tagClass.getName() + ".fragment");
+					// 判断根FragmentSet是否为空
+					if (this.fragemntSet == null)
+						this.fragemntSet = currentFragmentSet;
+					if (preFragmentSet != null)
+						preFragmentSet.setNextSet(currentFragmentSet);
+					preFragmentSet = currentFragmentSet;
+					currentFragmentSet.setXml(tag.getXml());
+					currentFragmentSet.setValue(tag.getValue());
+					currentFragmentSet.setTagSupport(tag);
+					currentFragmentSet.setSqlFragment(this);
+					currentFragmentSet.setContext(getContext());
+					currentFragmentSet.build(null);
+					sql = sql.substring(predex + len);
+				}catch (Exception e) {
+					throw new SqlFragmentBuilderException("could not found sql fragment register for ["+tagClass.getName()+"]",e);
+				}
 			}
 			// 截取类容
 			if (sql != null && !sql.trim().equals("")) {

@@ -31,7 +31,7 @@ import com.yanan.utils.string.StringUtil;
  * @author yanan
  *
  */
-@Register(attribute = "*.fragment", priority = Integer.MAX_VALUE, model = ProxyModel.CGLIB, signlTon = false)
+@Register(attribute = "DEFAULT.fragment", priority = Integer.MAX_VALUE, model = ProxyModel.CGLIB, signlTon = false)
 public class FragmentSet implements FragmentBuilder {
 	protected JDBContext context;
 	// xml文档
