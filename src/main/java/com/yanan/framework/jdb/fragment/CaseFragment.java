@@ -17,6 +17,5 @@ public class CaseFragment extends FragmentSet implements FragmentBuilder {
 	public void build(Object wrapper) {
 		this.cases = (Case) this.tagSupport;
 		super.build(wrapper);
-		System.out.println(cases);
 	}
 }

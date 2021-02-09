@@ -17,6 +17,5 @@ public class DefaultFragment extends FragmentSet implements FragmentBuilder {
 	public void build(Object wrapper) {
 		defaults = (Default) this.tagSupport;
 		super.build(wrapper);
-		System.out.println(defaults);
 	}
 }
