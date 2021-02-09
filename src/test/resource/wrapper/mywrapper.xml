@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wrapper namespace="testSql" database="YaNan_Demo">
 	<sql id="tablename">student2</sql>
+	<select id="case" >
+		<case>
+	        <when test="uname!=null and uname!=''">
+	            and uname like concat('%',#{uname},'%')
+	        </when>
+	        <when test="usex!=null and usex!=''">
+	            and usex=#{usex}
+	        </when>
+	        <default>
+	            and uid  <![CDATA[>]]>  10
+	        </default>
+	    </case>
+	</select>
 	<select id="query" resultType="map">
 		SELECT name FROM student
 		<trim prefix = "where" prefixoverride="and or" suffix="" suffixoverride="and or">

@@ -1,12 +1,12 @@
 ###################### plugin list
 plugins:[
-		com.yanan.frame.plugin.autowired.plugin.PluginWiredHandler, ##服务注入提供
-		com.yanan.frame.plugin.autowired.resource.ResourceWiredHandler, ##资源类注入
-		com.yanan.frame.plugin.autowired.property.PropertyWiredHandler, ##属性注入
-		com.yanan.frame.plugin.autowired.exception.ErrorPlugsHandler, ##错误记录
-		com.yanan.frame.plugin.builder.resolver.ArrayParameterResolver,#数组解析
-		com.yanan.frame.plugin.builder.resolver.ReferenceParameterResolver,#引用解析
-		com.yanan.frame.plugin.builder.resolver.DateParameterResolver,#日期解析
+		com.yanan.framework.plugin.autowired.plugin.PluginWiredHandler, ##服务注入提供
+		com.yanan.framework.plugin.autowired.resource.ResourceWiredHandler, ##资源类注入
+		com.yanan.framework.plugin.autowired.property.PropertyWiredHandler, ##属性注入
+		com.yanan.framework.plugin.autowired.exception.ErrorPlugsHandler, ##错误记录
+		com.yanan.framework.plugin.builder.resolver.ArrayParameterResolver,#数组解析
+		com.yanan.framework.plugin.builder.resolver.ReferenceParameterResolver,#引用解析
+		com.yanan.framework.plugin.builder.resolver.DateParameterResolver,#日期解析
 		##	 com.yanan.frame.util.quartz.QuartzManager,##Quartz corn注解服务
 		##   com.yanan.frame.servlets.validator.ParameterValitationRegister, ##参数验证拦截器
 		## com.yanan.frame.plugin.autowired.exception.ErrorPlugsHandler, ##异常捕获 @Error
@@ -22,21 +22,21 @@ plugins:[
 		## mysql数据库
 		{
 			id:dataSource,
-			class:com.yanan.frame.jdb.datasource.DefaultDataSource,
+			class:com.yanan.framework.jdb.datasource.DefaultDataSource,
 		},
 		{
 			id:jdbContext,
-			class:com.yanan.frame.jdb.JDBContext,
+			class:com.yanan.framework.jdb.JDBContext,
 			args:[dataSource],
 			types:[ref]
 		},{
 			id:sqlSession,
-			class:com.yanan.frame.jdb.mapper.DefaultSqlSessionExecuter,
+			class:com.yanan.framework.jdb.mapper.DefaultSqlSessionExecuter,
 			args:[jdbContext],
 			types:[ref]
 		},{
 			id:build,
-			class:com.yanan.frame.jdb.mapper.MapperInterfaceProxyBuilder,
+			class:com.yanan.framework.jdb.mapper.MapperInterfaceProxyBuilder,
 			args:[sqlSession],
 			types:[ref]
 			field.scanPath.array=["classpath:**"]
