@@ -10,6 +10,10 @@
 * ORM支持
 * 提供一个默认的MySql的事物实现
 * 架构本身对[Plugin.Core](https://github.com/tja414312570/plugin.core)依赖，架构内部高度解耦
+# 2021-02-09:
+* 修复fragment builder ，当某个标签对应的fragmentSet不存在时，默认指向FragmentSet导致的问题
+* 将标签支持扩展为可注册标签支持，终于可以不用改框架就扩展标签了
+* 新增 case-when-default标签支持
 # 2019-09-26:
 * 修改包结构
 * 新增注解事物支持 @Transactions
@@ -26,6 +30,40 @@
 # 2020-05-11:
 * 新增var和val两个注解，var用以定义变量，val用以使用变量,要使用的变量必须在val之前定义，同时var的作用域仅为当前的SqlFragment上下文;与include和sql不同，var和val将更灵活，也更安全
 * 修改读取xml的使用方法和部分解析逻辑
+* when-case-if
+```xml
+<wrapper namespace="testSql" database="YaNan_Demo">
+	<sql id="tablename">student2</sql>
+	<select id="case" >
+		<case>
+	        <when test="uname!=null and uname!=''">
+	            and uname like concat('%',#{uname},'%')
+	        </when>
+			<!-- 当 break 为 true时，条件满足不会忘后面执行，默认为 false -->
+	        <when test="usex!=null and usex!=''" break = "true">
+	            and usex=#{usex}
+	        </when>
+	        <default>
+	            and uid  <![CDATA[>]]>  10
+	        </default>
+	    </case>
+	</select>
+</wrapper>
+```
+```java
+Map<String,String> params = new HashMap<String,String>();
+		params.put("uname", "test username");
+		params.put("usex", "test usex");
+SqlFragment sqlFragment = sqlFragmentManager.getSqlFragment("testSql.case");
+PreparedSql preparedSql = sqlFragment.getPreparedSql(params);
+System.out.println(preparedSql.getSql());
+System.out.println(preparedSql.getParameter());
+
+
+-----log-----
+and uname like concat('%',?,'%') and usex=?
+[test username, test usex]
+```
 
 * 变量支持var与val
 ```xml
