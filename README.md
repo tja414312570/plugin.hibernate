@@ -1,4 +1,4 @@
-# plugin.hibernate 数据库组件
+# plugin.jdb 数据库组件
 特点
 * 对象化数据库编程（Query，Update，Insert，Delete等）
 * 事务支持
