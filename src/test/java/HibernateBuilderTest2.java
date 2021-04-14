@@ -21,9 +21,8 @@ public class HibernateBuilderTest2 {
 //		MapperInterfaceProxyBuilder proxy = PlugsFactory.getPlugsInstance(MapperInterfaceProxyBuilder.class,hibernateBuilder);
 //		//参数
 		Map<String,String> params = new HashMap<String,String>();
-		params.put("name", "1024");
 		params.put("uname", "test username");
-//		params.put("usex", "test usex");
+		params.put("usex", "test usex");
 //		SqlFragment frag = hibernateBuilder.getSqlFragmentManger().getSqlFragment("TestSq.test1");
 //		System.out.println(frag.getPreparedSql(params));
 //		frag = hibernateBuilder.getSqlFragmentManger().getSqlFragment("TestSq.test");
@@ -39,7 +38,6 @@ public class HibernateBuilderTest2 {
 //		System.out.println(sql.selectOne("TestSq.test", params)+"");
 		SqlFragment sqlFragment = sqlFragmentManager.getSqlFragment("testSql.case");
 		PreparedSql preparedSql = sqlFragment.getPreparedSql(params);
-		System.out.println();
 		System.out.println(preparedSql.getSql());
 		System.out.println(preparedSql.getParameter());
 //		System.out.println(sql.selectOne("TestSq.test1", params)+"");

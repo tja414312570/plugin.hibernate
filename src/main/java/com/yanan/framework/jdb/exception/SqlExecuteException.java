@@ -1,6 +1,8 @@
 package com.yanan.framework.jdb.exception;
 
-public class SqlExecuteException extends RuntimeException {
+import com.yanan.framework.transaction.exception.TransactionsException;
+
+public class SqlExecuteException extends TransactionsException {
 	public SqlExecuteException(String msg, Throwable e) {
 		super(msg,e);
 	}

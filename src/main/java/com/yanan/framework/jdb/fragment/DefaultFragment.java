@@ -15,7 +15,13 @@ public class DefaultFragment extends FragmentSet implements FragmentBuilder {
 	//构建sql片段
 	@Override
 	public void build(Object wrapper) {
-		defaults = (Default) this.tagSupport;
+		setDefaults((Default) this.tagSupport);
 		super.build(wrapper);
+	}
+	public Default getDefaults() {
+		return defaults;
+	}
+	public void setDefaults(Default defaults) {
+		this.defaults = defaults;
 	}
 }

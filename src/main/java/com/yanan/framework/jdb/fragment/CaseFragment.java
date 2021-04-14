@@ -15,7 +15,13 @@ public class CaseFragment extends FragmentSet implements FragmentBuilder {
 	//构建sql片段
 	@Override
 	public void build(Object wrapper) {
-		this.cases = (Case) this.tagSupport;
+		this.setCases((Case) this.tagSupport);
 		super.build(wrapper);
+	}
+	public Case getCases() {
+		return cases;
+	}
+	public void setCases(Case cases) {
+		this.cases = cases;
 	}
 }

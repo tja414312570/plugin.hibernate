@@ -3,13 +3,14 @@ package com.yanan.framework.jdb.mapper;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.yanan.framework.jdb.SqlSession;
 import com.yanan.framework.plugin.Plugin;
 import com.yanan.framework.plugin.PlugsFactory;
-import com.yanan.framework.plugin.annotations.AfterInstantiation;
 import com.yanan.framework.plugin.annotations.Register;
 import com.yanan.framework.plugin.autowired.property.Property;
 import com.yanan.framework.plugin.builder.PluginDefinitionBuilderFactory;
@@ -45,7 +46,7 @@ public class MapperInterfaceProxyBuilder {
 	@Property("classpath:")
 	private String scanPath[];
 	@SuppressWarnings("unchecked")
-	@AfterInstantiation
+	@PostConstruct
 	public void execute() {
 		generalMapperInterfaceProxy = PlugsFactory.getPluginsInstanceByParamType(GeneralMapperInterfaceProxy.class,new Class<?>[] {SqlSession.class},sqlSession);
 		RegisterDefinition register = PluginDefinitionBuilderFactory.builderRegisterDefinition(GeneralMapperInterfaceProxy.class);

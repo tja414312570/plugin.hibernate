@@ -3,10 +3,10 @@
 	<sql id="tablename">student2</sql>
 	<select id="case" >
 		<case>
-	        <when test="uname!=null and uname!=''">
+	        <when test="uname!=null and uname!=''"  >
 	            and uname like concat('%',#{uname},'%')
 	        </when>
-	        <when test="usex!=null and usex!=''">
+	        <when test="usex!=null and usex!=''" >
 	            and usex=#{usex}
 	        </when>
 	        <default>
