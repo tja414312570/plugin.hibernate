@@ -23,7 +23,7 @@ public class ValFragment extends FragmentSet implements FragmentBuilder {
 			throw new JDBContextInitException("mapper variable \""+this.sqlFragment.getId()+"\" not id attr at file "+this.sqlFragment.getBaseMapping().getXmlFile());
 		}
 		varFragment = GeneralCache.getCache().get(this.id);
-		Assert.isNull(varFragment, new JDBContextInitException("mapper variable \""+id+"\" could not be found at wrap id \""
+		Assert.isNotNull(varFragment, new JDBContextInitException("mapper variable \""+id+"\" could not be found at wrap id \""
 				+this.sqlFragment.getId()+"\" at file "
 				+this.sqlFragment.getBaseMapping().getXmlFile()));
 		//构建子项目
