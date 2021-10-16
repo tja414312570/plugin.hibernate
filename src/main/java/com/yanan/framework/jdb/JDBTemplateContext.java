@@ -27,7 +27,7 @@ public class JDBTemplateContext {
 		this.dataSource = dataSource;
 	}
 	void init() {
-		Assert.isNull(dataSource, "the data source is null");
+		Assert.isNotNull(dataSource, "the data source is null");
 		logger.debug("scan jdb template path "+Arrays.toString(dirs));
 		if(dirs != null && dirs.length >0) {
 			for(String dir : dirs) {
