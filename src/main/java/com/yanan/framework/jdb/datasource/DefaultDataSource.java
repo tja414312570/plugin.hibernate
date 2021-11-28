@@ -10,6 +10,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ import com.yanan.framework.plugin.autowired.property.Property;
  * @author yanan
  *
  */
-@Register(afterInstance="init",register=DataSource.class)
+@Register(register=DataSource.class)
 public class DefaultDataSource implements DataSource{
 	static org.slf4j.Logger logger = LoggerFactory.getLogger(DefaultDataSource.class);
 	ThreadLocal<Connection> connectionThreadLocal = new ThreadLocal<Connection>();
@@ -83,6 +84,7 @@ public class DefaultDataSource implements DataSource{
 		Connection connection = connectionPools.getConnection();
         return connection;
 	}
+	@PostConstruct
 	public void init() throws SQLException, ClassNotFoundException {
 		logger.debug("init datasource ["+this.id+"]");
 		//写入属性
