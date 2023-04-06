@@ -37,7 +37,8 @@ public class GeneralMapperInterfaceProxy implements InvokeHandler{
 	 * sql的接口进行拦截，才能知道具体调用了接口哪个方法
 	 * 对接口方法进行分析，调用具体的sql语句，然后执行sql，什么orm之类的返回出去
 	 */
-	public void before(MethodHandler methodHandler) {
+	@Override
+	public Object around(MethodHandler methodHandler) {
 		//获取SqlSession
 		//获取类名和方法并组装为sqlId
 		String clzz = methodHandler.getPlugsProxy().getInterfaceClass().getName();
@@ -50,19 +51,21 @@ public class GeneralMapperInterfaceProxy implements InvokeHandler{
 		BaseMapping mapping = sqlSession.getContext().getWrapper(sqlId);
 		if(mapping==null)
 			throw new SqlExecuteException("could not found sql mapper id \""+method+"\" at namespace \""+clzz+"\"");
-		if(mapping.getNode().trim().toLowerCase().equals("select")){
+		String op = mapping.getNode().trim().toLowerCase();
+		if(op.equals("select")){
 			if(ReflectUtils.implementsOf(methodHandler.getMethod().getReturnType(), List.class)){
-				methodHandler.interrupt(sqlSession.selectList(sqlId, parameter));
+				return sqlSession.selectList(sqlId, parameter);
 			}else{
-				methodHandler.interrupt(sqlSession.selectOne(sqlId, parameter));
+				return sqlSession.selectOne(sqlId, parameter);
 			}
-		}else if(mapping.getNode().trim().toLowerCase().equals("insert")){
-			methodHandler.interrupt(sqlSession.insert(sqlId, parameter));
-		}else if(mapping.getNode().trim().toLowerCase().equals("updaete")){
-			methodHandler.interrupt(sqlSession.update(sqlId, parameter));
-		}else if(mapping.getNode().trim().toLowerCase().equals("delete")){
-			methodHandler.interrupt(sqlSession.delete(sqlId, parameter));
+		}else if(op.equals("insert")){
+			return sqlSession.insert(sqlId, parameter);
+		}else if(op.equals("updaete")){
+			return sqlSession.update(sqlId, parameter);
+		}else if(op.equals("delete")){
+			return sqlSession.delete(sqlId, parameter);
 		}
+		throw new IllegalAccessError("not supported mapper operate "+op);
 	}
 	/**
 	 * 查询参数是否有注解，有Param注解则将参数组装成Map返回。
@@ -84,15 +87,5 @@ public class GeneralMapperInterfaceProxy implements InvokeHandler{
 			}
 		}
 		return parameter;
-	}
-
-	@Override
-	public void after(MethodHandler methodHandler) {
-	}
-
-	@Override
-	public void error(MethodHandler methodHandler, Throwable e) {
-		// TODO Auto-generated method stub
-		
 	}
 }

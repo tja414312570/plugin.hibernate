@@ -32,7 +32,7 @@ import com.yanan.utils.resource.Resource;
 import com.yanan.utils.resource.ResourceManager;
 import com.yanan.utils.resource.scanner.PackageScanner;
 
-@Register(afterInstance = "init")
+@Register(afterInstance = "init",signlTon = false)
 public class JDBContext {
 	private static final Logger logger = LoggerFactory.getLogger(JDBContext.class);
 
@@ -41,13 +41,13 @@ public class JDBContext {
 	/**
 	 * Mapper  位置
 	 */
-	@Property("jdb.mapper.path")
+	@Property(value = "jdb.mapper.path",defaultValue = "classpath:**")
 	private String[] mapperLocations;
 	private Map<String, BaseMapping> wrapMap = new HashMap<String, BaseMapping>();
 	/**
 	 * 扫描资源路径
 	 */
-	@Property("jdb.template.package")
+	@Property(value = "jdb.template.package",defaultValue = "classpath:**")
 	private String[] scanPather;
 
 	private List<String> nameSpaces = new ArrayList<String>();
@@ -102,10 +102,12 @@ public class JDBContext {
 		boolean jdb_init_plugin_yc = Environment.getEnviroment().getVariable(JDB_INIT_PLUGIN_YC,false);
 		if(!jdb_init_plugin_yc) {
 			InputStream inputStreamSource = JDBContext.class.getResourceAsStream("./conf/plugin.yc");
-			Resource resource = new InputStreamResource("plugin.yc",JDBContext.class.getResource("./conf/plugin.yc").getPath(),inputStreamSource);
-			ResourceDecoder<Resource> resourceDecoder = 
-					PlugsFactory.getPluginsInstanceByAttributeStrict(ResourceDecoder.class, ClassPathResource.class.getSimpleName());
-			resourceDecoder.decodeResource(PlugsFactory.getInstance(), resource);
+			if(inputStreamSource != null) {
+				Resource resource = new InputStreamResource("plugin.yc",JDBContext.class.getResource("./conf/plugin.yc").getPath(),inputStreamSource);
+				ResourceDecoder<Resource> resourceDecoder = 
+						PlugsFactory.getPluginsInstanceByAttributeStrict(ResourceDecoder.class, ClassPathResource.class.getSimpleName());
+				resourceDecoder.decodeResource(PlugsFactory.getInstance(), resource);
+			}
 			Environment.getEnviroment().setVariable(JDB_INIT_PLUGIN_YC, true);
 		}
 //		PlugsFactory.getInstance().refresh();
